@@ -4,9 +4,12 @@ const fetch = require('node-fetch');
 const { 
   introspectSchema, 
   makeRemoteExecutableSchema, 
+  makeExecutableSchema,
   transformSchema,
-  FilterRootFields
+  FilterRootFields,
+  delegateToSchema
 } = require('graphql-tools');
+const Article = require('./article/schema')
 
 const { ARTICLE_GRAPHQL_ENDPOINT, ARTICLE_GRAPHQL_TOKEN } = process.env;
 
@@ -36,7 +39,7 @@ module.exports = async () => {
     link
   });
 
-  const schema = transformSchema(executableSchema, [
+  const transformedSchema = transformSchema(executableSchema, [
     rootFieldFilter,
     {
       transformResult: (originalResult) => {
@@ -57,6 +60,29 @@ module.exports = async () => {
       }
     }
   ])
+
+  const schema = makeExecutableSchema({
+    typeDefs: [
+      Article
+    ],
+    resolvers: {
+      Query: {
+        article: (parent, args, context, info) => {
+          return delegateToSchema({
+            schema: transformedSchema,
+            operation: 'query',
+            fieldName: 'article',
+            args,
+            context,
+            info
+          })
+        }
+      }
+    },
+    resolverValidationOptions: {
+      requireResolversForResolveType: false
+    }
+  })
 
   return schema
 }
