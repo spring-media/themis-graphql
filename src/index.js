@@ -2,11 +2,18 @@ const path = require('path')
 const express = require('express')
 const { initializeGraphql } = require('./graphql')
 const valideEnv = require('./validate-env')
+const expressWinston = require('express-winston')
+const logger = require('./logger')
 
 valideEnv();
 
 async function start () {
   const app = express()
+
+  app.use(expressWinston.logger({
+    winstonInstance: logger,
+    statusLevels: true
+  }));
 
   // Initialize graphql
   await initializeGraphql(app, {

@@ -10,10 +10,22 @@ const {
   delegateToSchema
 } = require('graphql-tools');
 const Article = require('./article/schema')
+const logger = require('./../logger')
 
 const { ARTICLE_GRAPHQL_ENDPOINT, ARTICLE_GRAPHQL_TOKEN } = process.env;
 
-const http = new HttpLink({ uri: ARTICLE_GRAPHQL_ENDPOINT, fetch });
+const http = new HttpLink({ 
+  uri: ARTICLE_GRAPHQL_ENDPOINT, 
+  fetch: async (...args) => {
+    try {
+      const result = await fetch(...args)
+      logger.debug('Remote fetch result:', result)
+      return result
+    } catch (err) {
+      logger.error(err)
+    }  
+  }
+});
 
 const link = setContext((request, previousContext) => ({
   headers: {

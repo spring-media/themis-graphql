@@ -9,5 +9,6 @@ Create a `.env` file and/or provide the following environment configurations:
 - NODE_ENV
 - ARTICLE_GRAPHQL_ENDPOINT
 - ARTICLE_GRAPHQL_TOKEN
+- LOG_LEVEL
 
 Then just `npm run dev`.
