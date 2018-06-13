@@ -58,7 +58,7 @@ module.exports = async () => {
         if (originalResult && originalResult.data) {
           const { article } = originalResult.data
           if (article) {
-            // Transform the article result here...
+            // Transform the article result here... ?
             if (article.headline) {
               article.headline = {
                 ...article.headline,
