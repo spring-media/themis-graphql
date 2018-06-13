@@ -5,7 +5,7 @@ module.exports = gql`
 
   type Query {
     # Fetch specific article by id and version
-    article (id: ID! version: Int): Article
+    article (id: ID!): Article
   }
 
   # The delivery slate richtext-type
@@ -13,7 +13,6 @@ module.exports = gql`
     type: String
     typeVersion: String
     data: JSON
-    demoAdditionalDeliveryField: String
   }
 
   # Base interface for article
@@ -24,10 +23,11 @@ module.exports = gql`
     id: ID
   }
 
-  # Type for a basic article at article edit page
+  # Type for a Delivery Article 
+  # For the largest part, the article is populated with data from LeanCMS
   type Article implements BaseArticle {
     documentType: String
-    version: Int
+    
     # An article can be in a specific state (checkedIn, checkedOut, published)
     state: String
     # The Date, when the article was created
@@ -41,13 +41,10 @@ module.exports = gql`
     canonicalLink: String
     canonicalPath: String
     alternativePaths: [String]
-    editors: [String]
-    editorsDone: [String]
-    # The user who made the force checkin
-    forcedCheckinBy: String
-    publicationBlocked: Boolean
+    
     adState: String
     noIndexNoFollow: Boolean
+    
     # The kicker of an article in plaintext format
     kicker: String
     headline: DeliverySlateJS
@@ -55,28 +52,26 @@ module.exports = gql`
     subcell: DeliverySlateJS
     subcellPlain: String
     text: DeliverySlateJS
+    
+    # Meta data
     title: String
+    # Meta data
     metaDescription: String
-    readyToReview: Boolean
+    
     author: String
     displayDate: String
-    # Formally known as coreMediaId
-    externalId: String
     
     # This attribute was originally named cmsId
     id: ID
 
-    # This attribute is only for demonstration proposes.
-    # It explains how to add virtual attributes
-    versionId: String
     pageTitle: String
 
     premium: String
     conversionText: DeliverySlateJS
 
-    # Indicates if the context user is currently editing the article
-    checkedOutByMe: Boolean
-
     slateState: JSON
+
+    # Just to demo how to add data from another endpoint to the schema
+    extraRESTInfo: JSON
   }
 `
