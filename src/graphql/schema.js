@@ -1,7 +1,12 @@
 const { setContext } = require('apollo-link-context');
 const { HttpLink } = require('apollo-link-http');
 const fetch = require('node-fetch');
-const { introspectSchema, makeRemoteExecutableSchema } = require('graphql-tools');
+const { 
+  introspectSchema, 
+  makeRemoteExecutableSchema, 
+  transformSchema,
+  FilterRootFields
+} = require('graphql-tools');
 
 const { ARTICLE_GRAPHQL_ENDPOINT, ARTICLE_GRAPHQL_TOKEN } = process.env;
 
@@ -13,13 +18,38 @@ const link = setContext((request, previousContext) => ({
   }
 })).concat(http);
 
-module.exports = async () => {
-  const schema = await introspectSchema(link);
+const rootFieldFilter = new FilterRootFields((op, fieldname) => {
+  if (['Query'].includes(op)) {
+    if ([
+      'article', 'articles', 'teaser', 'channels'
+    ].includes(fieldname))
+    return true
+  }
+  return false
+})
 
+module.exports = async () => {
+  const remoteSchema = await introspectSchema(link);
+  
   const executableSchema = makeRemoteExecutableSchema({
-    schema,
-    link,
+    schema: remoteSchema,
+    link
   });
 
-  return executableSchema
+  const schema = transformSchema(executableSchema, [
+    rootFieldFilter,
+    {
+      transformResult: (originalResult) => {
+        if (originalResult && originalResult.data) {
+          const { article } = originalResult.data
+          if (article) {
+            // Transform the article result here...
+          }
+        }
+        return originalResult
+      }
+    }
+  ])
+
+  return schema
 }

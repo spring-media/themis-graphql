@@ -10,4 +10,4 @@ Create a `.env` file and/or provide the following environment configurations:
 - ARTICLE_GRAPHQL_ENDPOINT
 - ARTICLE_GRAPHQL_TOKEN
 
-Then just `npm run dev` 
+Then just `npm run dev`.
