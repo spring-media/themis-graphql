@@ -44,6 +44,13 @@ module.exports = async () => {
           const { article } = originalResult.data
           if (article) {
             // Transform the article result here...
+            if (article.headline) {
+              article.headline = {
+                ...article.headline,
+                type: 'slatejs',
+                data: 'transformed headline'
+              }
+            }
           }
         }
         return originalResult
