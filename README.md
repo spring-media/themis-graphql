@@ -2,7 +2,7 @@
 GQL Data Aggregation Layer for the RED Delivery
 
 # Development Setup
-Rum `npm install`.
+Run `npm install`.
 
 Create a `.env` file and/or provide the following environment configurations:
 - PORT

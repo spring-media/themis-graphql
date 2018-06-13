@@ -32,15 +32,12 @@ module.exports = gql`
     state: String
     # The Date, when the article was created
     creationDate: String
-    # The Date, when the article was published
+    # The last Date, when the article has been published
     publicationDate: String,
-    # The Date, when the article was originally published
+    # The Date, when the article has been published for the first time
     firstPublicationDate: String,
     # The Date, when the article was modified
     modificationDate: String
-    canonicalLink: String
-    canonicalPath: String
-    alternativePaths: [String]
     
     adState: String
     noIndexNoFollow: Boolean
