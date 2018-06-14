@@ -2,6 +2,7 @@ const { graphqlExpress, graphiqlExpress } = require('apollo-server-express')
 const createSchema = require('./schema')
 const bodyParser = require('body-parser')
 const { formatError } = require('apollo-errors')
+const logger = require('./../logger')
 
 /**
  * Initializes Graphql
@@ -15,7 +16,19 @@ const initializeGraphql = async (app, { graphQLPath, graphiQLPath }) => {
   app.use(graphQLPath,
     bodyParser.json(),
     graphqlExpress((req, res) => ({
-      formatError,
+      formatError: err => {
+        const params = {
+          message: err.message,
+          locations: err.locations,
+          stack: err.stack
+        };
+
+        const query = req.body && req.body.query
+        
+        logger.error(`message: "${err.message}", QUERY: "${query}"`);
+        
+        return formatError(params);
+      },
       schema,
       context: {},
       debug: process.env.NODE_ENV === 'development',

@@ -23,6 +23,32 @@ module.exports = gql`
     id: ID
   }
 
+  type TaxonomyNode {
+		id: ID
+		name: String
+		path: [String]
+	}
+
+  type ImageElement {
+		id: ID
+		width: Int
+		height: Int
+		renderUrl: String
+		aspectRatio: String
+		caption: DeliverySlateJS
+		source: String
+	}
+  
+  type EmbedElement {
+		id: ID
+		lastModified: String
+		modCounter: Int
+		embedType: String
+		url: String
+	}
+
+  union Lead = ImageElement | EmbedElement
+
   # Type for a Delivery Article 
   # For the largest part, the article is populated with data from LeanCMS
   type Article implements BaseArticle {
@@ -39,6 +65,8 @@ module.exports = gql`
     # The Date, when the article was modified
     modificationDate: String
     
+    editors: [String]
+		
     adState: String
     noIndexNoFollow: Boolean
     
@@ -49,11 +77,16 @@ module.exports = gql`
     subcell: DeliverySlateJS
     subcellPlain: String
     text: DeliverySlateJS
-    
+    lead: Lead
+		
     # Meta data
     title: String
     # Meta data
     metaDescription: String
+    
+    canonicalLink: String
+		
+    taxonomyNodes: [TaxonomyNode]
     
     author: String
     displayDate: String

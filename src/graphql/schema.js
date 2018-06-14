@@ -17,13 +17,9 @@ const { ARTICLE_GRAPHQL_ENDPOINT, ARTICLE_GRAPHQL_TOKEN } = process.env;
 const http = new HttpLink({ 
   uri: ARTICLE_GRAPHQL_ENDPOINT, 
   fetch: async (...args) => {
-    try {
-      const result = await fetch(...args)
-      logger.debug('Remote fetch result:', result)
-      return result
-    } catch (err) {
-      logger.error(err)
-    }  
+    const result = await fetch(...args)
+    logger.debug('Remote fetch result:', result)
+    return result
   }
 });
 
@@ -59,13 +55,13 @@ module.exports = async () => {
           const { article } = originalResult.data
           if (article) {
             // Transform the article result here... ?
-            if (article.headline) {
-              article.headline = {
-                ...article.headline,
-                type: 'slatejs',
-                data: 'transformed headline'
-              }
-            }
+            // if (article.headline) {
+            //   article.headline = {
+            //     ...article.headline,
+            //     type: 'slatejs',
+            //     data: 'transformed headline'
+            //   }
+            // }
           }
         }
         return originalResult
