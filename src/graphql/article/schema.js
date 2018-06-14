@@ -100,8 +100,5 @@ module.exports = gql`
     conversionText: DeliverySlateJS
 
     slateState: JSON
-
-    # Just to demo how to add data from another endpoint to the schema
-    extraRESTInfo: JSON
   }
 `;

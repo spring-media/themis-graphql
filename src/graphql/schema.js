@@ -79,12 +79,6 @@ module.exports = async () => {
             info
           })
         }
-      },
-      Article: {
-        // Example on how to extend the partial result from the editorial graph with additional fields
-        extraRESTInfo: async (...rest) => {
-          return await Promise.resolve({ info: 'from another remote endpoint' })
-        }
       }
     },
     resolverValidationOptions: {
