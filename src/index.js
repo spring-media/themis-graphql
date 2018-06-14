@@ -33,7 +33,7 @@ valideEnv();
     next(err)
   })
 
-  server.listen(process.env.PORT || 8787, (...rest) => {
+  server.listen(process.env.PORT || 8787, () => {
     const { address, port } = server.address()
     logger.info(`RED GQL Aggregation Server running at ${address}:${port}`)
   })
