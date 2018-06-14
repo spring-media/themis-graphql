@@ -30,13 +30,7 @@ const link = setContext((request, previousContext) => ({
 })).concat(http);
 
 const rootFieldFilter = new FilterRootFields((op, fieldname) => {
-  if (['Query'].includes(op)) {
-    if ([
-      'article', 'articles', 'teaser', 'channels'
-    ].includes(fieldname))
-    return true
-  }
-  return false
+  return op === 'Query' && ['article', 'articles', 'teaser', 'channels'].includes(fieldname)
 })
 
 module.exports = async () => {
