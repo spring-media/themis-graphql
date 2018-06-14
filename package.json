@@ -19,11 +19,14 @@
   },
   "devDependencies": {
     "dotenv": "6.0.0",
-    "nodemon": "1.17.5"
+    "nodemon": "1.17.5",
+    "eslint": "4.19.1",
+    "babel-eslint": "8.2.3"
   },
   "scripts": {
     "dev": "NODE_ENV=development nodemon -r dotenv/config src/",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:eslint": "./node_modules/.bin/eslint --quiet '**/*.js'"
   },
   "repository": {
     "type": "git",

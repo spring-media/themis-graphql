@@ -1,8 +1,8 @@
-const Joi = require('joi')
+const Joi = require('joi');
 
 const uriScheme = {
-  scheme: ['https', 'http']
-}
+  scheme: [ 'https', 'http' ],
+};
 
 const schema = Joi.object().keys({
   PORT: Joi.string().alphanum().min(2).max(5).required(),
@@ -16,12 +16,13 @@ const schema = Joi.object().keys({
     .required(),
   ARTICLE_GRAPHQL_TOKEN: Joi
     .string()
-    .required()
-}).unknown()
+    .required(),
+}).unknown();
 
 module.exports = function validateEnv () {
-  const { error } = Joi.validate(process.env, schema)
+  const { error } = Joi.validate(process.env, schema);
+
   if (error) {
-    throw new Error(error)
+    throw new Error(error);
   }
-}
+};

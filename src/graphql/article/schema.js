@@ -1,4 +1,4 @@
-const gql = require('graphql-tag')
+const gql = require('graphql-tag');
 
 module.exports = gql`
   scalar JSON
@@ -71,4 +71,4 @@ module.exports = gql`
     # Just to demo how to add data from another endpoint to the schema
     extraRESTInfo: JSON
   }
-`
+`;
