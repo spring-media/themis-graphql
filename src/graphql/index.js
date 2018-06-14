@@ -17,11 +17,7 @@ const initializeGraphql = async (app, { graphQLPath, graphiQLPath }) => {
     bodyParser.json(),
     graphqlExpress((req, res) => ({
       formatError: err => {
-        const params = {
-          message: err.message,
-          locations: err.locations,
-          stack: err.stack
-        };
+        const params = { message, locations, state } = err;
 
         const query = req.body && req.body.query
         
