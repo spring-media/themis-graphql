@@ -12,7 +12,7 @@ const schema = Joi.object().keys({
     .required(),
   ARTICLE_GRAPHQL_ENDPOINT: Joi
     .string()
-    .uri()
+    .uri(uriScheme)
     .required(),
   ARTICLE_GRAPHQL_TOKEN: Joi
     .string()

@@ -1,8 +1,6 @@
 const { Logger, transports } = require('winston');
 const isDev = process.env.NODE_ENV !== 'production';
 
-console.log('process.env.NODE_ENV', process.env.NODE_ENV);
-
 const logger = new (Logger)({
   transports: [
     new transports.Console({
