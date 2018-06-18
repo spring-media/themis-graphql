@@ -10,7 +10,7 @@
     "/node_modules/"
   ],
   "setupFiles": [
-    "../test/env.js"
+    "dotenv/config"
   ],
   "setupTestFrameworkScriptFile": "../test/framework.js"
 }
