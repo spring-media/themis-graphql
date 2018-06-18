@@ -88,5 +88,4 @@ module.exports = async () => {
   });
 
   return schema;
-}
-;
+};

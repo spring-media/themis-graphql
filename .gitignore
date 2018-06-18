@@ -38,7 +38,7 @@ node_modules
 dist/
 
 ### Sensible Config Files ###
-.env
+*.env
 
 ### Output ###
 output

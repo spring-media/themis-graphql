@@ -7,7 +7,7 @@ const logger = require('./logger');
 
 valideEnv();
 
-(async function start () {
+async function initServer () {
   const app = express();
   const server = createServer(app);
 
@@ -33,9 +33,9 @@ valideEnv();
     next(err);
   });
 
-  server.listen(process.env.PORT || 8787, () => {
-    const { address, port } = server.address();
+  return server;
+}
 
-    logger.info(`RED GQL Aggregation Server running at ${address}:${port}`);
-  });
-})();
+module.exports = {
+  initServer,
+};

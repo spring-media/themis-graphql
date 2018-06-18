@@ -12,3 +12,6 @@ Create a `.env` file and/or provide the following environment configurations:
 - LOG_LEVEL
 
 Then just `npm run dev`.
+
+# Testing
+See [test/README.md](test/README.md)

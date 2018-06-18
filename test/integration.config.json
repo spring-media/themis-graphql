@@ -1,0 +1,16 @@
+{
+  "bail": false,
+  "rootDir": "../src",
+  "testRegex": "(\\.(test))\\.js$",
+  "moduleFileExtensions": [
+    "js",
+    "json"
+  ],
+  "testPathIgnorePatterns": [
+    "/node_modules/"
+  ],
+  "setupFiles": [
+    "../test/env.js"
+  ],
+  "setupTestFrameworkScriptFile": "../test/framework.js"
+}

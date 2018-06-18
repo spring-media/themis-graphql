@@ -2,7 +2,7 @@
   "name": "red-gql",
   "version": "0.0.1",
   "description": "GQL Data Aggregation Layer for the RED Delivery",
-  "main": "src/index.js",
+  "main": "index.js",
   "dependencies": {
     "apollo-errors": "1.9.0",
     "apollo-link-context": "1.0.8",
@@ -18,14 +18,18 @@
     "winston": "2.4.3"
   },
   "devDependencies": {
+    "babel-eslint": "8.2.3",
     "dotenv": "6.0.0",
-    "nodemon": "1.17.5",
     "eslint": "4.19.1",
-    "babel-eslint": "8.2.3"
+    "jest": "23.1.0",
+    "jest-cli": "23.1.0",
+    "nock": "9.3.3",
+    "nodemon": "1.17.5",
+    "supertest": "3.1.0"
   },
   "scripts": {
-    "dev": "NODE_ENV=development nodemon -r dotenv/config src/",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "NODE_ENV=development nodemon -r dotenv/config index.js",
+    "test:integration": "jest --config test/integration.config.json",
     "test:eslint": "./node_modules/.bin/eslint --quiet '**/*.js'"
   },
   "repository": {
