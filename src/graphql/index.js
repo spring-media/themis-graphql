@@ -20,9 +20,15 @@ const initializeGraphql = async (app, { graphQLPath, graphiQLPath }) => {
         const { message, locations, state } = err;
         const params = { message, locations, state };
 
-        const query = req.body && req.body.query;
+        const { query, variables, operationName } = req.body;
 
-        logger.error(`message: "${err.message}", QUERY: "${query}"`);
+        logger.error(`message: "${err.message}", QUERY: "${query}", VARIABLES: ${JSON.stringify(variables, null, 2)}, OPERATION: "${operationName}"`);
+        if (process.env.LOG_LEVEL === 'debug') {
+          const stack = err.extensions && err.extensions.exception && err.extensions.exception.stacktrace;
+          const stackStr = stack.join('\n');
+
+          logger.debug(stackStr);
+        }
 
         return formatError(params);
       },
