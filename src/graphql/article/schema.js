@@ -3,9 +3,14 @@ const gql = require('graphql-tag');
 module.exports = gql`
   scalar JSON
 
+  input ArticleInput {
+    id: ID!
+    version: Int
+  }
+
   type Query {
     # Fetch specific article by id and version
-    article (id: ID!): Article
+    article (input: ArticleInput): Article
   }
 
   # The delivery slate richtext-type
