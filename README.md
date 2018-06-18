@@ -1,9 +1,7 @@
 # red-gql
 GQL Data Aggregation Layer for the RED Delivery
 
-# Development Setup
-Run `npm install`.
-
+# Configuration
 Create a `.env` file and/or provide the following environment configurations:
 - PORT
 - NODE_ENV
@@ -11,7 +9,11 @@ Create a `.env` file and/or provide the following environment configurations:
 - ARTICLE_GRAPHQL_TOKEN
 - LOG_LEVEL
 
+# Development Setup
+Run `npm install`.
 Then just `npm run dev`.
 
 # Testing
+Run `npm run test`.
+
 See [test/README.md](test/README.md)
