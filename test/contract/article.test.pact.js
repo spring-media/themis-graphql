@@ -1,6 +1,15 @@
 /* global provider, port */
 /* eslint-disable max-nested-callbacks */
 
+/*
+TODO:
+Erstellung eines initialen GraphQL Tests.
+Beispiel:
+https://github.com/pact-foundation/pact-js/tree/feat/message-pact/examples/graphql
+
+Anlegen einer consumer.js datei die den Query absetzt und erweitern der article.test.pact.js Datei um den Test.
+*/
+
 'use strict';
 
 const getMeDogs = require('../index').getMeDogs;
