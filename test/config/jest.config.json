@@ -1,6 +1,6 @@
 {
   "bail": false,
-  "rootDir": "../src",
+  "rootDir": "../../src",
   "testRegex": "(\\.(test))\\.js$",
   "moduleFileExtensions": [
     "js",

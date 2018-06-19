@@ -7,7 +7,7 @@ describe('Server', () => {
 
   beforeAll(async () => {
     // nockRecord();
-    nockLoad(path.resolve(__dirname, '/__nocks__/lean-remote-introspection-schema.nock'));
+    nockLoad(path.resolve(__dirname, '__nocks__/lean-remote-introspection-schema.nock'));
 
     server = await initServer();
     // nockSave(__dirname + '/__nocks__/lean-remote-introspection-schema.nock');
@@ -19,7 +19,7 @@ describe('Server', () => {
 
   it('populates the schema with remote data', async () => {
     // nockRecord();
-    nockLoad(path.resolve(__dirname, '/__nocks__/full-article.nock'));
+    nockLoad(path.resolve(__dirname, '__nocks__/full-article.nock'));
     const res = await request(server)
       .post('/api/graphql')
       .send({
