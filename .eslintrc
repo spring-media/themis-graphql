@@ -3,7 +3,9 @@
 		"parser": "babel-eslint",
 		"ecmaVersion": 2017,
 		"sourceType": "module",
-		"ecmaFeatures": {}
+		"ecmaFeatures": {
+			"experimentalObjectRestSpread": true
+		}
 	},
 	"rules": {
 		"accessor-pairs": 2,
@@ -168,11 +170,14 @@
 		"yoda": [2,"never",{}]
 	},
 	"env": {
-		"browser": true,
+		"browser": false,
 		"node": true,
 		"jest": true,
 		"worker": false,
 		"es6": true,
 		"serviceworker": true
+	},
+	"globals": {
+		"nockLoad": false
 	}
 }
