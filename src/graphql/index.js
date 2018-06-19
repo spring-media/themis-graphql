@@ -10,7 +10,9 @@ const logger = require('./../logger');
  * @param  {Object} app Express instance
  * @return {Object} app
  */
-const initializeGraphql = async (app, { graphQLPath, graphiQLPath }) => {
+const initializeGraphql = async (app, {
+  graphQLPath, graphiQLPath, tracing, cacheControl,
+}) => {
   const schema = await createSchema();
 
   app.use(graphQLPath,
@@ -35,8 +37,8 @@ const initializeGraphql = async (app, { graphQLPath, graphiQLPath }) => {
       schema,
       context: {},
       debug: process.env.NODE_ENV === 'development',
-      tracing: true,
-      cacheControl: true,
+      tracing,
+      cacheControl,
     }))
   );
 

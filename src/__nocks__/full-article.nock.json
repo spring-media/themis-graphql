@@ -1,0 +1,376 @@
+[
+  {
+    "scope": "http://editor.bild-int.leancms.de:80",
+    "method": "POST",
+    "path": "/api/graphql",
+    "body": {
+      "operationName": null,
+      "variables": {
+        "_v0_input": {
+          "id": "5afb22871a6fcc00015ec57d"
+        }
+      },
+      "query": "query ($_v0_input: ArticleInput) {\n  article(input: $_v0_input) {\n    documentType\n    state\n    creationDate\n    publicationDate\n    firstPublicationDate\n    modificationDate\n    editors\n    adState\n    kicker\n    headline {\n      data\n    }\n    headlinePlain\n    subcell {\n      data\n    }\n    subcellPlain\n    text {\n      data\n    }\n    lead {\n      ... on ImageElement {\n        renderUrl\n        caption {\n          data\n        }\n        width\n        height\n        aspectRatio\n        source\n      }\n      __typename\n    }\n    title\n    metaDescription\n    canonicalLink\n    taxonomyNodes {\n      id\n      name\n    }\n    author\n    displayDate\n    id\n    pageTitle\n    premium\n    conversionText {\n      data\n    }\n  }\n}\n"
+    },
+    "status": 200,
+    "response": [
+      "1f8b0800000000000003ec57db6ee44410fd95c24f20cd4c7c99fb0bca2acb027b8b9200d2a2156abbcb7613bb6dfa92ec64b5d2fe03af48f0b0dfc0136ff3277c0955ed492640562c028484904623abba5d75fad4a9aaf6cb480a27a2f5cb4818a78a06c3a33c75c2d1233dd9a73a1a45c2bbba3364f8b4d37a038f943e47321742775a15a26103ad1ee4e804fda97165abf16a8c4a5be1aec64257688bbab316f5b8ef1a7585aaf65a8e4b8f66acda96fea5426d9dd7a5c05a552f26b56b1b0ed1e90b345675fa0c5fb868ad7dd390d5a070643b1a60a671b21cc7f371929e25c93a5eac67cb49369d3da3f7a5b27d2336bfda381d67f1599aaee3987e615357f816b53bdbf4e1d43b2a46114ae53a63a3f597d1a16c958e9e8fa25219eb8e7dded0c17f8761364e66c1f57c3d8b27d3d594ddd72864a374e0f69aeebce98a73767c637a4538b07775b48e29b076ca6d4e0271b489c22acd2e4edda6c1dbe673dc50f0645e3439457281a3e8784f3194db9f0c048ae186e2ed1ba2f843de3f1cd89399fccae8d5f3ebd08f45cf985ebddac33f6e0431f027bc2b49bb67a2ccd374b948c4bc2c8a388e931916b385a4f573559c23abea1e2a7870fa0056e3fb8362e0b6626867431098b5afbe62c45ab48cfa93565478bf41ce1c6bd4f658b813ce092d36424b5b887e9069cf89fae7e89fb5a95eece93f22363e66762ebd9108540f2d3cf39551656959ccbea8e1a26be16cfbc6d1d6df9cf51d73a2aa9a62a5d972318a0c6a89e633d3700daa83b7517eb0cae2d5342dca392ee54ce66996a5cbe554ce729cae56999c1f24c94142106ce74dc1208e0f0f0e8fe1b8ee5c47e64b25999f6c16c704a1a55a3f22e046edd81d4ab3eda42aef2a8da13cd375b6a0aa9b2c92509e3da5f04c39ee3b7fa08235bcb3ee7a83adf22db92c0db200fab7542b414acee2e53a5daeb3d524ce52866477bdafa891e4299f7a1697f579814df3cf4948a0b3b725a4d0a2858f8878a8b0766054513b551125163e4673f51e104940e45c1205395e8ab2d4c86a0a2c29eb8014c1748e57e0ccf64de580ba316a200136e8ae1c3d068d06210aea720e2eb19ac091b070a6e8dd1bf1064f1f895a4baf2bd082d42bb185a7ad183f544d438b179d8623835692d3db39236facef161e77da89ea1aee0d8401c1f9f64ddb971c5ef1017c6b61fb5dce7b7276f144f4a269c9932066ef288fd1dfc27fbaf0f36ccfffa38e3404aab7be05d9359d01ab1c9d04dd08682459a2da79320a497b0a45bc60a39c198145498aa423d364f4ed8648375411e0b0edc989d2178a5874e01d3422a720806e088040ed4c0b108dfac66fc8011ae16ef9bbe81adf3b2f2670e898c10eb0b3fcb6280a6f79bf83afbd25bd48dfed5c8675146030f7ede45d7bcb4eebd7edfe7f29de2945f8af4a44bce874d76e9e741287ee16c678b29a4d17ab78493b76e39712ba0ad537accfa6f12c9bdf5a674283c08692fa9b1be74bba13e88a5f4956a3a8a3c98a142449326ee09b619e3c7d741400ec8634a9b6da57f813120f6bc7929ae1a4a3243b783881f77f7efd0364d907a3203522b1e288acd653d15a560e6b17",
+      "4e08a54643ba7f7f31fb00dcf647ca368e287b619d94d6b0ac1f0a8b86b69399dd3ddcfea8556573b3fd896f3e543d8a74cd5782a216faca412d1c7b09eba4491a6dc3442429c3cfafbf85961426c575215cdf297822de59dd7fa935ee19ce96f19ee2f8ad04e72bd7cf7f35c2e0b4c72b251a0688c4f4f5e0b66ca61683b0fb18a0e95c23ecc67e4377022a5e6f2bcc5523b99ea854e56023a61a85dbeff90dba00c03d34a8421b30701a6adaba73a3e8ae4e55e2e882c5f9a0037191070a73b41ddf962c39d543b6a0ee28fa03e41b84099d25a0dcdd37cea96595948c8e438405c1ef231c93938e95412e1d35c6097ca665c859c5d5ce9d68af2b823e81fb06867e448d9409706c0ed007b99cf8f08574ad1ae1cbe08e33b29384be69aaf4c81dcb1951ee243134d57b285a5ea4723f347737fdbd2c228a3b7c5745dcc31f0b62249c857c730364972d7c210896b174ad622001d620f22f78344cfeddbb77aa7dbadcabee2f1de38fc7237dfe1951f117c70ec4ee154969709fda9d8fcfc317eb2f000000ffff",
+      "c498d16ed3301486ef798aa8572095c98ee3c4e10e86808a31213409b8b413a7c9da26c34e983409690f32ed6acfc015777d933d09e7386993ad682a5b07974da3c4f639e7ffbf3fa563da5a7a748f10387548ad153e6534afa04d3f21c07f69697a3cb8f415a09ef8743c6a4e4eb439d019de44063fe106ce7eac93ed9bca2c24ee3cd1b8d751bfc22ecd1618934683c8e047a2cb6619a1a164942a2da2c06734f353ce52a2944ca910828f305a64d0eba54b035cd148b1580b056a2f305744242204b1c9e6d5a9cb63fb6e8f999c5bbd3e9cd50a6ee6877b573c2cbf73b5db8a03742c8a6467824959b08d60269237fe4030a5031a5088a21d759cfd4e135722943ab9994f0bb80b3d29c9e1ba3628b0e34e003e80f09555619d19a580506fb55a5e3529f80a928a7bc08ad1ca75066dec59832e843af4985e72d3ad457f3693a3970793fdc1e944461564703a55a7f22da8213e21873a54735befa0adf50110d2561a2586ed226fc5b2a73dbc62756e3a0edc60cdcec75b94c48ec1ff66b0b16206daad0c14aadefd31adf71e736d0756baf317f5f5f043ba4dab8a9c56a65fd0f5f9e5e7c2806f6619f629182954678cdd063c0991bc31493eab168bfafafc0200554e6bbda272bbf2d51368690bfc03a8fbae02d7f6de1bc8c049be90c67bcac533efacf15e4d0e5ef7d0be070c96e4169f3129a1d5c1e4d108619c973f1dfc63899657065e96a3e94f5b1bec88bf9ffe8fb012ab6755e9a4ed0c5eb458cdd90b6084cb436c35cc2d6d874905a3a161dcc65ea5fa165cfe6a8341bd079bdcda6641a91a3df70e7583bd86c0a1111a80c38f0ce42d58b6dd3454fbad91e69fb86928a818d479cbd5fe0fdf0c68e4dff2cd0032ca9dbe491e609b210b78679b3a4b78c843c6c224d5b160918e39537e20fd2c2342c67fb44ded279a9198a36d0a1e87e1dfda266ef821a50d8e59c4ef5bda9d18e47a29594cea81f1611473a3fe7c5266ae2e85e3ead3c2a4fdbc01e31a0f74a37661dcdefaeee7a9b92ed46378d77ad5a9c9857d4451ee5f749c4ff3bb5fb43160f0bebafd8e8a9f61e1f793df000000ffff",
+      "0300ad870788db190000"
+    ],
+    "rawHeaders": [
+      "Server",
+      "nginx/1.11.10",
+      "Date",
+      "Tue, 19 Jun 2018 12:59:33 GMT",
+      "Content-Type",
+      "application/json",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "keep-alive",
+      "X-Powered-By",
+      "Express",
+      "Content-Encoding",
+      "gzip"
+    ]
+  },
+  {
+    "scope": "http://127.0.0.1:63928",
+    "method": "POST",
+    "path": "/api/graphql",
+    "body": {
+      "query": "query fetchArticle($input: ArticleInput) { \n          article(input: $input) { \n            documentType\n            state\n            creationDate\n            publicationDate\n            firstPublicationDate\n            modificationDate\n            editors\n            adState\n            noIndexNoFollow\n            kicker\n            headline {\n              data\n            }\n            headlinePlain\n            subcell {\n              data\n            }\n            subcellPlain\n            text {\n              data\n            }\n            lead {\n              ... on ImageElement {\n                renderUrl\n                caption {\n                  data\n                }\n                width\n                height\n                aspectRatio\n                source\n              }\n            }\n            title\n            metaDescription\n            canonicalLink\n            taxonomyNodes {\n              id\n              name\n            }\n            author\n            displayDate\n            id\n            pageTitle\n            premium\n            conversionText {\n              data\n            }\n          }\n        }",
+      "variables": {
+        "input": {
+          "id": "5afb22871a6fcc00015ec57d"
+        }
+      }
+    },
+    "status": 200,
+    "response": {
+      "data": {
+        "article": {
+          "documentType": "article",
+          "state": "checkedOut",
+          "creationDate": "2018-06-12T11:07:58.345Z",
+          "publicationDate": "2018-06-11T08:28:39.032Z",
+          "firstPublicationDate": "2018-05-15T22:06:50.494Z",
+          "modificationDate": "2018-06-12T12:37:00.715Z",
+          "editors": [
+            "Admin"
+          ],
+          "adState": "adsOn",
+          "noIndexNoFollow": null,
+          "kicker": "Bei GSG 9-Einsatz angeschossen",
+          "headline": {
+            "data": {
+              "blocks": [
+                {
+                  "data": {},
+                  "depth": 0,
+                  "entityRanges": [],
+                  "inlineStyleRanges": [],
+                  "key": "16clb",
+                  "text": "Polizeihund für immer dienstunfähig?",
+                  "type": "unstyled"
+                }
+              ],
+              "entityMap": {}
+            }
+          },
+          "headlinePlain": "Polizeihund für immer dienstunfähig?",
+          "subcell": {
+            "data": {
+              "blocks": [
+                {
+                  "data": {},
+                  "depth": 0,
+                  "entityRanges": [],
+                  "inlineStyleRanges": [],
+                  "key": "aets7",
+                  "text": "Dieses Foto geht richtig ans Herz! Ein schwer bewaffneter Polizist der GSG-9 trägt einen verletzten Hund vom Tatort weg. Das Tier wurde bei der Fahndung nach dem Oma-Killer von Dresden angeschossen. Der am Montag schwer verletzte Hund kämpft weiter ums Überleben. Napalm Death",
+                  "type": "unstyled"
+                },
+                {
+                  "data": {},
+                  "depth": 0,
+                  "entityRanges": [],
+                  "inlineStyleRanges": [],
+                  "key": "27u63",
+                  "text": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",
+                  "type": "unstyled"
+                }
+              ],
+              "entityMap": {}
+            }
+          },
+          "subcellPlain": "Dieses Foto geht richtig ans Herz! Ein schwer bewaffneter Polizist der GSG-9 trägt einen verletzten Hund vom Tatort weg. Das Tier wurde bei der Fahndung nach dem Oma-Killer von Dresden angeschossen. Der am Montag schwer verletzte Hund kämpft weiter ums Überleben. Napalm Death Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.",
+          "text": {
+            "data": {
+              "blocks": [
+                {
+                  "data": {},
+                  "depth": 0,
+                  "entityRanges": [],
+                  "inlineStyleRanges": [
+                    {
+                      "length": 19,
+                      "offset": 113,
+                      "style": "BOLD"
+                    }
+                  ],
+                  "key": "5chtg",
+                  "text": "Nachdem sich Robert K. († 33), der vergangenen Samstag eine Rentnerin (75) tötete, in einer alten Kaserne in der Königsbrücker Heide verschanzt hatte, rückte die GSG 9 an – mit dabei der Zugriffshund.",
+                  "type": "unstyled"
+                },
+                {
+                  "data": {},
+                  "depth": 0,
+                  "entityRanges": [],
+                  "inlineStyleRanges": [
+                    {
+                      "length": 380,
+                      "offset": 0,
+                      "style": "BOLD"
+                    }
+                  ],
+                  "key": "b9tp6",
+                  "text": "Die Spezialhunde sind für spezielle polizeiliche Einsatzlagen ausgebildet, werden ausschließlich im Bereich der Schwerstkriminalität eingesetzt – besonders wenn eine hohe Gefährdung für Polizeikräfte oder für andere Personen besteht. Und die ging von Robert K. aus. Er schoss gezielt aus der alten Russen-Kaserne auf die angerückten Polizisten und traf dabei einen Beamten am Arm.",
+                  "type": "unstyled"
+                },
+                {
+                  "data": {
+                    "altText": "Ein Mann steht unter einem Wassersprenger auf einer Wiese.",
+                    "aspectRatio": "landscape",
+                    "caption": {
+                      "data": {
+                        "blocks": [
+                          {
+                            "data": {},
+                            "depth": 0,
+                            "entityRanges": [],
+                            "inlineStyleRanges": [],
+                            "key": "2nu28",
+                            "text": "Ein Mann steht unter einem Wassersprenger auf einer Wiese.",
+                            "type": "unstyled"
+                          }
+                        ],
+                        "entityMap": {}
+                      },
+                      "fragments": [],
+                      "type": "draftJs",
+                      "typeVersion": "Beta 1.00"
+                    },
+                    "crop": {
+                      "lowerRightX": 3500,
+                      "lowerRightY": 2021,
+                      "upperLeftX": 0,
+                      "upperLeftY": 53
+                    },
+                    "displayFormat": "center",
+                    "fragmentType": "image",
+                    "height": 2278,
+                    "id": "f016a311be874231f2d53d0bbad18885",
+                    "reference": "5b17b39e8b15480001707003",
+                    "showImageCrop": false,
+                    "type": "image",
+                    "width": 3500
+                  },
+                  "depth": 0,
+                  "entityRanges": [],
+                  "inlineStyleRanges": [],
+                  "key": "6nv5b",
+                  "text": "Ein Mann steht unter einem Wassersprenger auf einer Wiese.",
+                  "type": "atomic"
+                },
+                {
+                  "data": {},
+                  "depth": 0,
+                  "entityRanges": [],
+                  "inlineStyleRanges": [
+                    {
+                      "length": 134,
+                      "offset": 0,
+                      "style": "BOLD"
+                    }
+                  ],
+                  "key": "ca5u2",
+                  "text": "Danach schickten die Einsatzkräfte den belgischen Schäferhund, einen Malinois, in das Gebäude, um den bewaffneten Täter auszuschalten.",
+                  "type": "unstyled"
+                },
+                {
+                  "data": {},
+                  "depth": 0,
+                  "entityRanges": [],
+                  "inlineStyleRanges": [
+                    {
+                      "length": 19,
+                      "offset": 118,
+                      "style": "ITALIC"
+                    }
+                  ],
+                  "key": "7rbi0",
+                  "text": "Doch der Hund kam nicht weit, ein weiterer Schuss traf auch ihn und verletzte ihn sehr schwer. Das Tier wurde in eine Dresdner Tierklinik gebracht.",
+                  "type": "unstyled"
+                },
+                {
+                  "data": {},
+                  "depth": 0,
+                  "entityRanges": [],
+                  "inlineStyleRanges": [],
+                  "key": "95es6",
+                  "text": "",
+                  "type": "unstyled"
+                },
+                {
+                  "data": {},
+                  "depth": 0,
+                  "entityRanges": [],
+                  "inlineStyleRanges": [
+                    {
+                      "length": 261,
+                      "offset": 0,
+                      "style": "BOLD"
+                    }
+                  ],
+                  "key": "8h1or",
+                  "text": "„Wir hoffen dennoch, dass er durchkommt“, sagte Dresdens Polizeipräsident Horst Kretschmar (58) zu BILD am Montag. Sachsens Innenminister Wöller erklärte hingegen am Montag auf einer Pressekonferenz zum Einsatz: „Noch ist nicht abzusehen, ob der Hund überlebt.“",
+                  "type": "unstyled"
+                },
+                {
+                  "data": {
+                    "altText": "Manuel Neuer während des Trainings.",
+                    "aspectRatio": "square",
+                    "caption": {
+                      "data": {
+                        "blocks": [
+                          {
+                            "data": {},
+                            "depth": 0,
+                            "entityRanges": [],
+                            "inlineStyleRanges": [],
+                            "key": "6818r",
+                            "text": "Manuel Neuer während des Trainings.",
+                            "type": "unstyled"
+                          }
+                        ],
+                        "entityMap": {}
+                      },
+                      "fragments": [],
+                      "type": "draftJs",
+                      "typeVersion": "Beta 1.00"
+                    },
+                    "crop": {
+                      "lowerRightX": 4172,
+                      "lowerRightY": 4954,
+                      "upperLeftX": 0,
+                      "upperLeftY": 0
+                    },
+                    "displayFormat": "center",
+                    "fragmentType": "image",
+                    "height": 6345,
+                    "id": "efc5656336cde9837e953b24a2ff08a9",
+                    "reference": "5b17b3e2ce30950001859663",
+                    "showImageCrop": false,
+                    "type": "image",
+                    "width": 4172
+                  },
+                  "depth": 0,
+                  "entityRanges": [],
+                  "inlineStyleRanges": [],
+                  "key": "4j375",
+                  "text": "Manuel Neuer während des Trainings.",
+                  "type": "atomic"
+                },
+                {
+                  "data": {},
+                  "depth": 0,
+                  "entityRanges": [],
+                  "inlineStyleRanges": [],
+                  "key": "f90t2",
+                  "text": "Nach BILD-Informationen wird der Hund aber zeitlebens dienstunfähig bleiben.",
+                  "type": "unstyled"
+                },
+                {
+                  "data": {},
+                  "depth": 0,
+                  "entityRanges": [],
+                  "inlineStyleRanges": [],
+                  "key": "drh8s",
+                  "text": "",
+                  "type": "unstyled"
+                },
+                {
+                  "data": {},
+                  "depth": 0,
+                  "entityRanges": [],
+                  "inlineStyleRanges": [],
+                  "key": "djhgh",
+                  "text": "",
+                  "type": "unstyled"
+                }
+              ],
+              "entityMap": {}
+            }
+          },
+          "lead": {
+            "renderUrl": "/i/5afb22871a6fcc00015ec57d/930942cf6e8d5db2332884d5be4993d6/11/1",
+            "caption": {
+              "data": {
+                "blocks": [
+                  {
+                    "data": {},
+                    "depth": 0,
+                    "entityRanges": [],
+                    "inlineStyleRanges": [],
+                    "key": "5m2n7",
+                    "text": "Der Hund wurde beim Zugriffsversuch vom Täter angeschossen",
+                    "type": "unstyled"
+                  }
+                ],
+                "entityMap": {}
+              }
+            },
+            "width": 3500,
+            "height": 2387,
+            "aspectRatio": "landscape",
+            "source": "PA/AP Photo"
+          },
+          "title": null,
+          "metaDescription": null,
+          "canonicalLink": "/beta/bei-gsg-9-einsatz-angeschossen-polizeihund-fuer-immer-dienstunfaehigx.html",
+          "taxonomyNodes": [
+            {
+              "id": "19547908",
+              "name": "GSG9"
+            },
+            {
+              "id": "15405368",
+              "name": "Hund"
+            }
+          ],
+          "author": "Jonny Linke",
+          "displayDate": "2018-04-30T22:00:00Z",
+          "id": "5afb22871a6fcc00015ec57d",
+          "pageTitle": "Bei GSG 9-Einsatz angeschossen: Polizeihund für immer dienstunfähig?",
+          "premium": "free",
+          "conversionText": null
+        }
+      }
+    },
+    "rawHeaders": [
+      "X-Powered-By",
+      "Express",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "6614",
+      "Date",
+      "Tue, 19 Jun 2018 12:59:32 GMT",
+      "Connection",
+      "close"
+    ]
+  }
+]

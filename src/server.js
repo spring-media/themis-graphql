@@ -26,6 +26,8 @@ async function initServer () {
   await initializeGraphql(app, {
     graphQLPath: '/api/graphql',
     graphiQLPath: '/api/graphiql',
+    tracing: process.env.GQL_TRACING === 'true' || false,
+    cacheControl: process.env.GQL_CACHE_CONTROL === 'true' || false,
   });
 
   app.use((err, req, res, next) => {
