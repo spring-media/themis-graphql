@@ -9,7 +9,7 @@ const {
   FilterRootFields,
   delegateToSchema,
 } = require('graphql-tools');
-const Article = require('./article/schema');
+const Article = require('./article');
 const logger = require('./../logger');
 
 const { ARTICLE_GRAPHQL_ENDPOINT, ARTICLE_GRAPHQL_TOKEN } = process.env;
@@ -66,10 +66,11 @@ module.exports = async () => {
 
   const schema = makeExecutableSchema({
     typeDefs: [
-      Article,
+      Article.typeDefs,
     ],
     resolvers: {
       Query: {
+        ...Article.resolvers.Query,
         article: (parent, args, context, info) => {
           return delegateToSchema({
             schema: transformedSchema,
