@@ -1,5 +1,5 @@
 # red-gql
-GQL Data Aggregation Layer for the RED Delivery
+GQL Data Aggregation Layer for the RED BILD Delivery
 
 # Configuration
 Create a `.env` file and/or provide the following environment configurations:
@@ -14,6 +14,20 @@ Create a `.env` file and/or provide the following environment configurations:
 # Development Setup
 Run `npm install`.
 Then just `npm run dev`.
+
+# Docker
+In order to run the GraphQL aggregation layer inside a Docker container, simply do the following:
+ 
+* Build the Docker image from the `Dockerfile`, e.g.
+```
+docker build -t "gql_aggregation_layer" .
+```
+* Create and start a container using the Docker image, e.g.
+```
+docker run -it -p 8081:8081 gql_aggregation_layer
+```
+The GraphQl aggregation layer is available at localhost:8081/api/graphql. The graphical interactive in-browser 
+GraphQL IDE can be found at http://localhost:8081/api/graphiql.
 
 # Testing
 Run `npm run test`.
