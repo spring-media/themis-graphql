@@ -1,39 +1,94 @@
 /**
- * This setup allows manual recording and replaying of http(s) requests.
+ * This setup allows automatic recording and replaying of http(s) requests.
  * How to:
- * - add `nockRecord()` before a test case you want to record requests for
- * - add `nockSave(__dirname + '/__nocks__/somefilename.nock.json')`,
- *   after all requests to be recorded are done
- * - Replace `nockRecord` with `nockLoad(__dirname + '/__nocks__/somefilename.nock.json')`,
- *   (notice the `nockLoad`) finally remove `nockSave(...)`
- *
- * Note: This concept can be refined as a jest extension (jasmine plugin),
- * to behave more like snapshot tests for recording/refreshing convenience.
+ * - Mark a test to be recorded with `it.nock(...)`
+ * - Set JEST_NOCK_RECORD=true and run the tests you want to record
  */
 const nock = require('nock');
 const fs = require('fs');
+const path = require('path');
+const mkdirp = require('mkdirp');
 
-const forceJSONPath = path => /\.json$/i.test(path) ? path : `${path}.json`;
+const subPathName = '__nocks__';
 
-global.nockRecord = function () {
-  nock.recorder.rec({
-    /* eslint-disable camelcase */
-    dont_print: true,
-    output_objects: true,
-    /* eslint-enable camelcase */
-  });
+const env = jasmine.getEnv();
+
+function beforeTest (nockFilePath) {
+  if (process.env.JEST_NOCK_RECORD === 'true') {
+    nock.recorder.rec({
+      /* eslint-disable camelcase */
+      dont_print: true,
+      output_objects: true,
+      /* eslint-enable camelcase */
+    });
+  } else if (fs.existsSync(nockFilePath)) {
+      const defs = nock.loadDefs(nockFilePath);
+
+      nock.define(defs);
+    }
+}
+
+function afterTest (nockFileDir, nockFilePath) {
+  if (process.env.JEST_NOCK_RECORD === 'true') {
+    const recording = nock.recorder.play();
+
+    if (recording.length === 0) {
+      return;
+    }
+
+    if (!fs.existsSync(nockFileDir)) {
+      mkdirp.sync(nockFileDir);
+    }
+    fs.writeFileSync(nockFilePath, JSON.stringify(recording, null, 2));
+
+    nock.restore();
+  }
+}
+
+const bindNock = (fn, overrideTitle) => {
+  return function (...args) {
+    let title = args[0];
+    let testFn = args[1];
+    const fnArgs = [];
+
+    if (typeof args[0] === 'function') {
+      title = overrideTitle || 'default';
+      testFn = args[0];
+    } else {
+      fnArgs.push(title);
+    }
+
+    const { dir, name } = path.parse(jasmine.testPath);
+
+    const nockFileName = `${name}_${hashCode(title)}.nock.json`;
+    const nockFileDir = path.resolve(dir, subPathName);
+    const nockFilePath = path.join(nockFileDir, nockFileName);
+
+    const wrappedTest = async (...testArgs) => {
+      beforeTest(nockFilePath);
+
+      const result = await testFn(...testArgs);
+
+      afterTest(nockFileDir, nockFilePath);
+      return result;
+    };
+
+    fnArgs.push(wrappedTest);
+
+    return fn(...fnArgs);
+  };
 };
 
-global.nockSave = function (to) {
-  const recording = nock.recorder.play();
+function hashCode (str) {
+  let hash = 5381;
 
-  const toPath = forceJSONPath(to);
+  for (let i = str.length; i >= 0; --i) {
+    hash = (hash * 33) ^ str.charCodeAt(i);
+  }
 
-  fs.writeFileSync(toPath, JSON.stringify(recording, null, 2));
-};
+  return hash >>> 0;
+}
 
-global.nockLoad = function (from) {
-  const defs = nock.loadDefs(forceJSONPath(from));
-
-  nock.define(defs);
-};
+global.it.nock = bindNock(env.it);
+global.fit.nock = bindNock(env.fit);
+global.beforeAll.nock = bindNock(env.beforeAll, 'beforeAll');

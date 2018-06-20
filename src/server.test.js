@@ -5,21 +5,15 @@ const path = require('path');
 describe('Server', () => {
   let server = null;
 
-  beforeAll(async () => {
-    // nockRecord();
-    nockLoad(path.resolve(__dirname, '__nocks__/lean-remote-introspection-schema.nock'));
-
+  beforeAll.nock(async () => {
     server = await initServer();
-    // nockSave(__dirname + '/__nocks__/lean-remote-introspection-schema.nock');
   });
 
   afterAll(() => {
     server.close();
   });
 
-  it('populates the schema with remote data', async () => {
-    // nockRecord();
-    nockLoad(path.resolve(__dirname, '__nocks__/full-article.nock'));
+  it.nock('populates the schema with remote data', async () => {
     const res = await request(server)
       .post('/api/graphql')
       .send({
@@ -93,7 +87,7 @@ describe('Server', () => {
                 depth: 0,
                 entityRanges: [],
                 inlineStyleRanges: [],
-                key: '16clb',
+                key: '27u63',
                 text: 'Polizeihund für immer dienstunfähig?',
                 type: 'unstyled' }],
               entityMap: {},
@@ -105,7 +99,5 @@ describe('Server', () => {
     };
 
     expect(res.body).toMatchObject(expected);
-
-    // nockSave(__dirname + '/__nocks__/full-article.nock');
   });
 });
