@@ -1,0 +1,49 @@
+{
+  "name": "red-gql",
+  "version": "0.0.1",
+  "description": "GQL Data Aggregation Layer for the RED Delivery",
+  "main": "index.js",
+  "dependencies": {
+    "apollo-errors": "1.9.0",
+    "apollo-link-context": "1.0.8",
+    "apollo-link-http": "1.5.4",
+    "apollo-server-express": "2.0.0-beta.7",
+    "body-parser": "1.18.3",
+    "express": "4.16.3",
+    "express-winston": "2.5.1",
+    "graphql": "0.13.2",
+    "graphql-tag": "2.9.2",
+    "graphql-tools": "3.0.2",
+    "joi": "13.4.0",
+    "winston": "2.4.3"
+  },
+  "devDependencies": {
+    "babel-eslint": "8.2.3",
+    "dotenv": "6.0.0",
+    "eslint": "4.19.1",
+    "jest": "23.1.0",
+    "jest-cli": "23.1.0",
+    "mkdirp": "0.5.1",
+    "nock": "9.3.3",
+    "nodemon": "1.17.5",
+    "pact": "4.3.2",
+    "supertest": "3.1.0"
+  },
+  "scripts": {
+    "dev": "NODE_ENV=development nodemon -r dotenv/config index.js",
+    "test": "npm run test:integration",
+    "test:integration": "jest --config test/config/jest.config.json",
+    "test:contract": "jest --runInBand --setupFiles ./test/config/pact.config.js --setupTestFrameworkScriptFile ./test/contract/pactTestWrapper.js --testRegex \"/*(.test.pact.js)\"",
+    "test:eslint": "./node_modules/.bin/eslint --quiet '**/*.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spring-media/red-gql.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/spring-media/red-gql/issues"
+  },
+  "homepage": "https://github.com/spring-media/red-gql#readme"
+}
