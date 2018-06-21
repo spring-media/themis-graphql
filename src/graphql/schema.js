@@ -35,21 +35,6 @@ const rootFieldFilter = new FilterRootFields((op, fieldname) => {
   return op === 'Query' && [ 'article', 'articles', 'teaser', 'channels' ].includes(fieldname);
 });
 
-const transformLeanArticle = originalResult => {
-  if (originalResult && originalResult.data && originalResult.data.article) {
-    // const { article } = originalResult.data;
-    // Transform the article result here... ?
-    // if (article.headline) {
-    //   article.headline = {
-    //     ...article.headline,
-    //     type: 'slatejs',
-    //     data: 'transformed headline'
-    //   }
-    // }
-  }
-  return originalResult;
-};
-
 module.exports = async () => {
   const remoteSchema = await introspectSchema(link);
 
@@ -60,9 +45,6 @@ module.exports = async () => {
 
   const transformedSchema = transformSchema(executableSchema, [
     rootFieldFilter,
-    {
-      transformResult: transformLeanArticle,
-    },
   ]);
 
   const schema = makeExecutableSchema({
