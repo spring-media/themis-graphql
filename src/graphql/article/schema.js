@@ -29,28 +29,28 @@ module.exports = gql`
   }
 
   type TaxonomyNode {
-		id: ID
-		name: String
-		path: [String]
-	}
+    id: ID
+    name: String
+    path: [String]
+  }
 
   type ImageElement {
-		id: ID
-		width: Int
-		height: Int
-		renderUrl: String
-		aspectRatio: String
-		caption: DeliverySlateJS
-		source: String
-	}
+    id: ID
+    width: Int
+    height: Int
+    renderUrl: String
+    aspectRatio: String
+    caption: DeliverySlateJS
+    source: String
+  }
   
   type EmbedElement {
-		id: ID
-		lastModified: String
-		modCounter: Int
-		embedType: String
-		url: String
-	}
+    id: ID
+    lastModified: String
+    modCounter: Int
+    embedType: String
+    url: String
+  }
 
   union Lead = ImageElement | EmbedElement
 
@@ -71,7 +71,7 @@ module.exports = gql`
     modificationDate: String
     
     editors: [String]
-		
+    
     adState: String
     noIndexNoFollow: Boolean
     
@@ -83,14 +83,14 @@ module.exports = gql`
     subcellPlain: String
     text: DeliverySlateJS
     lead: Lead
-		
+    
     # Meta data
     title: String
     # Meta data
     metaDescription: String
     
     canonicalLink: String
-		
+    
     taxonomyNodes: [TaxonomyNode]
     
     author: String
