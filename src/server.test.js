@@ -1,6 +1,5 @@
 const { initServer } = require('./server');
 const request = require('supertest');
-const path = require('path');
 
 describe('Server', () => {
   let server = null;

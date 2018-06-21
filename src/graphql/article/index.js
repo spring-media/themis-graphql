@@ -3,10 +3,10 @@
  * https://gramps.js.org/data-source/data-source-overview/
  */
 
-const schema = require('./schema');
+const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 
 module.exports = {
-  typeDefs: schema,
+  typeDefs,
   resolvers,
 };
