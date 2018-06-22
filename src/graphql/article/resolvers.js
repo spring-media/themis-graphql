@@ -1,6 +1,16 @@
+const { delegateToSchema } = require('graphql-tools');
 
 module.exports = {
   Query: {
-    // Currently we have no local resolvers yet
+    article: (parent, args, context, info) => {
+      return delegateToSchema({
+        schema: context.cmsSchema,
+        operation: 'query',
+        fieldName: 'article',
+        args,
+        context,
+        info,
+      });
+    },
   },
 };

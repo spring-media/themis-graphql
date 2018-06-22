@@ -6,36 +6,28 @@ const {
   makeRemoteExecutableSchema,
   makeExecutableSchema,
   transformSchema,
-  FilterRootFields,
-  delegateToSchema,
 } = require('graphql-tools');
-const Article = require('./article');
 const logger = require('./../logger');
+const path = require('path');
 
-const { ARTICLE_GRAPHQL_ENDPOINT, ARTICLE_GRAPHQL_TOKEN } = process.env;
+const loadRemoteSchema = async ({
+  linkContext,
+  uri,
+  transforms = [],
+}) => {
+  const http = new HttpLink({
+    uri,
+    fetch: async (...args) => {
+      const result = await fetch(...args);
 
-const http = new HttpLink({
-  uri: ARTICLE_GRAPHQL_ENDPOINT,
-  fetch: async (...args) => {
-    const result = await fetch(...args);
+      logger.debug('Remote fetch args:', args);
+      logger.debug('Remote fetch result:', result);
+      return result;
+    },
+  });
 
-    logger.debug('Remote fetch args:', args);
-    logger.debug('Remote fetch result:', result);
-    return result;
-  },
-});
+  const link = linkContext ? setContext(linkContext).concat(http) : http;
 
-const link = setContext(() => ({
-  headers: {
-    'authorization': `${ARTICLE_GRAPHQL_TOKEN}`,
-  },
-})).concat(http);
-
-const rootFieldFilter = new FilterRootFields((op, fieldname) => {
-  return op === 'Query' && [ 'article', 'articles', 'teaser', 'channels' ].includes(fieldname);
-});
-
-module.exports = async () => {
   const remoteSchema = await introspectSchema(link);
 
   const executableSchema = makeRemoteExecutableSchema({
@@ -43,33 +35,63 @@ module.exports = async () => {
     link,
   });
 
-  const transformedSchema = transformSchema(executableSchema, [
-    rootFieldFilter,
-  ]);
+  const transformedSchema = transformSchema(executableSchema, transforms);
 
-  const schema = makeExecutableSchema({
-    typeDefs: [
-      Article.typeDefs,
-    ],
-    resolvers: {
-      Query: {
-        ...Article.resolvers.Query,
-        article: (parent, args, context, info) => {
-          return delegateToSchema({
-            schema: transformedSchema,
-            operation: 'query',
-            fieldName: 'article',
-            args,
-            context,
-            info,
-          });
-        },
-      },
-    },
+  return transformedSchema;
+};
+
+const packages = [
+  path.resolve(__dirname, 'article'),
+  path.resolve(__dirname, 'cms'),
+];
+
+const loadSchema = async ({ mockMode }) => {
+  const typeDefs = [];
+  const resolvers = {};
+  const context = {};
+
+  for (const pack of packages) {
+    logger.info(`Loading ${pack}`);
+    const config = require(pack);
+
+    if (config.remote) {
+      const schema = await loadRemoteSchema(config.remote);
+
+      logger.debug(`Loaded remote Schema ${pack}`);
+
+      if (config.remote.accessViaContext) {
+        context[config.remote.accessViaContext] = schema;
+      }
+    } else {
+      typeDefs.push(config.typeDefs);
+      const {
+        Query = {},
+      } = config.resolvers;
+
+      resolvers.Query = {
+        ...resolvers.Query,
+        ...Query,
+      };
+    }
+  }
+
+  const combinedSchema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
     resolverValidationOptions: {
       requireResolversForResolveType: false,
     },
   });
 
-  return schema;
+  return { schema: combinedSchema, context };
+};
+
+const buildSchema = () => {
+  // TODO: Load remote schemas and put them in `dist` folder,
+  //       to load them from there in production.
+};
+
+module.exports = {
+  loadSchema,
+  buildSchema,
 };

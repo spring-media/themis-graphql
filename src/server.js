@@ -7,7 +7,9 @@ const logger = require('./logger');
 
 valideEnv();
 
-async function initServer () {
+async function initServer ({
+  mockMode = false,
+} = {}) {
   const app = express();
   const server = createServer(app);
 
@@ -24,6 +26,7 @@ async function initServer () {
 
   // Initialize graphql
   await initializeGraphql(app, {
+    mockMode,
     graphQLPath: '/api/graphql',
     graphiQLPath: '/api/graphiql',
     tracing: process.env.GQL_TRACING === 'true' || false,
