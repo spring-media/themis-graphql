@@ -93,6 +93,7 @@ function upgradeJasmine (jsmn, glb) {
 
   glb.it.nock = bindNock(env.it, testPath);
   glb.fit.nock = bindNock(env.fit, testPath);
+  glb.beforeAll.nock = bindNock(env.beforeAll, testPath, 'beforeAll');
 }
 
 module.exports = {

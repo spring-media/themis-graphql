@@ -4,7 +4,7 @@ const request = require('supertest');
 describe('Server', () => {
   let server = null;
 
-  beforeAll(async () => {
+  beforeAll.nock(async () => {
     server = await initServer();
   });
 
