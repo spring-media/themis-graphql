@@ -10,6 +10,7 @@ const {
 } = require('graphql-tools');
 const logger = require('./../logger');
 const path = require('path');
+const validateDatasource = require('./validate-datasource');
 
 const loadRemoteSchema = async ({
   linkContext,
@@ -53,6 +54,8 @@ const loadSchema = async ({ mockMode }) => {
   for (const pack of packages) {
     logger.info(`Loading ${pack}`);
     const config = require(pack);
+
+    validateDatasource(config);
 
     if (config.remote) {
       const schema = await loadRemoteSchema(config.remote);
