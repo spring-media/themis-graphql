@@ -6,6 +6,7 @@ const {
   makeRemoteExecutableSchema,
   makeExecutableSchema,
   transformSchema,
+  mergeSchemas,
 } = require('graphql-tools');
 const logger = require('./../logger');
 const path = require('path');
@@ -46,9 +47,8 @@ const packages = [
 ];
 
 const loadSchema = async ({ mockMode }) => {
-  const typeDefs = [];
-  const resolvers = {};
   const context = {};
+  const schemas = [];
 
   for (const pack of packages) {
     logger.info(`Loading ${pack}`);
@@ -62,28 +62,29 @@ const loadSchema = async ({ mockMode }) => {
       if (config.remote.accessViaContext) {
         context[config.remote.accessViaContext] = schema;
       }
-    } else {
-      typeDefs.push(config.typeDefs);
-      const {
-        Query = {},
-      } = config.resolvers;
 
-      resolvers.Query = {
-        ...resolvers.Query,
-        ...Query,
-      };
+      if (config.remote.mount) {
+        schemas.push(schema);
+      }
+    } else {
+      const { typeDefs, resolvers } = config;
+      const schema = makeExecutableSchema({
+        typeDefs,
+        resolvers,
+        resolverValidationOptions: {
+          requireResolversForResolveType: false,
+        },
+      });
+
+      schemas.push(schema);
     }
   }
 
-  const combinedSchema = makeExecutableSchema({
-    typeDefs,
-    resolvers,
-    resolverValidationOptions: {
-      requireResolversForResolveType: false,
-    },
+  const mergedSchema = mergeSchemas({
+    schemas,
   });
 
-  return { schema: combinedSchema, context };
+  return { schema: mergedSchema, context };
 };
 
 const buildSchema = () => {

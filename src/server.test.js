@@ -4,7 +4,7 @@ const request = require('supertest');
 describe('Server', () => {
   let server = null;
 
-  beforeAll.nock(async () => {
+  beforeAll(async () => {
     server = await initServer();
   });
 
@@ -86,7 +86,7 @@ describe('Server', () => {
                 depth: 0,
                 entityRanges: [],
                 inlineStyleRanges: [],
-                key: '27u63',
+                key: '3n220',
                 text: 'Polizeihund für immer dienstunfähig?',
                 type: 'unstyled' }],
               entityMap: {},
