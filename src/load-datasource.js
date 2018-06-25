@@ -3,48 +3,60 @@ const logger = require('./logger');
 const { makeExecutableSchema } = require('graphql-tools');
 const { loadRemoteSchema } = require('./load-remote-schema');
 
-// eslint-disable-next-line complexity
-const loadDatasource = async (sourcePath, { mockMode }) => {
-  const schemas = [];
+const setupRemote = async (config, sourcePath, { mockMode }) => {
   const context = {};
+  const schemas = [];
+  const schema = await loadRemoteSchema(config);
 
-  logger.info(`Loading ${sourcePath}`);
-  const config = require(sourcePath);
+  if (config.accessViaContext) {
+    context[config.accessViaContext] = schema;
+  }
 
-  validateDatasource(config);
-
-  if (config.remote) {
-    const schema = await loadRemoteSchema(config.remote);
-
-    logger.debug(`Loaded remote Schema ${sourcePath}`);
-
-    if (config.remote.accessViaContext) {
-      context[config.remote.accessViaContext] = schema;
-    }
-
-    if (config.remote.mount) {
-      schemas.push(schema);
-    }
-  } else {
-    const { typeDefs, resolvers, mocks } = config;
-    const schema = makeExecutableSchema({
-      typeDefs,
-      resolvers,
-      resolverValidationOptions: {
-        requireResolversForResolveType: false,
-      },
-    });
-
-    if (mockMode) {
-      if (!mocks) {
-        logger.warn(`No mocks for ${sourcePath}`);
-      }
-    }
-
+  if (config.mount) {
     schemas.push(schema);
   }
 
   return { schemas, context };
 };
 
-module.exports = { loadDatasource };
+const setupLocal = (config, sourcePath, { mockMode }) => {
+  const { typeDefs, resolvers, mocks } = config;
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
+    resolverValidationOptions: {
+      requireResolversForResolveType: false,
+    },
+  });
+
+  if (mockMode) {
+    if (!mocks) {
+      logger.warn(`No mocks for ${sourcePath}`);
+    }
+  }
+
+  return { schemas: [schema], context: {} };
+};
+
+const loadDatasource = async sourcePath => {
+  logger.info(`Loading ${sourcePath}`);
+  const config = require(sourcePath);
+
+  validateDatasource(config);
+
+  return config;
+};
+
+const setupDatasource = async (sourcePath, { mockMode }) => {
+  const config = await loadDatasource(sourcePath);
+
+  if (config.remote) {
+    const source = setupRemote(config.remote, sourcePath, { mockMode });
+
+    logger.debug(`Loaded remote Schema ${sourcePath}`);
+    return source;
+  }
+  return setupLocal(config, sourcePath, { mockMode });
+};
+
+module.exports = { setupDatasource, loadDatasource };

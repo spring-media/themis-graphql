@@ -1,7 +1,6 @@
 const express = require('express');
 const { createServer } = require('http');
 const { initializeGraphql } = require('./express-gql');
-const valideEnv = require('./validate-env');
 const expressWinston = require('express-winston');
 const logger = require('./logger');
 
@@ -12,8 +11,6 @@ async function initServer ({
   if (datasourcePaths.length === 0) {
     throw new Error('Need at least one target path with datasources.');
   }
-
-  valideEnv();
 
   const app = express();
   const server = createServer(app);

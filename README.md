@@ -24,10 +24,10 @@ docker build -t "gql_aggregation_layer" .
 ```
 * Create and start a container using the Docker image, e.g.
 ```
-docker run -it -p 8081:8081 gql_aggregation_layer
+docker run -it -p 8484:8484 gql_aggregation_layer
 ```
-The GraphQl aggregation layer is available at localhost:8081/api/graphql. The graphical interactive in-browser 
-GraphQL IDE can be found at http://localhost:8081/api/graphiql.
+The GraphQl aggregation layer is available at localhost:8484/api/graphql. The graphical interactive in-browser 
+GraphQL IDE can be found at http://localhost:8484/api/graphiql.
 
 # Testing
 Run `npm run test`.

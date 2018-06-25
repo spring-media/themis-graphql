@@ -1,11 +1,11 @@
-const { loadDatasource } = require('./load-datasource');
+const { setupDatasource } = require('./load-datasource');
 const { mergeSchemas } = require('graphql-tools');
 
 const loadSchema = async ({ datasourcePaths, mockMode }) => {
   const sources = new Array(datasourcePaths.length);
 
   for (const path of datasourcePaths) {
-    const source = await loadDatasource(path, { mockMode });
+    const source = await setupDatasource(path, { mockMode });
 
     sources.push(source);
   }
@@ -23,12 +23,6 @@ const loadSchema = async ({ datasourcePaths, mockMode }) => {
   return { schema, context };
 };
 
-const buildSchema = () => {
-  // TODO: Load remote schemas and put them in `dist` folder,
-  //       to load them from there in production.
-};
-
 module.exports = {
   loadSchema,
-  buildSchema,
 };
