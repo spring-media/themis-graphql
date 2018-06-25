@@ -5,7 +5,7 @@ const uriScheme = {
 };
 
 const schema = Joi.object().keys({
-  PORT: Joi.string().alphanum().min(2).max(5).required(),
+  PORT: Joi.string().alphanum().min(2).max(5),
   NODE_ENV: Joi
     .string()
     .valid([ 'production', 'development', 'test' ])
