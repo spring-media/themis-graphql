@@ -18,6 +18,7 @@ module.exports = gql`
     type: String
     typeVersion: String
     data: JSON
+    additional: String
   }
 
   # Base interface for article

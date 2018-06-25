@@ -1,8 +1,8 @@
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
-const { loadSchema } = require('./schema');
+const { loadSchema } = require('./load-schema');
 const bodyParser = require('body-parser');
 const { formatError } = require('apollo-errors');
-const logger = require('./../logger');
+const logger = require('./logger');
 
 const logStack = err => {
   const stack = err.extensions && err.extensions.exception && err.extensions.exception.stacktrace;
@@ -34,9 +34,9 @@ const formatErrorWithLog = req => err => {
  * @return {Object} app
  */
 const initializeGraphql = async (app, {
-  graphQLPath, graphiQLPath, tracing, cacheControl, mockMode,
+  graphQLPath, graphiQLPath, tracing, cacheControl, mockMode, datasourcePaths,
 }) => {
-  const { schema, context = {} } = await loadSchema({ mockMode });
+  const { schema, context = {} } = await loadSchema({ datasourcePaths, mockMode });
 
   app.use(graphQLPath,
     bodyParser.json(),

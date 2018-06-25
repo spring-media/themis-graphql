@@ -1,3 +1,7 @@
+
+/**
+ * Checks if the imported datasource exports the needed data to stitch and mount it.
+ */
 const Joi = require('joi');
 
 const schema = Joi.alternatives().try([
