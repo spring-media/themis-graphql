@@ -32,7 +32,7 @@
     "supertest": "3.1.0"
   },
   "scripts": {
-    "dev": "NODE_ENV=development nodemon -r dotenv/config index.js",
+    "dev": "NODE_ENV=development nodemon -r dotenv/config index.js --use-subfolders graphql",
     "test": "npm run test:integration",
     "test:integration": "jest --config test/config/jest.config.json",
     "test:contract": "jest --runInBand --setupFiles ./test/config/pact.config.js --setupTestFrameworkScriptFile ./test/contract/pactTestWrapper.js --testRegex \"/*(.test.pact.js)\"",
