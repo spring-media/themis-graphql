@@ -84,7 +84,7 @@ describe('Server', () => {
 
     const expected = {
       data: {
-        article: {
+        article: expect.objectContaining({
           headline: {
             data: {
               blocks: [{
@@ -92,17 +92,17 @@ describe('Server', () => {
                 depth: 0,
                 entityRanges: [],
                 inlineStyleRanges: [],
-                key: '3n220',
+                key: expect.any(String),
                 text: 'Polizeihund für immer dienstunfähig?',
                 type: 'unstyled' }],
               entityMap: {},
             },
           },
           kicker: 'Bei GSG 9-Einsatz angeschossen',
-        },
+        }),
       },
     };
 
-    expect(res.body).toMatchObject(expected);
+    expect(res.body).toMatchObject(expect.objectContaining(expected));
   });
 });
