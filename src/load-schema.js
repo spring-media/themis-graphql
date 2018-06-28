@@ -1,5 +1,6 @@
-const { setupDatasource } = require('./load-datasource');
+const { setupDatasource } = require('./setup-datasource');
 const { mergeSchemas } = require('graphql-tools');
+const { insertIf } = require('./utils');
 
 const loadSchema = async ({ datasourcePaths, mockMode }) => {
   const sources = new Array(datasourcePaths.length);
@@ -10,15 +11,22 @@ const loadSchema = async ({ datasourcePaths, mockMode }) => {
     sources.push(source);
   }
 
-  const { schemas, context } = sources
-    .reduce((p, c) => ({
-      schemas: [ ...p.schemas, ...c.schemas ],
-      context: { ...p.context, ...c.context },
-    }), { schemas: [], context: {} });
+  // TODO: Implement namespaces
 
-    const schema = mergeSchemas({
+  const { schemas, context, contextValidations } = sources
+    .reduce((p, c) => ({
+      schemas: [ ...p.schemas, ...insertIf(c.schema, c.schema) ],
+      context: { ...p.context, ...c.context },
+      contextValidations: [ ...p.contextValidations, ...insertIf(c.validateContext, c.validateContext) ],
+    }), { schemas: [], context: {}, contextValidations: [] });
+
+  const schema = mergeSchemas({
     schemas,
   });
+
+  for (const validation of contextValidations) {
+    validation(context);
+  }
 
   return { schema, context };
 };

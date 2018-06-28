@@ -8,8 +8,8 @@ describe('Server', () => {
   beforeAll.nock(async () => {
     server = await initServer({
       datasourcePaths: [
-        path.resolve(__dirname, '../graphql/article'),
-        path.resolve(__dirname, '../graphql/cms'),
+        path.resolve(__dirname, '../test/data/article'),
+        path.resolve(__dirname, '../test/data/cms'),
       ],
     });
   });
@@ -24,54 +24,9 @@ describe('Server', () => {
       .send({
         query: `query fetchArticle($input: ArticleInput) { 
           article(input: $input) { 
-            documentType
             state
             creationDate
-            publicationDate
-            firstPublicationDate
-            modificationDate
-            editors
-            adState
-            noIndexNoFollow
-            kicker
-            headline {
-              data
-            }
             headlinePlain
-            subcell {
-              data
-            }
-            subcellPlain
-            text {
-              data
-            }
-            lead {
-              ... on ImageElement {
-                renderUrl
-                caption {
-                  data
-                }
-                width
-                height
-                aspectRatio
-                source
-              }
-            }
-            title
-            metaDescription
-            canonicalLink
-            taxonomyNodes {
-              id
-              name
-            }
-            author
-            displayDate
-            id
-            pageTitle
-            premium
-            conversionText {
-              data
-            }
           }
         }`,
         variables: {
@@ -85,20 +40,9 @@ describe('Server', () => {
     const expected = {
       data: {
         article: expect.objectContaining({
-          headline: {
-            data: {
-              blocks: [{
-                data: {},
-                depth: 0,
-                entityRanges: [],
-                inlineStyleRanges: [],
-                key: expect.any(String),
-                text: 'Polizeihund für immer dienstunfähig?',
-                type: 'unstyled' }],
-              entityMap: {},
-            },
-          },
-          kicker: 'Bei GSG 9-Einsatz angeschossen',
+          headlinePlain: 'Polizeihund für immer dienstunfähig?',
+          state: expect.any(String),
+          creationDate: expect.any(String),
         }),
       },
     };

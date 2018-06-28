@@ -5,9 +5,10 @@ const { FilterRootFields } = require('graphql-tools');
 const { ARTICLE_GRAPHQL_ENDPOINT, ARTICLE_GRAPHQL_TOKEN } = process.env;
 
 module.exports = {
+  namespace: 'Article',
+  accessViaContext: 'cmsSchema',
+  mount: false,
   remote: {
-    accessViaContext: 'cmsSchema',
-    mount: false,
     uri: ARTICLE_GRAPHQL_ENDPOINT,
     linkContext: () => ({
       headers: {

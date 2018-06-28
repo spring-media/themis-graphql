@@ -1,11 +1,18 @@
 const { initServer } = require('./server');
 const request = require('supertest');
+const path = require('path');
 
-describe.skip('Server', () => {
+describe('Server', () => {
   let server = null;
 
   beforeAll.nock(async () => {
-    server = await initServer();
+    server = await initServer({
+      mockMode: true,
+      datasourcePaths: [
+        path.resolve(__dirname, '../test/data/article'),
+        path.resolve(__dirname, '../test/data/cms'),
+      ],
+    });
   });
 
   afterAll(() => {
@@ -18,54 +25,9 @@ describe.skip('Server', () => {
       .send({
         query: `query fetchArticle($input: ArticleInput) { 
           article(input: $input) { 
-            documentType
             state
             creationDate
-            publicationDate
-            firstPublicationDate
-            modificationDate
-            editors
-            adState
-            noIndexNoFollow
-            kicker
-            headline {
-              data
-            }
             headlinePlain
-            subcell {
-              data
-            }
-            subcellPlain
-            text {
-              data
-            }
-            lead {
-              ... on ImageElement {
-                renderUrl
-                caption {
-                  data
-                }
-                width
-                height
-                aspectRatio
-                source
-              }
-            }
-            title
-            metaDescription
-            canonicalLink
-            taxonomyNodes {
-              id
-              name
-            }
-            author
-            displayDate
-            id
-            pageTitle
-            premium
-            conversionText {
-              data
-            }
           }
         }`,
         variables: {
@@ -77,9 +39,15 @@ describe.skip('Server', () => {
       .expect(200);
 
     const expected = {
-
+      data: {
+        article: {
+          headlinePlain: 'mocked headline',
+          creationDate: expect.any(String),
+          state: expect.any(String),
+        },
+      },
     };
 
-    expect(res.body).toMatchObject(expected);
+    expect(res.body).toMatchObject(expect.objectContaining(expected));
   });
 });

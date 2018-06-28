@@ -65,10 +65,15 @@ const bindNock = (fn, testPath, overrideTitle) => {
     const wrappedTest = async (...testArgs) => {
       beforeTest(nockFilePath);
 
-      const result = await testFn(...testArgs);
+      try {
+        const result = await testFn(...testArgs);
 
-      afterTest(nockFileDir, nockFilePath);
-      return result;
+        afterTest(nockFileDir, nockFilePath);
+        return result;
+      } catch (err) {
+        afterTest(nockFileDir, nockFilePath);
+        throw err;
+      }
     };
 
     fnArgs.push(wrappedTest);

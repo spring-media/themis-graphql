@@ -34,6 +34,7 @@
   "scripts": {
     "dev": "NODE_ENV=development nodemon -r dotenv/config index.js --use-subfolders graphql",
     "test": "npm run test:integration",
+    "test:coverage": "npm run test:integration -- --coverage",
     "test:integration": "jest --config test/config/jest.config.json",
     "test:contract": "jest --runInBand --setupFiles ./test/config/pact.config.js --setupTestFrameworkScriptFile ./test/contract/pactTestWrapper.js --testRegex \"/*(.test.pact.js)\"",
     "test:eslint": "./node_modules/.bin/eslint --quiet '**/*.js'"

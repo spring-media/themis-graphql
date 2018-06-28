@@ -23,7 +23,6 @@ module.exports = gql`
 
   # Base interface for article
   interface BaseArticle {
-    documentType: String
     creationDate: String
     modificationDate: String
     id: ID
@@ -58,8 +57,6 @@ module.exports = gql`
   # Type for a Delivery Article 
   # For the largest part, the article is populated with data from LeanCMS
   type Article implements BaseArticle {
-    documentType: String
-    
     # An article can be in a specific state (checkedIn, checkedOut, published)
     state: String
     # The Date, when the article was created

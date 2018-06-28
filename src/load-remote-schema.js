@@ -5,8 +5,6 @@ const fetch = require('node-fetch');
 const { introspectionQuery, parse } = require('graphql');
 const {
   introspectSchema,
-  makeRemoteExecutableSchema,
-  transformSchema,
 } = require('graphql-tools');
 const { makePromise, execute } = require('apollo-link');
 
@@ -31,22 +29,14 @@ const makeRemoteHTTPLink = ({ uri }) => {
 const loadRemoteSchema = async ({
   linkContext,
   uri,
-  transforms = [],
 }) => {
   const http = makeRemoteHTTPLink({ uri });
 
   const link = linkContext ? setContext(linkContext).concat(http) : http;
 
-  const remoteSchema = await introspectSchema(link);
+  const schema = await introspectSchema(link);
 
-  const executableSchema = makeRemoteExecutableSchema({
-    schema: remoteSchema,
-    link,
-  });
-
-  const transformedSchema = transformSchema(executableSchema, transforms);
-
-  return transformedSchema;
+  return { schema, link };
 };
 
 function linkToFetcher (link) {

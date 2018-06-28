@@ -1,21 +1,10 @@
 const Joi = require('joi');
 
-const uriScheme = {
-  scheme: [ 'https', 'http' ],
-};
-
 const schema = Joi.object().keys({
   PORT: Joi.string().alphanum().min(2).max(5),
   NODE_ENV: Joi
     .string()
     .valid([ 'production', 'development', 'test' ])
-    .required(),
-  ARTICLE_GRAPHQL_ENDPOINT: Joi
-    .string()
-    .uri(uriScheme)
-    .required(),
-  ARTICLE_GRAPHQL_TOKEN: Joi
-    .string()
     .required(),
   LOG_LEVEL: Joi
     .string()
