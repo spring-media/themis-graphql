@@ -7,8 +7,18 @@ const {
   introspectSchema,
 } = require('graphql-tools');
 const { makePromise, execute } = require('apollo-link');
+const { buildClientSchema } = require('graphql');
+const path = require('path');
 
 const parsedIntrospectionQuery = parse(introspectionQuery);
+
+const loadFileSchema = async (config, sourcePath) => {
+  const schemaPath = path.join(sourcePath, 'dist');
+  const schemaFilePath = path.join(schemaPath, '_remote_schema.json');
+  const jsonSchema = require(schemaFilePath);
+	const schema = buildClientSchema(jsonSchema.data);
+	return schema;
+};
 
 const makeRemoteHTTPLink = ({ uri }) => {
   const link = new HttpLink({
@@ -26,21 +36,24 @@ const makeRemoteHTTPLink = ({ uri }) => {
   return link;
 };
 
-const loadRemoteSchema = async ({
-  linkContext,
-  uri,
-}) => {
+const loadRemoteSchema = async (config, sourcePath, { mockMode }) => {
+  const {
+    linkContext,
+    uri,
+  } = config;
   const http = makeRemoteHTTPLink({ uri });
 
   const link = linkContext ? setContext(linkContext).concat(http) : http;
 
-  const schema = await introspectSchema(link);
+  const schema = mockMode || process.env.NODE_ENV === 'production' 
+    ? await loadFileSchema(config, sourcePath) 
+    : await introspectSchema(link);
 
   return { schema, link };
 };
 
 function linkToFetcher (link) {
-  return function (fetcherOperation) {
+  return async function (fetcherOperation) {
     return makePromise(execute(link, fetcherOperation));
   };
 }
