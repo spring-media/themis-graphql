@@ -24,6 +24,7 @@ sftp-config.json
 .idea/
 
 ### VisualStudioCode ###
+.vs
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
