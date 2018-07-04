@@ -1,13 +1,17 @@
 const express = require('express');
 const { createServer } = require('http');
-const { initializeGraphql } = require('./graphql');
-const valideEnv = require('./validate-env');
+const { initializeGraphql } = require('./express-gql');
 const expressWinston = require('express-winston');
 const logger = require('./logger');
 
-valideEnv();
+async function initServer ({
+  mockMode = false,
+  datasourcePaths = [],
+} = {}) {
+  if (datasourcePaths.length === 0) {
+    throw new Error('Need at least one target path with datasources.');
+  }
 
-async function initServer () {
   const app = express();
   const server = createServer(app);
 
@@ -22,8 +26,9 @@ async function initServer () {
     statusLevels: true,
   }));
 
-  // Initialize graphql
   await initializeGraphql(app, {
+    datasourcePaths,
+    mockMode,
     graphQLPath: '/api/graphql',
     graphiQLPath: '/api/graphiql',
     tracing: process.env.GQL_TRACING === 'true' || false,

@@ -9,6 +9,7 @@
     "apollo-link-http": "1.5.4",
     "apollo-server-express": "2.0.0-beta.7",
     "body-parser": "1.18.3",
+    "commander": "2.15.1",
     "express": "4.16.3",
     "express-winston": "2.5.1",
     "graphql": "0.13.2",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "babel-eslint": "8.2.3",
+    "casual": "1.5.19",
     "dotenv": "6.0.0",
     "eslint": "4.19.1",
     "jest": "23.1.0",
@@ -30,8 +32,9 @@
     "supertest": "3.1.0"
   },
   "scripts": {
-    "dev": "NODE_ENV=development nodemon -r dotenv/config index.js",
+    "dev": "NODE_ENV=development nodemon -r dotenv/config index.js --use-subfolders graphql",
     "test": "npm run test:integration",
+    "test:coverage": "npm run test:integration -- --coverage",
     "test:integration": "jest --config test/config/jest.config.json",
     "test:contract": "jest --runInBand --setupFiles ./test/config/pact.config.js --setupTestFrameworkScriptFile ./test/contract/pactTestWrapper.js --testRegex \"/*(.test.pact.js)\"",
     "test:eslint": "./node_modules/.bin/eslint --quiet '**/*.js'"

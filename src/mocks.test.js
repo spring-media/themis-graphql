@@ -7,6 +7,7 @@ describe('Server', () => {
 
   beforeAll.nock(async () => {
     server = await initServer({
+      mockMode: true,
       datasourcePaths: [
         path.resolve(__dirname, '../test/data/article'),
         path.resolve(__dirname, '../test/data/cms'),
@@ -18,7 +19,7 @@ describe('Server', () => {
     server.close();
   });
 
-  it.nock('populates the schema with remote data', async () => {
+  it.nock('populates the schema with mock data', async () => {
     const res = await request(server)
       .post('/api/graphql')
       .send({
@@ -39,11 +40,11 @@ describe('Server', () => {
 
     const expected = {
       data: {
-        article: expect.objectContaining({
-          headlinePlain: 'Polizeihund für immer dienstunfähig?',
-          state: expect.any(String),
+        article: {
+          headlinePlain: 'mocked headline',
           creationDate: expect.any(String),
-        }),
+          state: expect.any(String),
+        },
       },
     };
 
