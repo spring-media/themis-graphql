@@ -9,9 +9,10 @@ const { loadRemoteSchema } = require('./load-remote-schema');
 const { loadDatasource } = require('./load-datasource');
 const { spreadIf } = require('./utils');
 
-const setupRemote = async config => {
+const setupRemote = async (config, { mockMode, sourcePath }) => {
   const { transforms } = config;
-  const { schema, link } = await loadRemoteSchema(config);
+
+  const { schema, link } = await loadRemoteSchema(config, sourcePath, { mockMode });
 
   const executableSchema = makeRemoteExecutableSchema({
     schema,
@@ -40,23 +41,28 @@ const setupLocal = config => {
   };
 };
 
-const setupLocalOrRemoteSource = config => {
+const setupLocalOrRemoteSource = (config, opts) => {
   if (config.remote) {
-    return setupRemote(config.remote);
+    return setupRemote(config.remote, opts);
   }
-  return setupLocal(config);
+  return setupLocal(config, opts);
 };
 
 const setupDatasource = async (sourcePath, { mockMode }) => {
   const config = await loadDatasource(sourcePath);
-  const { schema } = await setupLocalOrRemoteSource(config);
+  const { schema } = await setupLocalOrRemoteSource(config, {
+    mockMode,
+    sourcePath,
+  });
 
   if (mockMode) {
     if (!config.mocks) {
       logger.warn(`No mocks for ${sourcePath}`);
     }
 
-    addMockFunctionsToSchema({ schema, mocks: config.mocks });
+    if (schema) {
+      addMockFunctionsToSchema({ schema, mocks: config.mocks });
+    }
   }
 
   return {

@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+require('dotenv').config();
 const { initServer } = require('./src/server');
 const { buildSchema } = require('./src/build-schema');
 const valideEnv = require('./src/validate-env');
@@ -5,7 +7,6 @@ const logger = require('./src/logger');
 const program = require('commander');
 const path = require('path');
 const fs = require('fs');
-
 program
   .name('gql')
   .usage('[options] <datasourcePaths ...>')
