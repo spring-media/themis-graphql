@@ -40,6 +40,10 @@ async function initServer ({
     next(err);
   });
 
+  app.get('/health', (req, res) => {
+  	return res.send('OK');
+  });
+
   return server;
 }
 
