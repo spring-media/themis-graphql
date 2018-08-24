@@ -23,8 +23,12 @@ COPY --from=intermediate /red-delivery/datasources /app/datasources
 # install ALL node_modules, including 'devDependencies'
 RUN npm install
 
+RUN npm install graphql@0.13.2 graphql-tag@2.9.2 graphql-tools@3.0.2
+
+RUN node index -s /app/datasources --build
+
 # expose port
 EXPOSE 8081
 
 # command to be executed when running the image
-CMD [ "node", "index", "-s /app/datasources", "--build" ]
+CMD [ "node", "index", "-s /app/datasources"]
