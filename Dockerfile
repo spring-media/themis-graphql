@@ -6,6 +6,10 @@ RUN apt-get install -y git
 
 ARG GIT_USERNAME
 ARG GIT_PASSWORD
+ARG ARTICLE_GRAPHQL_ENDPOINT
+ARG ARTICLE_GRAPHQL_TOKEN
+ARG LOG_LEVEL
+ARG NODE_ENV
 
 # clone Git repository red-delivery
 RUN git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/spring-media/red-delivery.git
