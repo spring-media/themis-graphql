@@ -8,7 +8,7 @@ ARG GIT_USERNAME
 ARG GIT_PASSWORD
 
 # clone Git repository red-delivery
-RUN git clone https://${GIT_USERNAME}:${GIT_PASSWORD}"@github.com/spring-media/red-delivery.git
+RUN git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/spring-media/red-delivery.git
 
 FROM node:8.11.1
 # set working directory
