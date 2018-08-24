@@ -38,4 +38,4 @@ RUN node index -s /app/datasources --build
 EXPOSE 8081
 
 # command to be executed when running the image
-CMD [ "node", "index", "-s /app/datasources"]
+CMD [ "node", "index", "-s", "/app/datasources"]
