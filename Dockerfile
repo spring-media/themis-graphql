@@ -1,4 +1,4 @@
-FROM node:8.11.1 as intermediate
+FROM node:8.11.4 as intermediate
 
 # install git
 RUN apt-get update
@@ -6,15 +6,17 @@ RUN apt-get install -y git
 
 ARG GIT_USERNAME
 ARG GIT_PASSWORD
+
+# clone Git repository red-delivery
+RUN git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/spring-media/red-delivery.git
+
+FROM node:8.11.4
+
 ARG ARTICLE_GRAPHQL_ENDPOINT
 ARG ARTICLE_GRAPHQL_TOKEN
 ARG LOG_LEVEL
 ARG NODE_ENV
 
-# clone Git repository red-delivery
-RUN git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/spring-media/red-delivery.git
-
-FROM node:8.11.1
 # set working directory
 WORKDIR /app
 
