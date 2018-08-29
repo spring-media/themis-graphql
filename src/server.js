@@ -30,7 +30,6 @@ async function initServer ({
     datasourcePaths,
     mockMode,
     graphQLPath: '/api/graphql',
-    graphiQLPath: '/api/graphiql',
     tracing: process.env.GQL_TRACING === 'true' || false,
     cacheControl: process.env.GQL_CACHE_CONTROL === 'true' || false,
   });

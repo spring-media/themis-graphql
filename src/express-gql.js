@@ -1,6 +1,5 @@
-const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
+const { ApolloServer } = require('apollo-server-express');
 const { loadSchema } = require('./load-schema');
-const bodyParser = require('body-parser');
 const { formatError } = require('apollo-errors');
 const logger = require('./logger');
 
@@ -34,30 +33,19 @@ const formatErrorWithLog = req => err => {
  * @return {Object} app
  */
 const initializeGraphql = async (app, {
-  graphQLPath, graphiQLPath, tracing, cacheControl, mockMode, datasourcePaths,
+  graphQLPath, tracing, cacheControl, mockMode, datasourcePaths,
 }) => {
   const { schema, context = {} } = await loadSchema({ datasourcePaths, mockMode });
+  const server = new ApolloServer({
+    schema,
+    context,
+    formatError: formatErrorWithLog,
+    debug: process.env.NODE_ENV === 'development',
+    tracing,
+    cacheControl,
+  });
 
-  app.use(graphQLPath,
-    bodyParser.json(),
-    graphqlExpress(req => ({
-      formatError: formatErrorWithLog(req),
-      schema,
-      context,
-      debug: process.env.NODE_ENV === 'development',
-      tracing,
-      cacheControl,
-    }))
-  );
-
-  // Add graphiql in dev mode
-  if (process.env.NODE_ENV !== 'production') {
-    app.use(graphiQLPath,
-      graphiqlExpress({
-        endpointURL: graphQLPath,
-      })
-    );
-  }
+  server.applyMiddleware({ app, path: graphQLPath });
 
   return app;
 };
