@@ -31,7 +31,7 @@ describe('Server', () => {
         }`,
         variables: {
           input: {
-            id: '5afb22871a6fcc00015ec57d',
+            id: '5b5f24ca91a89200015a2e89',
           },
         },
       })
@@ -40,7 +40,7 @@ describe('Server', () => {
     const expected = {
       data: {
         article: expect.objectContaining({
-          headlinePlain: 'Polizeihund für immer dienstunfähig?',
+          headlinePlain: 'WURDE VERHAFTET!!!!',
           state: expect.any(String),
           creationDate: expect.any(String),
         }),
