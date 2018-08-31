@@ -39,7 +39,7 @@
     "graphql-tools": "3.1.1"
   },
   "scripts": {
-    "dev": "NODE_ENV=development nodemon -r dotenv/config index.js --use-subfolders graphql",
+    "dev": "NODE_ENV=development nodemon -r dotenv/config index.js --use-subfolders",
     "test": "jest --config test/config/jest.config.json",
     "test:coverage": "npm run test:integration -- --coverage",
     "test:eslint": "./node_modules/.bin/eslint --quiet '**/*.js'"
