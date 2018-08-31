@@ -27,7 +27,6 @@ const makeRemoteHTTPLink = ({ uri }) => {
       const result = await fetch(...args);
 
       logger.debug('Remote fetch args:', args);
-      logger.debug('Remote fetch result:', result);
 
       return result;
     },
