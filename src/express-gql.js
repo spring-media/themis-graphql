@@ -1,30 +1,6 @@
 const { ApolloServer } = require('apollo-server-express');
 const { loadSchema } = require('./load-schema');
 const { formatError } = require('apollo-errors');
-const logger = require('./logger');
-
-const logStack = err => {
-  const stack = err.extensions && err.extensions.exception && err.extensions.exception.stacktrace;
-  const stackStr = (stack || []).join('\n');
-
-  if (stackStr) {
-    logger.debug(stackStr);
-  }
-};
-
-const formatErrorWithLog = req => err => {
-  const { message, locations, state } = err;
-  const params = { message, locations, state };
-
-  const { query, variables, operationName } = req.body;
-
-  logger.error(`message: "${err.message}", QUERY: "${query}", VARIABLES: ${JSON.stringify(variables, null, 2)}, OPERATION: "${operationName}"`);
-  if (logger.level === 'debug') {
-    logStack(err);
-  }
-
-  return formatError(params);
-};
 
 /**
  * Initializes Graphql
@@ -39,7 +15,7 @@ const initializeGraphql = async (app, {
   const server = new ApolloServer({
     schema,
     context,
-    formatError: formatErrorWithLog,
+    formatError,
     debug: process.env.NODE_ENV === 'development',
     tracing,
     cacheControl,
