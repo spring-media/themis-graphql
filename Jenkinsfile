@@ -9,8 +9,8 @@ def imageTag = buildDockerContainer(
 	project: "${project}"
 )
 
-//// step 2: deploy in K8s cluster (dev, stg, prd)
-//deployKubernetes(
-//	project: "${project}",
-//	imageTag: "${imageTag}"
-//)
+// step 2: deploy in K8s cluster (dev, stg, prd)
+deployKubernetes(
+	project: "${project}",
+	imageTag: "${imageTag}"
+)

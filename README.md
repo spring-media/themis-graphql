@@ -45,8 +45,8 @@ To use the CLI in a development environment with a `.env` file, use `node index 
 
 
 # Development Setup
-Run `npm install`.
-Then just `npm run dev`.
+Run `yarn install`.
+Then just `yarn run dev`.
 
 # Docker
 In order to run the GraphQL aggregation layer inside a Docker container, simply do the following:
@@ -63,7 +63,7 @@ The GraphQl aggregation layer is available at localhost:8484/api/graphql. The gr
 GraphQL IDE can be found at http://localhost:8484/api/graphiql.
 
 # Testing
-Run `npm run test`.
+Run `yarn run test`.
 
 The test setup mocks all external requests (including remote gql resources like lean), with [nock](https://github.com/nock/nock).
 Currently the nocking setup is included with jest at `./framework.js`, this may be subject to change.

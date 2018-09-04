@@ -1,38 +1,41 @@
-# Production Dockerfile (Dockerfile)
+FROM node:8.11.4 as intermediate
 
-# ---- Base Node ----
-FROM node:8.11.3 AS base
-# docker build argument
-ARG PACKAGE_VERSION
-# image metadata
-LABEL NAME="red-gql" VERSION=${PACKAGE_VERSION}
+# install git
+RUN apt-get update
+RUN apt-get install -y git
+
+ARG GIT_USERNAME
+ARG GIT_PASSWORD
+
+# clone Git repository red-delivery
+RUN git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/spring-media/red-delivery.git
+
+FROM node:8.11.4
+
+ARG ARTICLE_GRAPHQL_ENDPOINT
+ARG ARTICLE_GRAPHQL_TOKEN
+ARG IMAGE_HOST
+ARG LOG_LEVEL
+ARG NODE_ENV
+
 # set working directory
 WORKDIR /app
+
 # copy project files and folders
 COPY . /app
 
-# ---- Dependencies ----
-FROM base AS dependencies
-# install node packages
-RUN npm install --only=production
-# copy production node_modules aside
-RUN cp -R node_modules prod_node_modules
+# copy datasources folder in cloned repository from previous image to working directory
+COPY --from=intermediate /red-delivery/datasources /app/datasources
+
 # install ALL node_modules, including 'devDependencies'
 RUN npm install
-# build client and server
-#RUN npm run build
 
-# ---- Test ----
-# run linters and tests
-#FROM dependencies AS test
-# RUN npm run lint && npm run test
-#RUN npm run test
+RUN npm install graphql@0.13.2 graphql-tag@2.9.2 graphql-tools@3.0.2
 
-# ---- Release ----
-FROM base AS release
-# copy production node_modules
-COPY --from=dependencies /app/prod_node_modules /app/node_modules
+RUN node index -s /app/datasources --build
+
 # expose port
 EXPOSE 8081
+
 # command to be executed when running the image
-CMD [ "npm", "run", "dev" ]
+CMD [ "node", "index", "-s", "/app/datasources"]

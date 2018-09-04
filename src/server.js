@@ -30,7 +30,6 @@ async function initServer ({
     datasourcePaths,
     mockMode,
     graphQLPath: '/api/graphql',
-    graphiQLPath: '/api/graphiql',
     tracing: process.env.GQL_TRACING === 'true' || false,
     cacheControl: process.env.GQL_CACHE_CONTROL === 'true' || false,
   });
@@ -38,6 +37,10 @@ async function initServer ({
   app.use((err, req, res, next) => {
     logger.error(err);
     next(err);
+  });
+
+  app.get('/health', (req, res) => {
+  	return res.send('OK');
   });
 
   return server;
