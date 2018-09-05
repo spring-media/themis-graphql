@@ -25,7 +25,7 @@ WORKDIR /app
 COPY . /app
 
 # copy datasources folder in cloned repository from previous image to working directory
-COPY --from=intermediate /red-delivery/datasources /app/datasources
+COPY --from=intermediate /red-delivery/src/datasources /app/datasources
 
 # install ALL node_modules, including 'devDependencies'
 RUN npm install
