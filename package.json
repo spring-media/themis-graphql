@@ -17,7 +17,7 @@
     "express-winston": "2.5.1",
     "joi": "13.4.0",
     "winston": "2.4.3",
-    "red-placement-service": "0.1.0"
+    "red-placement-service": "spring-media/red-placement-service"
   },
   "peerDependencies": {
     "graphql": "0.13.2",
