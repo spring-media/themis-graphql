@@ -1,7 +1,7 @@
 {
   "name": "red-gql",
   "version": "0.0.1",
-  "description": "GQL Data Aggregation Layer for the RED Delivery",
+  "description": "GQL Data Aggregation CLI",
   "main": "index.js",
   "bin": {
     "red-gql": "index.js"
