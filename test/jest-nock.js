@@ -12,118 +12,118 @@ const mkdirp = require('mkdirp');
 const subPathName = '__nocks__';
 
 function beforeTest (nockFilePath, nockOptions) {
-	if (process.env.JEST_NOCK_RECORD === 'true') {
-		nock.recorder.rec({
-			/* eslint-disable camelcase */
-			dont_print: true,
-			output_objects: true,
-			/* eslint-enable camelcase */
-		});
-	} else {
-		if (fs.existsSync(nockFilePath)) {
-			const defs = nock.loadDefs(nockFilePath);
+  if (process.env.JEST_NOCK_RECORD === 'true') {
+    nock.recorder.rec({
+      /* eslint-disable camelcase */
+      dont_print: true,
+      output_objects: true,
+      /* eslint-enable camelcase */
+    });
+  } else {
+    if (fs.existsSync(nockFilePath)) {
+      const defs = nock.loadDefs(nockFilePath);
 
-			nock.define(defs);
-		}
+      nock.define(defs);
+    }
     nock.disableNetConnect();
     if (nockOptions && Array.isArray(nockOptions.enableNetConnect)) {
       nockOptions.enableNetConnect.forEach(stringOrRegEx => nock.enableNetConnect(stringOrRegEx));
     }
-	}
+  }
 }
 
 function afterTest (nockFileDir, nockFilePath) {
-	if (process.env.JEST_NOCK_RECORD === 'true') {
-		const recording = nock.recorder.play();
+  if (process.env.JEST_NOCK_RECORD === 'true') {
+    const recording = nock.recorder.play();
 
-		if (recording.length === 0) {
+    if (recording.length === 0) {
       nock.restore();
-			return;
-		}
+      return;
+    }
 
-		if (!fs.existsSync(nockFileDir)) {
-			mkdirp.sync(nockFileDir);
-		}
-		fs.writeFileSync(nockFilePath, JSON.stringify(recording, null, 2));
+    if (!fs.existsSync(nockFileDir)) {
+      mkdirp.sync(nockFileDir);
+    }
+    fs.writeFileSync(nockFilePath, JSON.stringify(recording, null, 2));
 
-		nock.restore();
-	}
-	nock.enableNetConnect();
+    nock.restore();
+  }
+  nock.enableNetConnect();
 }
 
 const bindNock = (fn, testPath, overrideTitle) => {
-	return function (...args) {
-		let title = args[0];
+  return function (...args) {
+    let title = args[0];
     let testFn = args[1];
     let nockOptions = args[2];
-		const fnArgs = [];
+    const fnArgs = [];
 
-		if (typeof args[0] === 'function') {
-			title = overrideTitle || 'default';
+    if (typeof args[0] === 'function') {
+      title = overrideTitle || 'default';
       testFn = args[0];
       nockOptions = args[1];
-		} else {
-			fnArgs.push(title);
-		}
+    } else {
+      fnArgs.push(title);
+    }
 
-		const { dir, name } = path.parse(testPath);
+    const { dir, name } = path.parse(testPath);
 
-		const nockFileName = `${name}_${hashCode(title)}.nock.json`;
-		const nockFileDir = path.resolve(dir, subPathName);
-		const nockFilePath = path.join(nockFileDir, nockFileName);
+    const nockFileName = `${name}_${hashCode(title)}.nock.json`;
+    const nockFileDir = path.resolve(dir, subPathName);
+    const nockFilePath = path.join(nockFileDir, nockFileName);
 
-		let wrappedTest = null;
+    let wrappedTest = null;
 
-		if (testFn.length >= 1) {
-			wrappedTest = done => {
-				beforeTest(nockFilePath, nockOptions);
-				const wrappedDone = err => {
-					afterTest(nockFileDir, nockFilePath);
-					done(err);
-				};
-
-				return testFn(wrappedDone);
-			};
-		} else {
-			wrappedTest = async (...testArgs) => {
-				beforeTest(nockFilePath, nockOptions);
-				try {
-					const result = await testFn(...testArgs);
-
-					afterTest(nockFileDir, nockFilePath);
-					return result;
-				} catch (err) {
+    if (testFn.length >= 1) {
+      wrappedTest = done => {
+        beforeTest(nockFilePath, nockOptions);
+        const wrappedDone = err => {
           afterTest(nockFileDir, nockFilePath);
-					throw err;
-				}
-			};
-		}
+          done(err);
+        };
 
-		fnArgs.push(wrappedTest);
+        return testFn(wrappedDone);
+      };
+    } else {
+      wrappedTest = async (...testArgs) => {
+        beforeTest(nockFilePath, nockOptions);
+        try {
+          const result = await testFn(...testArgs);
 
-		return fn(...fnArgs);
-	};
+          afterTest(nockFileDir, nockFilePath);
+          return result;
+        } catch (err) {
+          afterTest(nockFileDir, nockFilePath);
+          throw err;
+        }
+      };
+    }
+
+    fnArgs.push(wrappedTest);
+
+    return fn(...fnArgs);
+  };
 };
 
 function hashCode (str) {
-	let hash = 5381;
+  let hash = 5381;
 
-	for (let i = str.length; i >= 0; --i) {
-		hash = (hash * 33) ^ str.charCodeAt(i);
-	}
+  for (let i = str.length; i >= 0; --i) {
+    hash = (hash * 33) ^ str.charCodeAt(i);
+  }
 
-	return hash >>> 0;
+  return hash >>> 0;
 }
 
 function upgradeJasmine (jsmn, glb) {
-	const env = jsmn.getEnv();
-	const testPath = jsmn.testPath;
+  const env = jsmn.getEnv();
+  const testPath = jsmn.testPath;
 
-	glb.it.nock = bindNock(env.it, testPath);
-	glb.fit.nock = bindNock(env.fit, testPath);
-	glb.beforeAll.nock = bindNock(env.beforeAll, testPath, 'beforeAll');
+  glb.it.nock = bindNock(env.it, testPath);
+  glb.fit.nock = bindNock(env.fit, testPath);
+  glb.beforeAll.nock = bindNock(env.beforeAll, testPath, 'beforeAll');
 }
 
 module.exports = {
-	upgradeJasmine,
+  upgradeJasmine,
 };
