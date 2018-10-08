@@ -7,21 +7,22 @@
     "red-gql": "index.js"
   },
   "dependencies": {
-    "graphql": "0.13.2",
-    "graphql-tag": "2.9.2",
-    "graphql-tools": "3.1.1",
     "apollo-errors": "1.9.0",
     "apollo-link-context": "1.0.8",
     "apollo-link-http": "1.5.4",
     "apollo-server-express": "2.0.4",
     "body-parser": "1.18.3",
+    "casual": "1.5.19",
     "commander": "2.17.1",
     "express": "4.16.3",
     "express-winston": "2.5.1",
+    "graphql": "0.13.2",
+    "graphql-subscriptions": "1.0.0",
+    "graphql-tag": "2.9.2",
+    "graphql-tools": "3.1.1",
     "joi": "13.4.0",
-    "winston": "2.4.3",
     "mkdirp": "0.5.1",
-    "casual": "1.5.19"
+    "winston": "2.4.3"
   },
   "devDependencies": {
     "babel-eslint": "8.2.3",
@@ -50,6 +51,6 @@
   },
   "homepage": "https://github.com/spring-media/red-gql#readme",
   "publishConfig": {
-    "registry":"https://spring.jfrog.io/spring/api/npm/npm-local-red/"
+    "registry": "https://spring.jfrog.io/spring/api/npm/npm-local-red/"
   }
 }

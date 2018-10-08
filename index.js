@@ -33,11 +33,11 @@ if (program.build) {
   initServer({
     mockMode: program.mock || false,
     datasourcePaths,
-  }).then(server => {
+  }).then(({ server, apolloServer }) => {
     server.listen(process.env.PORT || 8484, () => {
-      const { address, port } = server.address();
-
-      logger.info(`RED GQL Aggregation Server running at ${address}:${port}`);
+      const { port } = server.address();
+      logger.info(`Server ready at http://127.0.0.1:${port}${apolloServer.graphqlPath}`)
+      logger.info(`Subscriptions ready at ws://127.0.0.1:${port}${apolloServer.subscriptionsPath}`)
     });
   });
 }

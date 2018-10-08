@@ -8,7 +8,7 @@ const { formatError } = require('apollo-errors');
  * @param  {Object} app Express instance
  * @return {Object} app
  */
-const initializeGraphql = async (app, {
+const initializeGraphql = async (app, httpServer, {
   graphQLPath, tracing, cacheControl, mockMode, datasourcePaths,
 }) => {
   const { schema, context = {} } = await loadSchema({ datasourcePaths, mockMode });
@@ -19,11 +19,15 @@ const initializeGraphql = async (app, {
     debug: process.env.NODE_ENV === 'development',
     tracing,
     cacheControl,
+    subscriptions: {
+      path: graphQLPath,
+    },
   });
 
   server.applyMiddleware({ app, path: graphQLPath });
+  server.installSubscriptionHandlers(httpServer);
 
-  return app;
+  return server;
 };
 
 module.exports = { initializeGraphql };

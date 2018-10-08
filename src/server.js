@@ -26,7 +26,7 @@ async function initServer ({
     statusLevels: true,
   }));
 
-  await initializeGraphql(app, {
+  const apolloServer = await initializeGraphql(app, server, {
     datasourcePaths,
     mockMode,
     graphQLPath: '/api/graphql',
@@ -43,7 +43,7 @@ async function initServer ({
   	return res.send('OK');
   });
 
-  return server;
+  return { server, apolloServer };
 }
 
 module.exports = {
