@@ -9,13 +9,23 @@ const makeDir = promisify(mkdirp);
 const writeFile = promisify(fs.writeFile);
 
 
-const buildRemote = async ({ uri, context }, sourcePath) => {
+const buildRemote = async ({ uri, context, schemaPath }, sourcePath) => {
   const http = makeRemoteHTTPLink({ uri });
   const introspectionSchema = await loadIntrospectionSchema(http, context);
-  const schemaPath = path.join(sourcePath, 'dist');
-  const schemaFilePath = path.join(schemaPath, '_remote_schema.json');
+  let schemaDistPath = path.join(sourcePath, 'dist');
+  let schemaFilePath = path.join(schemaDistPath, '_remote_schema.json');
 
-  await makeDir(schemaPath);
+  if (schemaPath) {
+    if (path.isAbsolute(schemaPath)) {
+      schemaDistPath = path.resolve(path.dirname(schemaPath));
+      schemaFilePath = path.resolve(schemaPath);
+    } else {
+      schemaDistPath = path.resolve(sourcePath, path.dirname(schemaPath));
+      schemaFilePath = path.resolve(sourcePath, schemaPath);
+    }
+  }
+
+  await makeDir(schemaDistPath);
   await writeFile(schemaFilePath, JSON.stringify(introspectionSchema));
 };
 

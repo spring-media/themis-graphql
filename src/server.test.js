@@ -48,5 +48,7 @@ describe('Server', () => {
     };
 
     expect(res.body).toMatchObject(expect.objectContaining(expected));
+  }, {
+    enableNetConnect: ['127.0.0.1'],
   });
 });

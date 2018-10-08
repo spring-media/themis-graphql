@@ -22,6 +22,7 @@ const schema = Joi.alternatives().try([
     accessViaContext: Joi.string(),
     remote: Joi.object().keys({
       uri: Joi.string().uri().required(),
+      schemaPath: Joi.string(),
       linkContext: Joi.func(),
       transforms: Joi.array(),
     }).required(),

@@ -25,4 +25,28 @@ describe('Build Schema', () => {
 
     expect(builtSchema).toMatchObject(expect.objectContaining(expected));
   });
+
+  it.nock('stores the remote schema into custom local path', async () => {
+    const datasourcePath = path.resolve(__dirname, '../test/data/cms.1');
+
+    await buildSchema({
+      datasourcePaths: [datasourcePath],
+    });
+
+    const builtSchema = require(path.join(datasourcePath, 'customDist/schema.json'));
+
+    const expected = {
+      data: {
+        __schema: {
+          directives: expect.any(Array),
+          mutationType: expect.any(Object),
+          queryType: expect.any(Object),
+          subscriptionType: expect.any(Object),
+          types: expect.any(Array),
+        },
+      },
+    };
+
+    expect(builtSchema).toMatchObject(expect.objectContaining(expected));
+  });
 });

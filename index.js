@@ -7,6 +7,7 @@ const logger = require('./src/logger');
 const program = require('commander');
 const path = require('path');
 const fs = require('fs');
+
 program
   .name('gql')
   .usage('[options] <datasourcePaths ...>')
