@@ -10007,9 +10007,9 @@
       "extensions": {
         "tracing": {
           "version": 1,
-          "startTime": "2018-10-08T10:33:04.798Z",
-          "endTime": "2018-10-08T10:33:04.901Z",
-          "duration": 102616597,
+          "startTime": "2018-10-08T15:25:58.803Z",
+          "endTime": "2018-10-08T15:25:58.825Z",
+          "duration": 22515291,
           "execution": {
             "resolvers": []
           }
@@ -10018,11 +10018,11 @@
     },
     "rawHeaders": [
       "Date",
-      "Mon, 08 Oct 2018 10:33:04 GMT",
+      "Mon, 08 Oct 2018 15:25:58 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "137225",
+      "137224",
       "Connection",
       "close",
       "Access-Control-Allow-Origin",

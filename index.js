@@ -34,6 +34,7 @@ if (program.build) {
   initServer({
     mockMode: program.mock || false,
     datasourcePaths,
+    productionMode: process.env.NODE_ENV === 'production',
   }).then(server => {
     server.listen(process.env.PORT || 8484, () => {
       const { address, port } = server.address();

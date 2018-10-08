@@ -7,16 +7,33 @@ const {
   introspectSchema,
 } = require('graphql-tools');
 const { makePromise, execute } = require('apollo-link');
-const { buildClientSchema } = require('graphql');
 const path = require('path');
+const { buildClientSchema } = require('graphql');
 
 const parsedIntrospectionQuery = parse(introspectionQuery);
 
+const distPathForConfig = ({ schemaPath }, sourcePath) => {
+  let schemaDistPath = path.join(sourcePath, 'dist');
+  let schemaFilePath = path.join(schemaDistPath, '_remote_schema.json');
+
+  if (schemaPath) {
+    if (path.isAbsolute(schemaPath)) {
+      schemaDistPath = path.resolve(path.dirname(schemaPath));
+      schemaFilePath = path.resolve(schemaPath);
+    } else {
+      schemaDistPath = path.resolve(sourcePath, path.dirname(schemaPath));
+      schemaFilePath = path.resolve(sourcePath, schemaPath);
+    }
+  }
+
+  return { schemaDistPath, schemaFilePath };
+};
+
 const loadFileSchema = async (config, sourcePath) => {
-  const schemaPath = path.join(sourcePath, 'dist');
-  const schemaFilePath = path.join(schemaPath, '_remote_schema.json');
+  const { schemaFilePath } = distPathForConfig(config, sourcePath);
   const jsonSchema = require(schemaFilePath);
 	const schema = buildClientSchema(jsonSchema.data);
+
 	return schema;
 };
 
@@ -35,7 +52,7 @@ const makeRemoteHTTPLink = ({ uri }) => {
   return link;
 };
 
-const loadRemoteSchema = async (config, sourcePath, { mockMode }) => {
+const loadRemoteSchema = async (config, sourcePath, { mockMode, productionMode }) => {
   const {
     linkContext,
     uri,
@@ -44,9 +61,9 @@ const loadRemoteSchema = async (config, sourcePath, { mockMode }) => {
 
   const link = linkContext ? setContext(linkContext).concat(http) : http;
 
-  const schema = mockMode || process.env.NODE_ENV === 'production' 
-    ? await loadFileSchema(config, sourcePath) 
-    : await introspectSchema(link);
+  const schema = mockMode || productionMode ?
+    await loadFileSchema(config, sourcePath) :
+    await introspectSchema(link);
 
   return { schema, link };
 };
@@ -67,4 +84,9 @@ const loadIntrospectionSchema = async (link, linkContext) => {
   return rawSchema;
 };
 
-module.exports = { loadRemoteSchema, makeRemoteHTTPLink, loadIntrospectionSchema };
+module.exports = {
+  loadRemoteSchema,
+  makeRemoteHTTPLink,
+  loadIntrospectionSchema,
+  distPathForConfig,
+};
