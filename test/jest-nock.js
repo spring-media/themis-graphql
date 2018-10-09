@@ -11,7 +11,7 @@ const mkdirp = require('mkdirp');
 
 const subPathName = '__nocks__';
 
-function beforeTest (nockFilePath) {
+function beforeTest (nockFilePath, nockOptions) {
   if (process.env.JEST_NOCK_RECORD === 'true') {
     nock.recorder.rec({
       /* eslint-disable camelcase */
@@ -19,11 +19,17 @@ function beforeTest (nockFilePath) {
       output_objects: true,
       /* eslint-enable camelcase */
     });
-  } else if (fs.existsSync(nockFilePath)) {
+  } else {
+    if (fs.existsSync(nockFilePath)) {
       const defs = nock.loadDefs(nockFilePath);
 
       nock.define(defs);
     }
+    nock.disableNetConnect();
+    if (nockOptions && Array.isArray(nockOptions.enableNetConnect)) {
+      nockOptions.enableNetConnect.forEach(stringOrRegEx => nock.enableNetConnect(stringOrRegEx));
+    }
+  }
 }
 
 function afterTest (nockFileDir, nockFilePath) {
@@ -31,6 +37,7 @@ function afterTest (nockFileDir, nockFilePath) {
     const recording = nock.recorder.play();
 
     if (recording.length === 0) {
+      nock.restore();
       return;
     }
 
@@ -41,17 +48,20 @@ function afterTest (nockFileDir, nockFilePath) {
 
     nock.restore();
   }
+  nock.enableNetConnect();
 }
 
 const bindNock = (fn, testPath, overrideTitle) => {
   return function (...args) {
     let title = args[0];
     let testFn = args[1];
+    let nockOptions = args[2];
     const fnArgs = [];
 
     if (typeof args[0] === 'function') {
       title = overrideTitle || 'default';
       testFn = args[0];
+      nockOptions = args[1];
     } else {
       fnArgs.push(title);
     }
@@ -62,19 +72,32 @@ const bindNock = (fn, testPath, overrideTitle) => {
     const nockFileDir = path.resolve(dir, subPathName);
     const nockFilePath = path.join(nockFileDir, nockFileName);
 
-    const wrappedTest = async (...testArgs) => {
-      beforeTest(nockFilePath);
+    let wrappedTest = null;
 
-      try {
-        const result = await testFn(...testArgs);
+    if (testFn.length >= 1) {
+      wrappedTest = done => {
+        beforeTest(nockFilePath, nockOptions);
+        const wrappedDone = err => {
+          afterTest(nockFileDir, nockFilePath);
+          done(err);
+        };
 
-        afterTest(nockFileDir, nockFilePath);
-        return result;
-      } catch (err) {
-        afterTest(nockFileDir, nockFilePath);
-        throw err;
-      }
-    };
+        return testFn(wrappedDone);
+      };
+    } else {
+      wrappedTest = async (...testArgs) => {
+        beforeTest(nockFilePath, nockOptions);
+        try {
+          const result = await testFn(...testArgs);
+
+          afterTest(nockFileDir, nockFilePath);
+          return result;
+        } catch (err) {
+          afterTest(nockFileDir, nockFilePath);
+          throw err;
+        }
+      };
+    }
 
     fnArgs.push(wrappedTest);
 

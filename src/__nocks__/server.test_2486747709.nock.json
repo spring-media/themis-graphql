@@ -304,16 +304,12 @@
                   "description": "",
                   "args": [
                     {
-                      "name": "id",
+                      "name": "input",
                       "description": "",
                       "type": {
-                        "kind": "NON_NULL",
-                        "name": null,
-                        "ofType": {
-                          "kind": "SCALAR",
-                          "name": "ID",
-                          "ofType": null
-                        }
+                        "kind": "INPUT_OBJECT",
+                        "name": "InfographicQueryInput",
+                        "ofType": null
                       },
                       "defaultValue": null
                     }
@@ -1076,6 +1072,18 @@
                   "type": {
                     "kind": "SCALAR",
                     "name": "Boolean",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
+                  "name": "note",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
                     "ofType": null
                   },
                   "isDeprecated": false,
@@ -2426,6 +2434,18 @@
                   "deprecationReason": null
                 },
                 {
+                  "name": "note",
+                  "description": "Note for the article",
+                  "args": [],
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
                   "name": "teaser",
                   "description": "The teaser of an article.",
                   "args": [
@@ -2583,6 +2603,11 @@
                 {
                   "kind": "OBJECT",
                   "name": "HtmlElement",
+                  "ofType": null
+                },
+                {
+                  "kind": "OBJECT",
+                  "name": "Infographic",
                   "ofType": null
                 }
               ]
@@ -2869,6 +2894,18 @@
                   "deprecationReason": null
                 },
                 {
+                  "name": "linkNoFollow",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
                   "name": "customFormat",
                   "description": "",
                   "args": [],
@@ -3083,6 +3120,169 @@
                 },
                 {
                   "name": "markup",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                }
+              ],
+              "inputFields": null,
+              "interfaces": [],
+              "enumValues": null,
+              "possibleTypes": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "Infographic",
+              "description": "",
+              "fields": [
+                {
+                  "name": "id",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
+                  "name": "description",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
+                  "name": "title",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
+                  "name": "authors",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
+                  "name": "reference",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
+                  "name": "previewUrl",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
+                  "name": "thumbnailUrl",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
+                  "name": "liveUrl",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
+                  "name": "keywords",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
+                  "name": "type",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
+                  "name": "creationTool",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
+                  "name": "iFrameHeight",
                   "description": "",
                   "args": [],
                   "type": {
@@ -4623,133 +4823,6 @@
             },
             {
               "kind": "OBJECT",
-              "name": "Infographic",
-              "description": "",
-              "fields": [
-                {
-                  "name": "id",
-                  "description": "",
-                  "args": [],
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
-                  },
-                  "isDeprecated": false,
-                  "deprecationReason": null
-                },
-                {
-                  "name": "description",
-                  "description": "",
-                  "args": [],
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  },
-                  "isDeprecated": false,
-                  "deprecationReason": null
-                },
-                {
-                  "name": "title",
-                  "description": "",
-                  "args": [],
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  },
-                  "isDeprecated": false,
-                  "deprecationReason": null
-                },
-                {
-                  "name": "authors",
-                  "description": "",
-                  "args": [],
-                  "type": {
-                    "kind": "LIST",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "String",
-                      "ofType": null
-                    }
-                  },
-                  "isDeprecated": false,
-                  "deprecationReason": null
-                },
-                {
-                  "name": "preview_url",
-                  "description": "",
-                  "args": [],
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  },
-                  "isDeprecated": false,
-                  "deprecationReason": null
-                },
-                {
-                  "name": "thumbnail_url",
-                  "description": "",
-                  "args": [],
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  },
-                  "isDeprecated": false,
-                  "deprecationReason": null
-                },
-                {
-                  "name": "live_url",
-                  "description": "",
-                  "args": [],
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  },
-                  "isDeprecated": false,
-                  "deprecationReason": null
-                },
-                {
-                  "name": "keywords",
-                  "description": "",
-                  "args": [],
-                  "type": {
-                    "kind": "LIST",
-                    "name": null,
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "String",
-                      "ofType": null
-                    }
-                  },
-                  "isDeprecated": false,
-                  "deprecationReason": null
-                },
-                {
-                  "name": "type",
-                  "description": "",
-                  "args": [],
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  },
-                  "isDeprecated": false,
-                  "deprecationReason": null
-                }
-              ],
-              "inputFields": null,
-              "interfaces": [],
-              "enumValues": null,
-              "possibleTypes": null
-            },
-            {
-              "kind": "OBJECT",
               "name": "InfographicType",
               "description": "",
               "fields": [
@@ -4780,6 +4853,27 @@
               ],
               "inputFields": null,
               "interfaces": [],
+              "enumValues": null,
+              "possibleTypes": null
+            },
+            {
+              "kind": "INPUT_OBJECT",
+              "name": "InfographicQueryInput",
+              "description": "",
+              "fields": null,
+              "inputFields": [
+                {
+                  "name": "id",
+                  "description": "",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "interfaces": null,
               "enumValues": null,
               "possibleTypes": null
             },
@@ -4851,6 +4945,18 @@
                 },
                 {
                   "name": "likes",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
+                  "name": "clicks",
                   "description": "",
                   "args": [],
                   "type": {
@@ -6044,6 +6150,33 @@
                   "deprecationReason": null
                 },
                 {
+                  "name": "changeNote",
+                  "description": "Changing the note for the article",
+                  "args": [
+                    {
+                      "name": "input",
+                      "description": "",
+                      "type": {
+                        "kind": "NON_NULL",
+                        "name": null,
+                        "ofType": {
+                          "kind": "INPUT_OBJECT",
+                          "name": "ChangeNoteInput",
+                          "ofType": null
+                        }
+                      },
+                      "defaultValue": null
+                    }
+                  ],
+                  "type": {
+                    "kind": "OBJECT",
+                    "name": "ChangeNoteResponse",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                },
+                {
                   "name": "updateTeaser",
                   "description": "",
                   "args": [
@@ -6152,11 +6285,11 @@
                   "description": "",
                   "args": [
                     {
-                      "name": "id",
+                      "name": "input",
                       "description": "",
                       "type": {
-                        "kind": "SCALAR",
-                        "name": "ID",
+                        "kind": "INPUT_OBJECT",
+                        "name": "ImportInfographicInput",
                         "ofType": null
                       },
                       "defaultValue": null
@@ -7132,6 +7265,68 @@
             },
             {
               "kind": "INPUT_OBJECT",
+              "name": "ChangeNoteInput",
+              "description": "",
+              "fields": null,
+              "inputFields": [
+                {
+                  "name": "id",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "note",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "interfaces": null,
+              "enumValues": null,
+              "possibleTypes": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "ChangeNoteResponse",
+              "description": "",
+              "fields": [
+                {
+                  "name": "success",
+                  "description": "",
+                  "args": [],
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "isDeprecated": false,
+                  "deprecationReason": null
+                }
+              ],
+              "inputFields": null,
+              "interfaces": [],
+              "enumValues": null,
+              "possibleTypes": null
+            },
+            {
+              "kind": "INPUT_OBJECT",
               "name": "TeaserUpdateInput",
               "description": "",
               "fields": null,
@@ -7369,6 +7564,91 @@
               ],
               "inputFields": null,
               "interfaces": [],
+              "enumValues": null,
+              "possibleTypes": null
+            },
+            {
+              "kind": "INPUT_OBJECT",
+              "name": "ImportInfographicInput",
+              "description": "",
+              "fields": null,
+              "inputFields": [
+                {
+                  "name": "id",
+                  "description": "",
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "ID",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "liveUrl",
+                  "description": "",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "previewUrl",
+                  "description": "",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "description",
+                  "description": "",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "type",
+                  "description": "",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "creationTool",
+                  "description": "",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "iFrameHeight",
+                  "description": "",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "interfaces": null,
               "enumValues": null,
               "possibleTypes": null
             },
@@ -7706,6 +7986,16 @@
                   "type": {
                     "kind": "SCALAR",
                     "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "linkNoFollow",
+                  "description": "",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
                     "ofType": null
                   },
                   "defaultValue": null
@@ -9717,9 +10007,9 @@
       "extensions": {
         "tracing": {
           "version": 1,
-          "startTime": "2018-08-29T11:51:21.568Z",
-          "endTime": "2018-08-29T11:51:21.598Z",
-          "duration": 29815117,
+          "startTime": "2018-10-08T10:33:04.252Z",
+          "endTime": "2018-10-08T10:33:04.285Z",
+          "duration": 32672853,
           "execution": {
             "resolvers": []
           }
@@ -9728,11 +10018,11 @@
     },
     "rawHeaders": [
       "Date",
-      "Wed, 29 Aug 2018 11:51:21 GMT",
+      "Mon, 08 Oct 2018 10:33:04 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "133640",
+      "137224",
       "Connection",
       "close",
       "Access-Control-Allow-Origin",

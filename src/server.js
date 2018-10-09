@@ -6,6 +6,7 @@ const logger = require('./logger');
 
 async function initServer ({
   mockMode = false,
+  productionMode = true,
   datasourcePaths = [],
 } = {}) {
   if (datasourcePaths.length === 0) {
@@ -29,6 +30,7 @@ async function initServer ({
   await initializeGraphql(app, {
     datasourcePaths,
     mockMode,
+    productionMode,
     graphQLPath: '/api/graphql',
     tracing: process.env.GQL_TRACING === 'true' || false,
     cacheControl: process.env.GQL_CACHE_CONTROL === 'true' || false,
@@ -40,7 +42,7 @@ async function initServer ({
   });
 
   app.get('/health', (req, res) => {
-  	return res.send('OK');
+    return res.send('OK');
   });
 
   return server;
