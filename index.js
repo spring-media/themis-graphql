@@ -12,6 +12,7 @@ program
   .name('gql')
   .usage('[options] <datasourcePaths ...>')
   .option('-b, --build', 'Build datasources for production (load and store remote schemas)')
+  .option('--pretty', 'store remote schema as pretty JSON for scm tracking and comparison')
   .option('-m, --mock', 'Start server in mock mode')
   .option('-s, --use-subfolders', 'Treat each folder in a datasourcePath as a datasource');
 
@@ -28,8 +29,11 @@ const datasourcePaths = program.useSubfolders ?
 valideEnv();
 
 if (program.build) {
-  buildSchema({ datasourcePaths })
-    .then(() => logger.info('Build Done.'));
+  buildSchema({
+    datasourcePaths,
+    pretty: program.pretty,
+  })
+  .then(() => logger.info('Build Done.'));
 } else {
   initServer({
     mockMode: program.mock || false,
