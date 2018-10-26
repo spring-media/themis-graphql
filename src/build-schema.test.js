@@ -52,6 +52,21 @@ describe('Build Schema', () => {
     expect(builtSchema).toMatchObject(expect.objectContaining(expected));
   });
 
+  it.nock('can stores a pretty json schema', async () => {
+    const datasourcePath = path.resolve(__dirname, '../test/data/cms.2');
+
+    await buildSchema({
+      datasourcePaths: [datasourcePath],
+      pretty: true,
+    });
+
+    const builtSchema = require(path.join(datasourcePath, 'customDist/schema.json'));
+
+    const expectedSchema = require(path.join(datasourcePath, 'cms.2_pretty_schema.json'));
+
+    expect(builtSchema).toMatchObject(expectedSchema);
+  });
+
   it.nock('uses built schema from custom path', async () => {
     const datasourcePath = path.resolve(__dirname, '../test/data/cms.1');
 
@@ -70,8 +85,8 @@ describe('Build Schema', () => {
     const res = await request(server)
       .post('/api/graphql')
       .send({
-        query: `query fetchBuiltArticle($input: ArticleInput) { 
-          article(input: $input) { 
+        query: `query fetchBuiltArticle($input: ArticleInput) {
+          article(input: $input) {
             state
             creationDate
             headlinePlain
