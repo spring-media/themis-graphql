@@ -106,13 +106,16 @@ describe('Server --nock', () => {
         path.resolve(__dirname, '../test/data/nocked'),
       ],
     });
+    gqlServer.listen(12345)
 
-    nock.enableNetConnect(/\:49/);
+    nock.enableNetConnect(/\:12345/);
 
     const res2 = await request(gqlServer)
       .post('/api/graphql')
       .send(query)
       .expect(200);
+
+    nock.enableNetConnect();
 
     expect(res2.text).toBe(res1.text);
   });

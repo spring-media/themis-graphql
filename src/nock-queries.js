@@ -30,6 +30,7 @@ const nockMiddleware = ({ nockPath }) => (req, res, next) => {
     }
     fs.writeFileSync(nockFilePath, JSON.stringify(recording, null, 2));
 
+    nock.recorder.clear();
     nock.cleanAll();
     nock.restore();
   });
