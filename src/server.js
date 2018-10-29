@@ -37,6 +37,7 @@ async function initServer ({
     if (nockRecord) {
       app.use(nockMiddleware({ nockPath }));
     } else {
+      productionMode = true;
       replayNocks({ nockPath });
     }
   }

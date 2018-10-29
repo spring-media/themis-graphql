@@ -50,6 +50,7 @@ To start the server in replay mode use:
 ```
 node index -s ./datasources --nock
 ```
+Replaying is currently only possible in production mode, as it needs an existing remote schema for remote datasources.
 
 
 # Configuration
