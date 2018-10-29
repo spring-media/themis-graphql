@@ -1,11 +1,17 @@
 const express = require('express');
 const { createServer } = require('http');
 const { initializeGraphql } = require('./express-gql');
+const { nockMiddleware, replayNocks } = require('./nock-queries');
 const expressWinston = require('express-winston');
+const path = require('path');
 const logger = require('./logger');
 
+// eslint-disable-next-line complexity
 async function initServer ({
   mockMode = false,
+  nockMode = false,
+  nockRecord = false,
+  nockPath = path.join(process.cwd(), '/__query_nocks__'),
   productionMode = true,
   datasourcePaths = [],
 } = {}) {
@@ -27,9 +33,19 @@ async function initServer ({
     statusLevels: true,
   }));
 
+  if (nockMode) {
+    if (nockRecord) {
+      app.use(nockMiddleware({ nockPath }));
+    } else {
+      replayNocks({ nockPath });
+    }
+  }
+
   await initializeGraphql(app, {
     datasourcePaths,
     mockMode,
+    nockMode,
+    nockRecord,
     productionMode,
     graphQLPath: '/api/graphql',
     tracing: process.env.GQL_TRACING === 'true' || false,

@@ -9,7 +9,12 @@ const { formatError } = require('apollo-errors');
  * @return {Object} app
  */
 const initializeGraphql = async (app, {
-  graphQLPath, tracing, cacheControl, mockMode, datasourcePaths, productionMode,
+  graphQLPath,
+  tracing,
+  cacheControl,
+  mockMode,
+  datasourcePaths,
+  productionMode,
 }) => {
   const { schema, context = {} } = await loadSchema({ datasourcePaths, mockMode, productionMode });
   const server = new ApolloServer({
