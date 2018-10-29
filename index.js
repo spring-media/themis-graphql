@@ -14,6 +14,8 @@ program
   .option('-b, --build', 'Build datasources for production (load and store remote schemas)')
   .option('--pretty', 'store remote schema as pretty JSON for scm tracking and comparison')
   .option('-m, --mock', 'Start server in mock mode')
+  .option('-n, --nock', 'Start server in nock mode (Load recorded nocks)')
+  .option('-r, --record', 'Record external requests with nock')
   .option('-s, --use-subfolders', 'Treat each folder in a datasourcePath as a datasource');
 
 program.parse(process.argv);
@@ -37,6 +39,8 @@ if (program.build) {
 } else {
   initServer({
     mockMode: program.mock || false,
+    nockMode: program.nock,
+    nockRecord: program.record,
     datasourcePaths,
     productionMode: process.env.NODE_ENV === 'production',
   }).then(server => {
