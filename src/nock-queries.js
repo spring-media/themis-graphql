@@ -16,6 +16,7 @@ const nockMiddleware = ({ nockPath }) => (req, res, next) => {
     const recording = nock.recorder.play();
 
     if (recording.length === 0) {
+      nock.cleanAll();
       nock.restore();
       return;
     }
@@ -29,6 +30,7 @@ const nockMiddleware = ({ nockPath }) => (req, res, next) => {
     }
     fs.writeFileSync(nockFilePath, JSON.stringify(recording, null, 2));
 
+    nock.cleanAll();
     nock.restore();
   });
 
