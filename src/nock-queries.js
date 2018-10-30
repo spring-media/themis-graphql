@@ -47,9 +47,8 @@ const replayNocks = ({ nockPath }) => {
   }
 
   files.forEach(file => {
-    const defs = nock.loadDefs(path.join(nockPath, file));
-
-    nock.define(defs);
+    const scopes = nock.load(path.join(nockPath, file))
+    scopes.forEach(scope => scope.persist());
   });
 
   nock.disableNetConnect();

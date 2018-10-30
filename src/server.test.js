@@ -59,11 +59,11 @@ describe('Server --nock', () => {
   let testServer = null;
   let gqlServer = null;
 
-  beforeAll(() => {
+  beforeEach(() => {
     testServer = testEndpoint.listen('54321');
   });
 
-  afterAll(() => {
+  afterEach(() => {
     testServer.close();
     if (gqlServer) {
       gqlServer.close();
@@ -109,6 +109,61 @@ describe('Server --nock', () => {
     gqlServer.listen(12345)
 
     nock.enableNetConnect(/\:12345/);
+
+    const res2 = await request(gqlServer)
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
+
+    nock.enableNetConnect();
+
+    expect(res2.text).toBe(res1.text);
+  });
+
+  it('can replay recorded requests as persisted nock scopes', async () => {
+    gqlServer = await initServer({
+      nockMode: true,
+      nockRecord: true,
+      datasourcePaths: [
+        path.resolve(__dirname, '../test/data/nocked'),
+      ],
+    });
+
+    const query = {
+      query: `query fetch($id: ID!) {
+        someObject(id: $id) {
+          id
+          state
+          creationDate
+        }
+      }`,
+      variables: {
+        id: 'two',
+      },
+    };
+
+    const res1 = await request(gqlServer)
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
+
+    gqlServer.close();
+    testServer.close();
+
+    gqlServer = await initServer({
+      nockMode: true,
+      datasourcePaths: [
+        path.resolve(__dirname, '../test/data/nocked'),
+      ],
+    });
+    gqlServer.listen(12345)
+
+    nock.enableNetConnect(/\:12345/);
+
+    await request(gqlServer)
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
 
     const res2 = await request(gqlServer)
       .post('/api/graphql')

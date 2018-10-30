@@ -6,6 +6,10 @@ const objects = [{
   id: 'one',
   state: 'occupied',
   creationDate: '2018-10-16T13:05:16.649Z',
+}, {
+  id: 'two',
+  state: 'occupied',
+  creationDate: '2018-10-16T13:05:16.649Z',
 }];
 
 app.get('/someObject/:id', (req, res) => {
