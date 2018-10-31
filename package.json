@@ -40,6 +40,7 @@
     "dev": "NODE_ENV=development nodemon -r dotenv/config index.js --use-subfolders",
     "test": "jest --config test/config/jest.config.json",
     "test:coverage": "npm run test:integration -- --coverage",
+    "lint": "yarn test:eslint",
     "test:eslint": "./node_modules/.bin/eslint --quiet '**/*.js'"
   },
   "repository": {
