@@ -37,7 +37,10 @@ async function initServer ({
     if (nockRecord) {
       app.use(nockMiddleware({ nockPath }));
     } else {
-      productionMode = true;
+      // NOTE: To replay nocks we need to set productionMode to use saved remote schema
+      // to be in offline mode, maybe the parameter for initializeGraphql can be renamed
+      // to `useFileSchema`
+      productionMode = true; // eslint-disable-line
       replayNocks({ nockPath });
     }
   }

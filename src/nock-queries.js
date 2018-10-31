@@ -47,7 +47,8 @@ const replayNocks = ({ nockPath }) => {
   }
 
   files.forEach(file => {
-    const scopes = nock.load(path.join(nockPath, file))
+    const scopes = nock.load(path.join(nockPath, file));
+
     scopes.forEach(scope => scope.persist());
   });
 
