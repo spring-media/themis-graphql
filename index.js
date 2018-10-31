@@ -16,6 +16,7 @@ program
   .option('-m, --mock', 'Start server in mock mode')
   .option('-n, --nock', 'Start server in nock mode (Load recorded nocks)')
   .option('-r, --record', 'Record external requests with nock')
+  .option('-p, --nockPath [nockPath]', 'Where external request records should go')
   .option('-s, --use-subfolders', 'Treat each folder in a datasourcePath as a datasource');
 
 program.parse(process.argv);
@@ -40,6 +41,7 @@ if (program.build) {
   initServer({
     mockMode: program.mock || false,
     nockMode: program.nock,
+    nockPath: program.nockPath || null,
     nockRecord: program.record,
     datasourcePaths,
     productionMode: process.env.NODE_ENV === 'production',
