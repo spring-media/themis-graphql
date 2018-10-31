@@ -22,8 +22,8 @@ describe('Server', () => {
     const res = await request(server)
       .post('/api/graphql')
       .send({
-        query: `query fetchArticle($input: ArticleInput) { 
-          article(input: $input) { 
+        query: `query fetchArticle($input: ArticleInput) {
+          article(input: $input) {
             state
             creationDate
             headlinePlain

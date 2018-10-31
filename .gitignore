@@ -46,3 +46,8 @@ output
 
 ### Coverage ###
 coverage
+
+__query_nocks__
+tmp
+.yarnrc
+.npmrc
