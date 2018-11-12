@@ -1,3 +1,5 @@
+jest.mock('./logger');
+const logger = require('./logger');
 const { initServer } = require('./server');
 const request = require('supertest');
 const path = require('path');
@@ -50,5 +52,49 @@ describe('Server', () => {
     expect(res.body).toMatchObject(expect.objectContaining(expected));
   }, {
     enableNetConnect: ['127.0.0.1'],
+  });
+});
+
+describe('Error', () => {
+  it('logs resolver errors', async () => {
+    const server = await initServer({
+      datasourcePaths: [
+        path.resolve(__dirname, '../test/data/error'),
+      ],
+    });
+
+    const res = await request(server)
+      .post('/api/graphql')
+      .send({
+        query: 'query { error }',
+      })
+      .expect(200);
+
+    const expected = {
+      data: {
+        error: null,
+      },
+      errors: [{
+        message: 'resolver error in datasource',
+        locations: [{ line: 1, column: 9 }],
+        path: ['error'],
+        extensions: {
+          code: 'INTERNAL_SERVER_ERROR',
+          exception: {
+            errors: [{
+              message: 'resolver error in datasource',
+              locations: [],
+              path: ['error'],
+            }],
+          },
+        },
+      }],
+    };
+
+    expect(logger.error).toHaveBeenCalledWith({
+      message: 'resolver error in datasource',
+      stack: expect.stringMatching('Error: resolver error in datasource\n'),
+    });
+    expect(res.body).toMatchObject(expect.objectContaining(expected));
   });
 });
