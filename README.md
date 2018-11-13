@@ -20,7 +20,7 @@ red-gql git:(master) ✗ node index --help
 ```
 
 # What
-Inspired by [GrAMPS Datsources](https://gramps.js.org/data-source/data-source-overview/), built with [GraphQL Tools](https://github.com/apollographql/graphql-tools) and [Apollo Server](https://github.com/apollographql/apollo-server), this is an integrated CLI Tool to work with `datasources`. In short, `datasources` are encapsulated subsets of a larger graph and can be [stitched](https://www.apollographql.com/docs/graphql-tools/schema-stitching.html) together as a combined graphql endpoint.
+Inspired by [GrAMPS Datsources](https://gramps.js.org/data-source/data-source-overview/), built with [GraphQL Tools](https://github.com/apollographql/graphql-tools) and [Apollo Server](https://github.com/apollographql/apollo-server), this is an integrated CLI Tool to work with `datasources`. In short, `datasources` are encapsulated subsets of a larger graphql schema and can be [stitched](https://www.apollographql.com/docs/graphql-tools/schema-stitching.html) together as a combined graphql endpoint.
 
 You can point red-gql to a directory containing `datasources` and it will start up a server to stitch and run them.
 ```
