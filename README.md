@@ -16,6 +16,7 @@ red-gql git:(master) ✗ node index --help
     -r, --record               Record external requests with nock
     -p, --nockPath [nockPath]  Where external request records should go
     -s, --use-subfolders       Treat each folder in a datasourcePath as a datasource
+    --introspection            Force activate introspection query on Apollo Server
     -h, --help                 output usage information
 ```
 
