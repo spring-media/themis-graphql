@@ -14,7 +14,7 @@ async function initServer ({
   nockPath = path.join(process.cwd(), '/__query_nocks__'),
   productionMode = true,
   datasourcePaths = [],
-  introspection = false,
+  introspection,
 } = {}) {
   if (datasourcePaths.length === 0) {
     throw new Error('Need at least one target path with datasources.');

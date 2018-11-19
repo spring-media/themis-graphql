@@ -46,7 +46,7 @@ if (program.build) {
     nockRecord: program.record,
     datasourcePaths,
     productionMode: process.env.NODE_ENV === 'production',
-    introspection: program.introspection || false,
+    introspection: program.introspection,
   }).then(server => {
     server.listen(process.env.PORT || 8484, () => {
       const { address, port } = server.address();

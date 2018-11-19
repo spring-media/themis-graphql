@@ -16,7 +16,7 @@ const initializeGraphql = async (app, {
   mockMode,
   datasourcePaths,
   productionMode,
-  introspection = false,
+  introspection,
 }) => {
   const { schema, context = {} } = await loadSchema({ datasourcePaths, mockMode, productionMode });
   const server = new ApolloServer({
