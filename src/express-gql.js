@@ -23,9 +23,10 @@ const initializeGraphql = async (app, {
     schema,
     context,
     formatError: err => {
-      const { message, stack } = err.originalError;
+      err.extensions.exception.errors.forEach(ex => {
+        logger.error(ex.stack || ex.message || ex);
+      });
 
-      logger.error({ message, stack });
       return formatError(err);
     },
     debug: process.env.NODE_ENV === 'development',
