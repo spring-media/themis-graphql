@@ -1,6 +1,7 @@
 const { ApolloServer } = require('apollo-server-express');
 const { loadSchema } = require('./load-schema');
 const { formatError } = require('apollo-errors');
+const logger = require('./logger');
 
 /**
  * Initializes Graphql
@@ -15,15 +16,22 @@ const initializeGraphql = async (app, {
   mockMode,
   datasourcePaths,
   productionMode,
+  introspection,
 }) => {
   const { schema, context = {} } = await loadSchema({ datasourcePaths, mockMode, productionMode });
   const server = new ApolloServer({
     schema,
     context,
-    formatError,
+    formatError: err => {
+      const { message, stack } = err.originalError;
+
+      logger.error({ message, stack });
+      return formatError(err);
+    },
     debug: process.env.NODE_ENV === 'development',
     tracing,
     cacheControl,
+    introspection,
   });
 
   server.applyMiddleware({ app, path: graphQLPath });

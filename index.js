@@ -17,7 +17,8 @@ program
   .option('-n, --nock', 'Start server in nock mode (Load recorded nocks)')
   .option('-r, --record', 'Record external requests with nock')
   .option('-p, --nockPath [nockPath]', 'Where external request records should go')
-  .option('-s, --use-subfolders', 'Treat each folder in a datasourcePath as a datasource');
+  .option('-s, --use-subfolders', 'Treat each folder in a datasourcePath as a datasource')
+  .option('--introspection', 'Force activate introspection query on Apollo Server');
 
 program.parse(process.argv);
 
@@ -45,6 +46,7 @@ if (program.build) {
     nockRecord: program.record,
     datasourcePaths,
     productionMode: process.env.NODE_ENV === 'production',
+    introspection: program.introspection,
   }).then(server => {
     server.listen(process.env.PORT || 8484, () => {
       const { address, port } = server.address();
