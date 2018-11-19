@@ -14,6 +14,7 @@ async function initServer ({
   nockPath = path.join(process.cwd(), '/__query_nocks__'),
   productionMode = true,
   datasourcePaths = [],
+  introspection = false,
 } = {}) {
   if (datasourcePaths.length === 0) {
     throw new Error('Need at least one target path with datasources.');
@@ -54,6 +55,7 @@ async function initServer ({
     graphQLPath: '/api/graphql',
     tracing: process.env.GQL_TRACING === 'true' || false,
     cacheControl: process.env.GQL_CACHE_CONTROL === 'true' || false,
+    introspection,
   });
 
   app.use((err, req, res, next) => {

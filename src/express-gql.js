@@ -16,6 +16,7 @@ const initializeGraphql = async (app, {
   mockMode,
   datasourcePaths,
   productionMode,
+  introspection = false,
 }) => {
   const { schema, context = {} } = await loadSchema({ datasourcePaths, mockMode, productionMode });
   const server = new ApolloServer({
@@ -30,6 +31,7 @@ const initializeGraphql = async (app, {
     debug: process.env.NODE_ENV === 'development',
     tracing,
     cacheControl,
+    introspection,
   });
 
   server.applyMiddleware({ app, path: graphQLPath });
