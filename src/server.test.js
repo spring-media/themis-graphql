@@ -56,6 +56,10 @@ describe('Server', () => {
 });
 
 describe('Error', () => {
+  beforeEach(() => {
+    logger.error.mockReset();
+  });
+
   it('logs resolver errors', async () => {
     const server = await initServer({
       datasourcePaths: [
@@ -69,6 +73,8 @@ describe('Error', () => {
         query: 'query { error }',
       })
       .expect(200);
+
+    server.close();
 
     const expected = {
       data: {
@@ -91,10 +97,38 @@ describe('Error', () => {
       }],
     };
 
-    expect(logger.error).toHaveBeenCalledWith({
-      message: 'resolver error in datasource',
-      stack: expect.stringMatching('Error: resolver error in datasource\n'),
+    expect(logger.error).toHaveBeenCalledWith(expect.stringMatching('Error: resolver error in datasource\n'));
+    expect(res.body).toMatchObject(expect.objectContaining(expected));
+  });
+
+  it('logs validation errors', async () => {
+    const server = await initServer({
+      datasourcePaths: [
+        path.resolve(__dirname, '../test/data/error'),
+      ],
     });
+
+    const res = await request(server)
+      .post('/api/graphql')
+      .send({
+        query: 'query { imageStuff }',
+      })
+      .expect(400);
+
+    server.close();
+
+    const expected = {
+      errors: [{
+        message: 'Cannot query field "imageStuff" on type "Query".',
+        locations: [{ line: 1, column: 9 }],
+        extensions: {
+          code: 'GRAPHQL_VALIDATION_FAILED',
+        },
+      }],
+    };
+
+    expect(logger.error).toHaveBeenCalledWith(expect.stringMatching('Cannot query field "imageStuff" on type "Query".'));
     expect(res.body).toMatchObject(expect.objectContaining(expected));
   });
 });
+

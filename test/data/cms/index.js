@@ -2,17 +2,16 @@
  * This is a TEST remote data source
  */
 const { FilterRootFields } = require('graphql-tools');
-const { ARTICLE_GRAPHQL_ENDPOINT, ARTICLE_GRAPHQL_TOKEN } = process.env;
 
 module.exports = {
   namespace: 'Article',
   accessViaContext: 'cmsSchema',
   mount: false,
   remote: {
-    uri: ARTICLE_GRAPHQL_ENDPOINT,
+    uri: 'https://editor.bild-stg.leancms.de/api/graphql',
     linkContext: () => ({
       headers: {
-        'authorization': `${ARTICLE_GRAPHQL_TOKEN}`,
+        'authorization': 'dummy-test-token',
       },
     }),
     transforms: [
