@@ -42,7 +42,7 @@ if (program.build) {
   initServer({
     mockMode: program.mock || false,
     nockMode: program.nock,
-    nockPath: program.nockPath || null,
+    nockPath: program.nockPath,
     nockRecord: program.record,
     datasourcePaths,
     productionMode: process.env.NODE_ENV === 'production',
