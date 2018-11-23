@@ -5,6 +5,8 @@ const testEndpoint = require('../test/test-endpoint');
 const nock = require('nock');
 const rimraf = require('rimraf');
 const fs = require('fs');
+const { buildSchema } = require('./build-schema');
+const { spawn } = require('child_process');
 
 describe('Server --nock', () => {
   let testServer = null;
@@ -106,6 +108,86 @@ describe('Server --nock', () => {
       datasourcePaths: [
         path.resolve(__dirname, '../test/data/nocked'),
       ],
+    });
+    gqlServer.listen(12345);
+
+    nock.enableNetConnect(/\:12345/);
+
+    await request(gqlServer)
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
+
+    const res2 = await request(gqlServer)
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
+
+    nock.enableNetConnect();
+
+    expect(res2.text).toBe(res1.text);
+  });
+
+  it('can replay recorded gql requests as persisted nock scopes', async () => {
+    const remoteServer = spawn('node', [
+      'index',
+      path.resolve(__dirname, '../test/data/cms_article'),
+    ], {
+      env: {
+        ...process.env,
+        PORT: 54325,
+      },
+      detached: true,
+    });
+
+    await new Promise(resolve => {
+      // eslint-disable-next-line max-nested-callbacks
+      remoteServer.stdout.on('data', data => {
+        if (/running at :::54325/.test(data.toString())) {
+          resolve();
+        }
+      });
+    });
+
+    const datasourcePaths = [
+      path.resolve(__dirname, '../test/data/article'),
+      path.resolve(__dirname, '../test/data/nocked_cms'),
+    ];
+
+    await buildSchema({
+      datasourcePaths,
+    });
+
+    gqlServer = await initServer({
+      nockMode: true,
+      nockRecord: true,
+      datasourcePaths,
+    });
+
+    const query = {
+      query: `query {
+        article(input: { id: "some" }) {
+          headlinePlain
+          state
+          creationDate
+        }
+      }`,
+    };
+
+    const res1 = await request(gqlServer)
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
+
+    gqlServer.close();
+    await new Promise(resolve => {
+      remoteServer.on('close', () => resolve());
+      process.kill(-remoteServer.pid, 'SIGINT');
+    });
+
+    gqlServer = await initServer({
+      nockMode: true,
+      datasourcePaths,
     });
     gqlServer.listen(12345);
 

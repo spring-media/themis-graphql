@@ -53,6 +53,15 @@ if (program.build) {
 
       logger.info(`RED GQL Aggregation Server running at ${address}:${port}`);
     });
+
+    const shutdown = () => {
+      logger.info('Shutting down...');
+      server.close();
+    };
+
+    process.on('SIGINT', shutdown);
+    process.on('SIGTERM', shutdown);
+    process.on('SIGKILL', shutdown);
   });
 }
 
