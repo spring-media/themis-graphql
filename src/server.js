@@ -11,7 +11,7 @@ async function initServer ({
   mockMode = false,
   nockMode = false,
   nockRecord = false,
-  nockPath = path.join(process.cwd(), '/__query_nocks__'),
+  nockPath,
   productionMode = true,
   datasourcePaths = [],
   introspection,
@@ -35,14 +35,16 @@ async function initServer ({
   }));
 
   if (nockMode) {
+    const resolvedNockPath = nockPath ? path.resolve(nockPath) : path.join(process.cwd(), '/__query_nocks__');
+
     if (nockRecord) {
-      app.use(nockMiddleware({ nockPath }));
+      app.use(nockMiddleware({ nockPath: resolvedNockPath }));
     } else {
       // NOTE: To replay nocks we need to set productionMode to use saved remote schema
       // to be in offline mode, maybe the parameter for initializeGraphql can be renamed
       // to `useFileSchema`
       productionMode = true; // eslint-disable-line
-      replayNocks({ nockPath });
+      replayNocks({ nockPath: resolvedNockPath });
     }
   }
 
