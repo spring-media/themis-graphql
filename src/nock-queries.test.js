@@ -6,7 +6,7 @@ const nock = require('nock');
 const rimraf = require('rimraf');
 const fs = require('fs');
 const { buildSchema } = require('./build-schema');
-const { spawn } = require('child_process');
+const { spawn } = require('../test/spawn');
 
 describe('Server --nock', () => {
   let testServer = null;
@@ -16,11 +16,12 @@ describe('Server --nock', () => {
     testServer = testEndpoint.listen('54321');
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     testServer.close();
     if (gqlServer) {
       gqlServer.close();
     }
+    await spawn.anakin();
   });
 
   it('can record and replay external requests', async () => {
@@ -136,6 +137,7 @@ describe('Server --nock', () => {
       env: {
         ...process.env,
         PORT: 54325,
+        LOG_LEVEL: 'info',
       },
       detached: true,
     });
@@ -153,10 +155,6 @@ describe('Server --nock', () => {
       path.resolve(__dirname, '../test/data/article'),
       path.resolve(__dirname, '../test/data/nocked_cms'),
     ];
-
-    await buildSchema({
-      datasourcePaths,
-    });
 
     gqlServer = await initServer({
       nockMode: true,
@@ -181,7 +179,9 @@ describe('Server --nock', () => {
 
     gqlServer.close();
     await new Promise(resolve => {
-      remoteServer.on('close', () => resolve());
+      remoteServer.on('close', () => {
+        resolve();
+      });
       process.kill(-remoteServer.pid, 'SIGINT');
     });
 
