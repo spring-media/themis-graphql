@@ -5,7 +5,6 @@ const testEndpoint = require('../test/test-endpoint');
 const nock = require('nock');
 const rimraf = require('rimraf');
 const fs = require('fs');
-const { buildSchema } = require('./build-schema');
 const { spawn } = require('../test/spawn');
 
 describe('Server --nock', () => {
