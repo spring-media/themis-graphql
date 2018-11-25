@@ -12,7 +12,10 @@ const loadSchema = async ({ datasourcePaths, mockMode, productionMode }) => {
     .reduce((p, c) => ({
       schemas: [ ...p.schemas, ...insertIf(c.schema, c.schema) ],
       context: { ...p.context, ...c.context },
-      contextValidations: [ ...p.contextValidations, ...insertIf(c.validateContext, c.validateContext) ],
+      contextValidations: [
+        ...p.contextValidations,
+        ...insertIf(c.validateContext, c.validateContext),
+      ],
   }), { schemas: [], context: {}, contextValidations: [] });
 
   const schema = mergeSchemas({

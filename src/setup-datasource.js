@@ -12,14 +12,19 @@ const { spreadIf } = require('./utils');
 const setupRemote = async (config, { mockMode, sourcePath, productionMode }) => {
   const { transforms } = config;
 
-  const { schema, link } = await loadRemoteSchema(config, sourcePath, { mockMode, productionMode });
+  const remoteResult = await loadRemoteSchema(config, sourcePath, { mockMode, productionMode });
+  const { schema, link } = remoteResult;
 
   const executableSchema = makeRemoteExecutableSchema({
     schema,
     link,
   });
 
-  const transformedSchema = transformSchema(executableSchema, transforms);
+  let transformedSchema = executableSchema;
+
+  if (Array.isArray(transforms)) {
+    transformedSchema = transformSchema(executableSchema, transforms);
+  }
 
   return {
     schema: transformedSchema,

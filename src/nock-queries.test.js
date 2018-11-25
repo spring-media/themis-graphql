@@ -5,6 +5,7 @@ const testEndpoint = require('../test/test-endpoint');
 const nock = require('nock');
 const rimraf = require('rimraf');
 const fs = require('fs');
+const { spawn } = require('../test/spawn');
 
 describe('Server --nock', () => {
   let testServer = null;
@@ -14,11 +15,12 @@ describe('Server --nock', () => {
     testServer = testEndpoint.listen('54321');
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     testServer.close();
     if (gqlServer) {
       gqlServer.close();
     }
+    await spawn.anakin();
   });
 
   it('can record and replay external requests', async () => {
@@ -106,6 +108,85 @@ describe('Server --nock', () => {
       datasourcePaths: [
         path.resolve(__dirname, '../test/data/nocked'),
       ],
+    });
+    gqlServer.listen(12345);
+
+    nock.enableNetConnect(/\:12345/);
+
+    await request(gqlServer)
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
+
+    const res2 = await request(gqlServer)
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
+
+    nock.enableNetConnect();
+
+    expect(res2.text).toBe(res1.text);
+  });
+
+  it('can replay recorded gql requests as persisted nock scopes', async () => {
+    const remoteServer = spawn('node', [
+      'index',
+      path.resolve(__dirname, '../test/data/cms_article'),
+    ], {
+      env: {
+        ...process.env,
+        PORT: 54325,
+        LOG_LEVEL: 'info',
+      },
+      detached: true,
+    });
+
+    await new Promise(resolve => {
+      // eslint-disable-next-line max-nested-callbacks
+      remoteServer.stdout.on('data', data => {
+        if (/running at :::54325/.test(data.toString())) {
+          resolve();
+        }
+      });
+    });
+
+    const datasourcePaths = [
+      path.resolve(__dirname, '../test/data/article'),
+      path.resolve(__dirname, '../test/data/nocked_cms'),
+    ];
+
+    gqlServer = await initServer({
+      nockMode: true,
+      nockRecord: true,
+      datasourcePaths,
+    });
+
+    const query = {
+      query: `query {
+        article(input: { id: "some" }) {
+          headlinePlain
+          state
+          creationDate
+        }
+      }`,
+    };
+
+    const res1 = await request(gqlServer)
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
+
+    gqlServer.close();
+    await new Promise(resolve => {
+      remoteServer.on('close', () => {
+        resolve();
+      });
+      process.kill(-remoteServer.pid, 'SIGINT');
+    });
+
+    gqlServer = await initServer({
+      nockMode: true,
+      datasourcePaths,
     });
     gqlServer.listen(12345);
 
