@@ -3140,10 +3140,10 @@ jest-mock@^23.2.0:
   resolved "https://registry.yarnpkg.com/jest-mock/-/jest-mock-23.2.0.tgz#ad1c60f29e8719d47c26e1138098b6d18b261134"
   integrity sha1-rRxg8p6HGdR8JuETgJi20YsmETQ=
 
-jest-nock@^0.1.2:
+jest-nock@0.1.2:
   version "0.1.2"
-  resolved "https://registry.yarnpkg.com/jest-nock/-/jest-nock-0.1.2.tgz#96c1555f25bb5ef0ca5bd6dbacc0340f8913b316"
-  integrity sha512-WgsShxC67r3nDli/B9b+/smnlFcNgXwA6XpWggy3grpZudlyqEddpkxcndNIHDS4kFZ/mH0gHAn/s2/BIrRN/A==
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/jest-nock/-/jest-nock-0.1.2.tgz#96c1555f25bb5ef0ca5bd6dbacc0340f8913b316"
+  integrity sha1-lsFVXyW7XvDKW9bbrMA0D4kTsxY=
   dependencies:
     mkdirp "^0.5.1"
 
@@ -4585,7 +4585,7 @@ retry@0.12.0:
   resolved "https://registry.yarnpkg.com/retry/-/retry-0.12.0.tgz#1b42a6266a21f07421d1b0b54b7dc167b01c013b"
   integrity sha1-G0KmJmoh8HQh0bC1S33BZ7AcATs=
 
-rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2, rimraf@~2.6.2:
+rimraf@2.6.2, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@~2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
   integrity sha512-lreewLK/BlghmxtfH36YYVg1i8IAce4TI7oao75I1g245+6BctqTVQiBP3YUJ9C6DQOXJmkYR9X9fCLtCOJc5w==
