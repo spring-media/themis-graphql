@@ -58,7 +58,7 @@ async function initServer ({
     nockMode,
     nockRecord,
     productionMode,
-    graphQLPath: '/api/graphql',
+    graphQLPath: process.env.GQL_API_PATH || '/api/graphql',
     tracing: process.env.GQL_TRACING === 'true' || false,
     cacheControl,
     introspection,
