@@ -16,6 +16,7 @@ const schema = Joi.alternatives().try([
     validateContext: Joi.func(),
     accessViaContext: Joi.string(),
     mount: Joi.bool(),
+    dependencies: Joi.array().items(Joi.string()),
   }).with('typeDefs', 'resolvers').with('extendTypes', 'extendResolvers'),
   Joi.object().keys({
     name: Joi.string().required(),
@@ -30,6 +31,7 @@ const schema = Joi.alternatives().try([
       linkContext: Joi.func(),
       transforms: Joi.array(),
     }).required(),
+    dependencies: Joi.array().items(Joi.string()),
   }),
 ]);
 

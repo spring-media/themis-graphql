@@ -1,0 +1,7 @@
+{
+    "name": "article",
+    "description": "A datasource dependent on another",
+    "datasourceDependencies": [
+        "cms-article"
+    ]
+}

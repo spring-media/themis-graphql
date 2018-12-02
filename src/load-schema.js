@@ -8,6 +8,19 @@ const loadSchema = async ({ datasourcePaths, mockMode, productionMode }) => {
 
   // TODO: Implement namespaces
 
+  const sourceNames = sources.map(config => config.name);
+
+  sources
+    .filter(config => config.dependencies)
+    .forEach(config => config.dependencies
+      .forEach(dependency => {
+        if (!sourceNames.includes(dependency)) {
+          throw new Error(`Cannot load datasource "${config.name}",` +
+            `because missing dependency "${dependency}"`);
+        }
+      })
+    );
+
   const { schemas, resolvers, context, contextValidations } = sources
     .reduce((p, c) => ({
       schemas: [ ...p.schemas, ...insertIf(c.schema, c.schema), ...insertIf(c.extendTypes, c.extendTypes) ],

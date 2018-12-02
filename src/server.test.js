@@ -239,6 +239,19 @@ describe('Extended Types', () => {
 
     expect(res.body).toMatchObject(expect.objectContaining(expected));
   });
+
+  it('throws when schema to extend is missing', done => {
+    initServer({
+      datasourcePaths: [
+        path.resolve(__dirname, '../test/data/extend_article'),
+      ],
+    })
+    .catch(e => {
+      expect(e).toBeInstanceOf(Error);
+      expect(e.message).toMatch(/Cannot extend type "Article" because it does not exist in the existing schema/);
+      done();
+    });
+  });
 });
 
 describe('Validation', () => {
@@ -250,6 +263,21 @@ describe('Validation', () => {
     })
     .catch(e => {
       expect(e).toBeInstanceOf(Error);
+      done();
+    });
+  });
+});
+
+describe('Dependencies', () => {
+  it('throws for missing dependency datasource', done => {
+    initServer({
+      datasourcePaths: [
+        path.resolve(__dirname, '../test/data/missing_dependency'),
+      ],
+    })
+    .catch(e => {
+      expect(e).toBeInstanceOf(Error);
+      expect(e.message).toMatch(/Cannot load datasource "article",because missing dependency "cms-article"/);
       done();
     });
   });
