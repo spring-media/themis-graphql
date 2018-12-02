@@ -15,7 +15,7 @@ program
   .option('--pretty', 'store remote schema as pretty JSON for scm tracking and comparison')
   .option('-m, --mock', 'Start server in mock mode')
   .option('-n, --nock', 'Start server in nock mode (Load recorded nocks)')
-  .option('-r, --record', 'Record external requests with nock')
+  .option('-r, --record', 'Record external requests with nock (use with --nock)')
   .option('-p, --nockPath [nockPath]', 'Where external request records should go')
   .option('-s, --use-subfolders', 'Treat each folder in a datasourcePath as a datasource')
   .option('--introspection', 'Force activate introspection query on Apollo Server');
