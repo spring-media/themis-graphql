@@ -52,7 +52,7 @@ async function initServer ({
     defaultMaxAge: parseInt(process.env.GQL_CACHE_CONTROL_MAX_AGE, 10) || 15,
   };
 
-  await initializeGraphql(app, {
+  const gqlOptions = {
     datasourcePaths,
     mockMode,
     nockMode,
@@ -62,7 +62,15 @@ async function initServer ({
     tracing: process.env.GQL_TRACING === 'true' || false,
     cacheControl,
     introspection,
-  });
+  };
+
+  if (process.env.APOLLO_ENGINE_API_KEY) {
+    gqlOptions.engine = {
+      apiKey: process.env.APOLLO_ENGINE_API_KEY,
+    };
+  }
+
+  await initializeGraphql(app, gqlOptions);
 
   app.use((err, req, res, next) => {
     logger.error(err);

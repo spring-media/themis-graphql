@@ -62,6 +62,7 @@ Create a `.env` file and/or provide the following environment configurations:
 - LOG_LEVEL = STRING (debug|warn|error|info)
 - GQL_TRACING = BOOLEAN 
 - GQL_CACHE_CONTROL_MAX_AGE = INT (seconds)
+- APOLLO_ENGINE_API_KEY = [See Apollo Engine Docs](https://www.apollographql.com/docs/engine/)
 
 To use the CLI in a development environment with a `.env` file, use `node index -r dotenv/config ...`.
 
