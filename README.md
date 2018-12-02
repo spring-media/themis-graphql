@@ -8,13 +8,13 @@ red-gql git:(master) ✗ node index --help
   Usage: node index [options] <datasourcePaths ...>
 
   Options:
-
     -b, --build                Build datasources for production (load and store remote schemas)
     --pretty                   store remote schema as pretty JSON for scm tracking and comparison
+    -c, --config [configPath]  Load configuration from a file (resolved relative to cwd, or absolute)
     -m, --mock                 Start server in mock mode
     -n, --nock                 Start server in nock mode (Load recorded nocks)
     -r, --record               Record external requests with nock (use with --nock)
-    -p, --nockPath [nockPath]  Where external request records should go
+    --nockPath [nockPath]      Where external request records should go
     -s, --use-subfolders       Treat each folder in a datasourcePath as a datasource
     --introspection            Force activate introspection query on Apollo Server
     -h, --help                 output usage information

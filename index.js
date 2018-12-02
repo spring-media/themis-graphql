@@ -9,18 +9,21 @@ const path = require('path');
 const fs = require('fs');
 
 program
-  .name('gql')
+  .name('leto')
   .usage('[options] <datasourcePaths ...>')
   .option('-b, --build', 'Build datasources for production (load and store remote schemas)')
   .option('--pretty', 'store remote schema as pretty JSON for scm tracking and comparison')
+  .option('-c, --config [configPath]', 'Load configuration from a file (resolved relative to cwd, or absolute)')
   .option('-m, --mock', 'Start server in mock mode')
   .option('-n, --nock', 'Start server in nock mode (Load recorded nocks)')
   .option('-r, --record', 'Record external requests with nock (use with --nock)')
-  .option('-p, --nockPath [nockPath]', 'Where external request records should go')
+  .option('--nockPath [nockPath]', 'Where external request records should go')
   .option('-s, --use-subfolders', 'Treat each folder in a datasourcePath as a datasource')
   .option('--introspection', 'Force activate introspection query on Apollo Server');
 
 program.parse(process.argv);
+
+valideEnv();
 
 const datasourcePaths = program.useSubfolders ?
   program.args.map(arg => {
@@ -30,7 +33,27 @@ const datasourcePaths = program.useSubfolders ?
   }).reduce((p, c) => p.concat(c), []) :
   program.args.map(arg => path.resolve(arg));
 
-valideEnv();
+const configPath = program.config || 'leto.config';
+
+const resolvedConfigPath = path.isAbsolute(configPath) ?
+  configPath :
+  path.resolve(process.cwd(), configPath);
+
+if (fs.existsSync(resolvedConfigPath)) {
+  const dsConfig = require(resolvedConfigPath);
+
+  if (dsConfig.datasources) {
+    const resolvedPaths = dsConfig.datasources
+      .map(dsPath => {
+        if (!path.isAbsolute(dsPath)) {
+          return path.resolve(process.cwd(), dsPath);
+        }
+        return dsPath;
+      });
+
+    datasourcePaths.push(...resolvedPaths);
+  }
+}
 
 if (program.build) {
   buildSchema({

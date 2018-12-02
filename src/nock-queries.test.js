@@ -6,6 +6,7 @@ const nock = require('nock');
 const rimraf = require('rimraf');
 const fs = require('fs');
 const { spawn } = require('../test/spawn');
+const { spawnCLI } = require('../test/utils');
 
 describe('Server --nock', () => {
   let testServer = null;
@@ -129,26 +130,7 @@ describe('Server --nock', () => {
   });
 
   it('can replay recorded gql requests as persisted nock scopes', async () => {
-    const remoteServer = spawn('node', [
-      'index',
-      path.resolve(__dirname, '../test/data/cms_article'),
-    ], {
-      env: {
-        ...process.env,
-        PORT: 54325,
-        LOG_LEVEL: 'info',
-      },
-      detached: true,
-    });
-
-    await new Promise(resolve => {
-      // eslint-disable-next-line max-nested-callbacks
-      remoteServer.stdout.on('data', data => {
-        if (/running at :::54325/.test(data.toString())) {
-          resolve();
-        }
-      });
-    });
+    const remoteServer = await spawnCLI([path.resolve(__dirname, '../test/data/cms_article')]);
 
     const datasourcePaths = [
       path.resolve(__dirname, '../test/data/article'),
@@ -177,12 +159,7 @@ describe('Server --nock', () => {
       .expect(200);
 
     gqlServer.close();
-    await new Promise(resolve => {
-      remoteServer.on('close', () => {
-        resolve();
-      });
-      process.kill(-remoteServer.pid, 'SIGINT');
-    });
+    await spawn.anakin(remoteServer);
 
     gqlServer = await initServer({
       nockMode: true,
