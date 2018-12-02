@@ -9,6 +9,7 @@ const mocks = require('./mocks');
 const validateContext = require('./validate-context');
 
 module.exports = {
+  name: 'article',
   namespace: 'Article',
   typeDefs,
   resolvers,

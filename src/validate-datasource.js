@@ -6,6 +6,7 @@ const Joi = require('joi');
 
 const schema = Joi.alternatives().try([
   Joi.object().keys({
+    name: Joi.string().required(),
     namespace: Joi.string().required(),
     typeDefs: Joi.object(),
     extendTypes: Joi.object(),
@@ -17,6 +18,7 @@ const schema = Joi.alternatives().try([
     mount: Joi.bool(),
   }).with('typeDefs', 'resolvers').with('extendTypes', 'extendResolvers'),
   Joi.object().keys({
+    name: Joi.string().required(),
     namespace: Joi.string().required(),
     mount: Joi.bool(),
     mocks: Joi.object(),

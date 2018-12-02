@@ -189,3 +189,17 @@ describe('Extended Types', () => {
   });
 });
 
+describe('Validation', () => {
+  it('throws for datasources without a name', done => {
+    initServer({
+      datasourcePaths: [
+        path.resolve(__dirname, '../test/data/noname'),
+      ],
+    })
+    .catch(e => {
+      expect(e).toBeInstanceOf(Error);
+      done();
+    });
+  });
+});
+
