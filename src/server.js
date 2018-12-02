@@ -48,6 +48,10 @@ async function initServer ({
     }
   }
 
+  const cacheControl = {
+    defaultMaxAge: parseInt(process.env.GQL_CACHE_CONTROL_MAX_AGE, 10) || 15,
+  };
+
   await initializeGraphql(app, {
     datasourcePaths,
     mockMode,
@@ -56,7 +60,7 @@ async function initServer ({
     productionMode,
     graphQLPath: '/api/graphql',
     tracing: process.env.GQL_TRACING === 'true' || false,
-    cacheControl: process.env.GQL_CACHE_CONTROL === 'true' || false,
+    cacheControl,
     introspection,
   });
 

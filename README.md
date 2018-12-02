@@ -57,11 +57,11 @@ Replaying is currently only possible in production mode, as it needs an existing
 
 # Configuration
 Create a `.env` file and/or provide the following environment configurations:
-- PORT = (INT)
-- NODE_ENV = (development|production)
-- LOG_LEVEL = (debug|warn|error|info)
-- GQL_TRACING = (true|false)
-- GQL_CACHE_CONTROL = (true|false)
+- PORT = INT
+- NODE_ENV = STRING (development|production)
+- LOG_LEVEL = STRING (debug|warn|error|info)
+- GQL_TRACING = BOOLEAN 
+- GQL_CACHE_CONTROL_MAX_AGE = INT (seconds)
 
 To use the CLI in a development environment with a `.env` file, use `node index -r dotenv/config ...`.
 
