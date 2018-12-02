@@ -188,6 +188,61 @@ describe('Extended Types', () => {
     expect(res.body).toMatchObject(expect.objectContaining(expected));
   });
 
+  it('does not matter which order datasource paths are specified when depending on another', async () => {
+    const server = await initServer({
+      datasourcePaths: [
+        path.resolve(__dirname, '../test/data/extend_article'),
+        path.resolve(__dirname, '../test/data/cms_article'),
+      ],
+    });
+
+    const res = await request(server)
+      .post('/api/graphql')
+      .send({
+        query: `query fetchArticle($input: ArticleInput) {
+          article(input: $input) {
+            state
+            creationDate
+            headlinePlain
+            additionalField
+            sharedType {
+              someField
+            }
+          }
+          own {
+            someField
+          }
+        }`,
+        variables: {
+          input: {
+            id: '5b5f24ca91a89200015a2e89',
+          },
+        },
+      })
+      .expect(200);
+
+    server.close();
+
+    const expected = {
+      data: {
+        article: expect.objectContaining({
+          headlinePlain: 'remote headline',
+          state: expect.any(String),
+          creationDate: expect.any(String),
+          additionalField: 'extended type',
+          sharedType: {
+            someField: 'own type',
+          },
+        }),
+        own: {
+          someField: 'own type',
+        },
+      },
+    };
+
+    expect(res.body).toMatchObject(expect.objectContaining(expected));
+  });
+
   it('allows to extend extension types', async () => {
     const server = await initServer({
       datasourcePaths: [
