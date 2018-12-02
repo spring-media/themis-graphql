@@ -1,4 +1,5 @@
 const { spawn } = require('./spawn');
+const path = require('path');
 
 const cliReady = (instance, PORT) => {
   return new Promise(resolve => {
@@ -10,10 +11,15 @@ const cliReady = (instance, PORT) => {
   });
 };
 
-const spawnCLI = (args, PORT = 54325) => {
+const spawnCLI = (args, {
+  PORT = 54325,
+  cwd,
+  indexPath,
+} = {}) => {
   return Promise.resolve().then(() => {
+    const index = indexPath ? path.join(indexPath, 'index') : 'index';
     const instance = spawn('node', [
-      'index',
+      index,
       ...args,
     ], {
       env: {
@@ -21,11 +27,15 @@ const spawnCLI = (args, PORT = 54325) => {
         PORT,
         LOG_LEVEL: 'info',
       },
+      cwd,
       detached: true,
     });
 
     instance.stderr.on('data', data => {
-      console.error('Spawn:', data.toString());
+      const err = data.toString();
+
+      console.error('Spawn:', err);
+      throw err;
     });
 
     return cliReady(instance, PORT);

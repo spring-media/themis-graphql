@@ -130,7 +130,9 @@ describe('Server --nock', () => {
   });
 
   it('can replay recorded gql requests as persisted nock scopes', async () => {
-    const remoteServer = await spawnCLI([path.resolve(__dirname, '../test/data/cms_article')]);
+    const remoteServer = await spawnCLI([
+      path.resolve(__dirname, '../test/data/cms_article'),
+    ]);
 
     const datasourcePaths = [
       path.resolve(__dirname, '../test/data/article'),

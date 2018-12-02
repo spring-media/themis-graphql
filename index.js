@@ -46,7 +46,14 @@ if (fs.existsSync(resolvedConfigPath)) {
     const resolvedPaths = dsConfig.datasources
       .map(dsPath => {
         if (!path.isAbsolute(dsPath)) {
-          return path.resolve(process.cwd(), dsPath);
+          if (/^.\//.test(dsPath)) {
+            return path.resolve(process.cwd(), dsPath);
+          }
+          return require.resolve(dsPath, {
+            paths: [
+              ...require.resolve.paths(dsPath),
+              path.join(process.cwd(), 'node_modules') ],
+          });
         }
         return dsPath;
       });

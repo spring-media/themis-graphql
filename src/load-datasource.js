@@ -5,24 +5,19 @@ const path = require('path');
 
 const loadDatasource = async sourcePath => {
   logger.info(`Loading ${sourcePath}`);
-  try {
-    const config = require(sourcePath);
+  const config = require(sourcePath);
 
-    const packageJsonPath = path.resolve(sourcePath, 'package.json');
+  const packageJsonPath = path.resolve(sourcePath, 'package.json');
 
-    if (fs.existsSync(packageJsonPath)) {
-      const packageJson = require(packageJsonPath);
+  if (fs.existsSync(packageJsonPath)) {
+    const packageJson = require(packageJsonPath);
 
-      config.dependencies = packageJson.datasourceDependencies;
-    }
-
-    validateDatasource(config, sourcePath);
-
-    return config;
-  } catch (e) {
-    logger.error(`Could not load datasource at ${sourcePath}`);
-    throw e;
+    config.dependencies = packageJson.datasourceDependencies;
   }
+
+  validateDatasource(config, sourcePath);
+
+  return config;
 };
 
 module.exports = { loadDatasource };
