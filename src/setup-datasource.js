@@ -32,18 +32,26 @@ const setupRemote = async (config, { mockMode, sourcePath, productionMode }) => 
 };
 
 const setupLocal = config => {
-  const { typeDefs, resolvers } = config;
-  const schema = makeExecutableSchema({
-    typeDefs,
-    resolvers,
-    resolverValidationOptions: {
-      requireResolversForResolveType: false,
-    },
-  });
+  const { typeDefs, extendTypes, resolvers, extendResolvers } = config;
 
-  return {
-    schema,
-  };
+  const source = {};
+
+  if (typeDefs) {
+    source.schema = makeExecutableSchema({
+      typeDefs,
+      resolvers,
+      resolverValidationOptions: {
+        requireResolversForResolveType: false,
+      },
+    });
+  }
+
+  if (extendTypes) {
+    source.extendTypes = extendTypes;
+    source.resolvers = extendResolvers;
+  }
+
+  return source;
 };
 
 const setupLocalOrRemoteSource = (config, opts) => {
@@ -55,7 +63,7 @@ const setupLocalOrRemoteSource = (config, opts) => {
 
 const setupDatasource = async (sourcePath, { mockMode, productionMode }) => {
   const config = await loadDatasource(sourcePath);
-  const { schema } = await setupLocalOrRemoteSource(config, {
+  const { schema, resolvers } = await setupLocalOrRemoteSource(config, {
     mockMode,
     sourcePath,
     productionMode,
@@ -75,6 +83,7 @@ const setupDatasource = async (sourcePath, { mockMode, productionMode }) => {
     ...config,
     ...spreadIf(config.mount !== false, {
       schema,
+      resolvers,
     }),
     context: {
       ...spreadIf(config.context, config.context),

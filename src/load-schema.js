@@ -8,18 +8,20 @@ const loadSchema = async ({ datasourcePaths, mockMode, productionMode }) => {
 
   // TODO: Implement namespaces
 
-  const { schemas, context, contextValidations } = sources
+  const { schemas, resolvers, context, contextValidations } = sources
     .reduce((p, c) => ({
-      schemas: [ ...p.schemas, ...insertIf(c.schema, c.schema) ],
+      schemas: [ ...p.schemas, ...insertIf(c.schema, c.schema), ...insertIf(c.extendTypes, c.extendTypes) ],
+      resolvers: [ ...p.resolvers, ...insertIf(c.resolvers, c.resolvers) ],
       context: { ...p.context, ...c.context },
       contextValidations: [
         ...p.contextValidations,
         ...insertIf(c.validateContext, c.validateContext),
       ],
-  }), { schemas: [], context: {}, contextValidations: [] });
+  }), { schemas: [], resolvers: [], context: {}, contextValidations: [] });
 
   const schema = mergeSchemas({
     schemas,
+    resolvers,
   });
 
   for (const validation of contextValidations) {

@@ -3,11 +3,16 @@ const logger = require('./logger');
 
 const loadDatasource = async sourcePath => {
   logger.info(`Loading ${sourcePath}`);
-  const config = require(sourcePath);
+  try {
+    const config = require(sourcePath);
 
-  validateDatasource(config, sourcePath);
+    validateDatasource(config, sourcePath);
 
-  return config;
+    return config;
+  } catch (e) {
+    logger.error(`Could not load datasource at ${sourcePath}`);
+    throw e;
+  }
 };
 
 module.exports = { loadDatasource };
