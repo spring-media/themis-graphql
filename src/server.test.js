@@ -150,6 +150,9 @@ describe('Extended Types', () => {
             creationDate
             headlinePlain
             additionalField
+            sharedType {
+              someField
+            }
           }
           own {
             someField
@@ -172,6 +175,9 @@ describe('Extended Types', () => {
           state: expect.any(String),
           creationDate: expect.any(String),
           additionalField: 'extended type',
+          sharedType: {
+            someField: 'own type',
+          },
         }),
         own: {
           someField: 'own type',

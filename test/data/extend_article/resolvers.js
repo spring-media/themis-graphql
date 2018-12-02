@@ -1,9 +1,7 @@
+const fetchOwn = require('./fetch-own');
+
 module.exports = {
   Query: {
-    own: () => {
-      return {
-        someField: 'own type',
-      };
-    },
+    own: fetchOwn,
   },
 };
