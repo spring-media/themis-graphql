@@ -20,8 +20,11 @@ program
   .option('-r, --record', 'Record external requests with nock (use with --nock)')
   .option('--nockPath [nockPath]', 'Where external request records should go')
   .option('--graphQLPath [graphQLPath]', 'Server path at which the API will be mounted (default: /api/graphql)')
+  .option('--graphQLSubscriptionsPath [path]', 'Server path at which the API will be mounted (default: /api/graphql)')
+  .option('--keepAlive [keepAlive]', 'Subscription connection keep alive intervall')
   .option('-s, --use-subfolders', 'Treat each folder in a datasourcePath as a datasource')
-  .option('--introspection', 'Force activate introspection query on Apollo Server');
+  .option('--introspection', 'Force activate introspection query on Apollo Server')
+  .option('-d, --debug', 'Run Apollo Server in debug mode');
 
 program.parse(process.argv);
 
@@ -96,8 +99,11 @@ if (program.build) {
     productionMode: process.env.NODE_ENV === 'production',
     introspection: program.introspection,
     graphQLPath: program.graphQLPath || process.env.GQL_API_PATH,
+    graphQLSubscriptionsPath: program.graphQLSubscriptionsPath || process.env.GQL_SUBSCRIPTIONS_PATH,
     middleware,
     context,
+    keepAlive: program.keepAlive || process.env.GQL_SUBSCRIPTION_KEEPALIVE,
+    debug: program.debug || process.env.NODE_ENV === 'development',
   }).then(server => {
     server.listen(process.env.PORT || 8484, () => {
       const { address, port } = server.address();

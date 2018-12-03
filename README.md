@@ -5,19 +5,23 @@ GQL Data Aggregation CLI
 ```
 red-gql git:(master) ✗ node index --help
 
-  Usage: node index [options] <datasourcePaths ...>
+Usage: node index [options] <datasourcePaths ...>
 
-  Options:
-    -b, --build                Build datasources for production (load and store remote schemas)
-    --pretty                   store remote schema as pretty JSON for scm tracking and comparison
-    -c, --config [configPath]  Load configuration from a file (resolved relative to cwd, or absolute)
-    -m, --mock                 Start server in mock mode
-    -n, --nock                 Start server in nock mode (Load recorded nocks)
-    -r, --record               Record external requests with nock (use with --nock)
-    --nockPath [nockPath]      Where external request records should go
-    -s, --use-subfolders       Treat each folder in a datasourcePath as a datasource
-    --introspection            Force activate introspection query on Apollo Server
-    -h, --help                 output usage information
+Options:
+  -b, --build                        Build datasources for production (load and store remote schemas)
+  --pretty                           store remote schema as pretty JSON for scm tracking and comparison
+  -c, --config [configPath]          Load configuration from a file (resolved relative to cwd, or absolute)
+  -m, --mock                         Start server in mock mode
+  -n, --nock                         Start server in nock mode (Load recorded nocks)
+  -r, --record                       Record external requests with nock (use with --nock)
+  --nockPath [nockPath]              Where external request records should go
+  --graphQLPath [graphQLPath]        Server path at which the API will be mounted (default: /api/graphql)
+  --graphQLSubscriptionsPath [path]  Server path at which the API will be mounted (default: /api/graphql)
+  --keepAlive [keepAlive]            Subscription connection keep alive intervall
+  -s, --use-subfolders               Treat each folder in a datasourcePath as a datasource
+  --introspection                    Force activate introspection query on Apollo Server
+  -d, --debug                        Run Apollo Server in debug mode
+  -h, --help                         output usage information
 ```
 
 # What
@@ -61,7 +65,9 @@ Create a `.env` file and/or provide the following environment configurations:
 - NODE_ENV = STRING (development|production)
 - LOG_LEVEL = STRING (debug|warn|error|info)
 - GQL_API_PATH = STRING (default: '/api/graphql')
-- GQL_TRACING = BOOLEAN 
+- GQL_SUBSCRIPTIONS_PATH = STRING (default: '/ws/subscriptions')
+- GQL_SUBSCRIPTION_KEEPALIVE = INT (ms, default: 15000)
+- GQL_TRACING = BOOLEAN
 - GQL_CACHE_CONTROL_MAX_AGE = INT (seconds)
 - APOLLO_ENGINE_API_KEY = [See Apollo Engine Docs](https://www.apollographql.com/docs/engine/)
 

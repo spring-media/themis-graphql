@@ -1,22 +1,20 @@
 const { ApolloServer } = require('apollo-server-express');
 const { loadSchema } = require('./load-schema');
 const formatError = require('./format-error');
+const { spreadIf } = require('./utils');
 
-/**
- * Initializes Graphql
- *
- * @param  {Object} app Express instance
- * @return {Object} app
- */
 const initializeGraphql = async (app, {
   graphQLPath,
+  graphQLSubscriptionsPath,
   tracing,
+  keepAlive,
   cacheControl,
   mockMode,
   datasourcePaths,
   productionMode,
   introspection,
   context: configContext,
+  debug,
 }) => {
   const {
     schema,
@@ -25,8 +23,8 @@ const initializeGraphql = async (app, {
   } = await loadSchema({ datasourcePaths, mockMode, productionMode });
 
   const combinedContext = context.concat(configContext);
-
-  const server = new ApolloServer({
+  const hasSubscriptionType = Boolean(schema.getSubscriptionType());
+  const serverOptions = {
     schema,
     context: (...args) => ({
       ...combinedContext.reduce((ctx, fn) => ({
@@ -36,12 +34,23 @@ const initializeGraphql = async (app, {
       ...accessViaContext,
     }),
     formatError,
-    debug: process.env.NODE_ENV === 'development',
+    debug,
     tracing,
     cacheControl,
     introspection,
-  });
+    ...spreadIf(hasSubscriptionType, {
+      subscriptions: {
+        path: graphQLSubscriptionsPath,
+        onConnect: () => {},
+        keepAlive,
+      },
+    }),
+  };
+  const server = new ApolloServer(serverOptions);
 
+  if (hasSubscriptionType) {
+    server.installSubscriptionHandlers(app);
+  }
   server.applyMiddleware({ app, path: graphQLPath });
 
   return app;
