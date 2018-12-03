@@ -40,6 +40,7 @@ const middleware = {
   before: [],
   after: [],
 };
+let context = [];
 
 const resolvedConfigPath = path.isAbsolute(configPath) ?
   configPath :
@@ -73,6 +74,10 @@ if (fs.existsSync(resolvedConfigPath)) {
     middleware.before = dsConfig.middleware.before || [];
     middleware.after = dsConfig.middleware.after || [];
   }
+
+  if (dsConfig.context) {
+    context = [].concat(dsConfig.context);
+  }
 }
 
 if (program.build) {
@@ -92,6 +97,7 @@ if (program.build) {
     introspection: program.introspection,
     graphQLPath: program.graphQLPath || process.env.GQL_API_PATH,
     middleware,
+    context,
   }).then(server => {
     server.listen(process.env.PORT || 8484, () => {
       const { address, port } = server.address();

@@ -133,4 +133,34 @@ describe('Middleware', () => {
       'x-extra-header': 'header from middleware',
     }));
   });
+
+  it('can use middleware to set additional context', async () => {
+    await spawnCLI([
+      '-c',
+      './test/data/config_file/context.config.js',
+    ], {
+      PORT: 54329,
+    });
+
+    const query = {
+      query: `query {
+        user {
+          id
+        }
+      }`,
+    };
+
+    const res1 = await request('http://127.0.0.1:54329')
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
+
+    expect(res1.body).toEqual({
+      data: {
+        user: {
+          id: 'f14abf12b4ff1bfa',
+        },
+      },
+    });
+  });
 });

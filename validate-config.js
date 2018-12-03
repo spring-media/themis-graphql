@@ -16,6 +16,10 @@ const schema = Joi.object().keys({
       Joi.func(),
     ])),
   }),
+  context: Joi.alternatives([
+    Joi.func(),
+    Joi.array().items(Joi.func()),
+  ]),
 });
 
 module.exports = function validateConfig (config, configPath) {

@@ -17,6 +17,7 @@ async function initServer ({
   introspection,
   graphQLPath = '/api/graphql',
   middleware,
+  context = [],
 } = {}) {
   if (datasourcePaths.length === 0) {
     throw new Error('Need at least one target path with datasources.');
@@ -72,6 +73,7 @@ async function initServer ({
     tracing: process.env.GQL_TRACING === 'true' || false,
     cacheControl,
     introspection,
+    context,
   };
 
   if (process.env.APOLLO_ENGINE_API_KEY) {

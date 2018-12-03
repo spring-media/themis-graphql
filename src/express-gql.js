@@ -16,16 +16,20 @@ const initializeGraphql = async (app, {
   datasourcePaths,
   productionMode,
   introspection,
+  context: configContext,
 }) => {
   const {
     schema,
     context = [],
     accessViaContext,
   } = await loadSchema({ datasourcePaths, mockMode, productionMode });
+
+  const combinedContext = context.concat(configContext);
+
   const server = new ApolloServer({
     schema,
     context: (...args) => ({
-      ...context.reduce((ctx, fn) => ({
+      ...combinedContext.reduce((ctx, fn) => ({
         ...ctx,
         ...fn(...args),
       }), {}),
