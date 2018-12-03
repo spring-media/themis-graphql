@@ -38,6 +38,38 @@ describe('CLI', () => {
     });
   });
 
+  it('Allows to set the graphql api path', async () => {
+    await spawnCLI([
+      '-c',
+      './test/data/config_file/datasource.config.js',
+      '--graphQLPath',
+      '/another/api/path',
+    ], {
+      PORT: 54325,
+    });
+
+    const query = {
+      query: `query {
+        article(input: { id: "some" }) {
+          creationDate
+        }
+      }`,
+    };
+
+    const res1 = await request('http://127.0.0.1:54325')
+      .post('/another/api/path')
+      .send(query)
+      .expect(200);
+
+    expect(res1.body).toEqual({
+      data: {
+        article: {
+          creationDate: '2018-06-24T00:34:45.253Z',
+        },
+      },
+    });
+  });
+
   it('resolves datasources in node_modules', async () => {
     await spawnCLI([
       '-c',

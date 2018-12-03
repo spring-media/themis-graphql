@@ -15,6 +15,7 @@ async function initServer ({
   productionMode = true,
   datasourcePaths = [],
   introspection,
+  graphQLPath = '/api/graphql',
 } = {}) {
   if (datasourcePaths.length === 0) {
     throw new Error('Need at least one target path with datasources.');
@@ -58,7 +59,7 @@ async function initServer ({
     nockMode,
     nockRecord,
     productionMode,
-    graphQLPath: process.env.GQL_API_PATH || '/api/graphql',
+    graphQLPath,
     tracing: process.env.GQL_TRACING === 'true' || false,
     cacheControl,
     introspection,

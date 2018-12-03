@@ -18,6 +18,7 @@ program
   .option('-n, --nock', 'Start server in nock mode (Load recorded nocks)')
   .option('-r, --record', 'Record external requests with nock (use with --nock)')
   .option('--nockPath [nockPath]', 'Where external request records should go')
+  .option('--graphQLPath [graphQLPath]', 'Server path at which the API will be mounted (default: /api/graphql)')
   .option('-s, --use-subfolders', 'Treat each folder in a datasourcePath as a datasource')
   .option('--introspection', 'Force activate introspection query on Apollo Server');
 
@@ -77,6 +78,7 @@ if (program.build) {
     datasourcePaths,
     productionMode: process.env.NODE_ENV === 'production',
     introspection: program.introspection,
+    graphQLPath: program.graphQLPath || process.env.GQL_API_PATH,
   }).then(server => {
     server.listen(process.env.PORT || 8484, () => {
       const { address, port } = server.address();
