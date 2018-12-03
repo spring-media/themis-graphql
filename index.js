@@ -3,6 +3,7 @@ require('dotenv').config();
 const { initServer } = require('./src/server');
 const { buildSchema } = require('./src/build-schema');
 const valideEnv = require('./src/validate-env');
+const validateConfig = require('./validate-config');
 const logger = require('./src/logger');
 const program = require('commander');
 const path = require('path');
@@ -35,6 +36,10 @@ const datasourcePaths = program.useSubfolders ?
   program.args.map(arg => path.resolve(arg));
 
 const configPath = program.config || 'leto.config';
+const middleware = {
+  before: [],
+  after: [],
+};
 
 const resolvedConfigPath = path.isAbsolute(configPath) ?
   configPath :
@@ -42,6 +47,8 @@ const resolvedConfigPath = path.isAbsolute(configPath) ?
 
 if (fs.existsSync(resolvedConfigPath)) {
   const dsConfig = require(resolvedConfigPath);
+
+  validateConfig(dsConfig, resolvedConfigPath);
 
   if (dsConfig.datasources) {
     const resolvedPaths = dsConfig.datasources
@@ -61,6 +68,11 @@ if (fs.existsSync(resolvedConfigPath)) {
 
     datasourcePaths.push(...resolvedPaths);
   }
+
+  if (dsConfig.middleware) {
+    middleware.before = dsConfig.middleware.before || [];
+    middleware.after = dsConfig.middleware.after || [];
+  }
 }
 
 if (program.build) {
@@ -79,6 +91,7 @@ if (program.build) {
     productionMode: process.env.NODE_ENV === 'production',
     introspection: program.introspection,
     graphQLPath: program.graphQLPath || process.env.GQL_API_PATH,
+    middleware,
   }).then(server => {
     server.listen(process.env.PORT || 8484, () => {
       const { address, port } = server.address();

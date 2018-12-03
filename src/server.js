@@ -16,6 +16,7 @@ async function initServer ({
   datasourcePaths = [],
   introspection,
   graphQLPath = '/api/graphql',
+  middleware,
 } = {}) {
   if (datasourcePaths.length === 0) {
     throw new Error('Need at least one target path with datasources.');
@@ -34,6 +35,14 @@ async function initServer ({
     winstonInstance: logger,
     statusLevels: true,
   }));
+
+  if (middleware) {
+    if (Array.isArray(middleware.before)) {
+      middleware.before.forEach(fn => {
+        app.use(fn);
+      });
+    }
+  }
 
   if (nockMode) {
     const resolvedNockPath = nockPath ? path.resolve(nockPath) : path.join(process.cwd(), '/__query_nocks__');

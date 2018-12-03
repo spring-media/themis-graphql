@@ -45,7 +45,7 @@ describe('CLI', () => {
       '--graphQLPath',
       '/another/api/path',
     ], {
-      PORT: 54325,
+      PORT: 54326,
     });
 
     const query = {
@@ -56,7 +56,7 @@ describe('CLI', () => {
       }`,
     };
 
-    const res1 = await request('http://127.0.0.1:54325')
+    const res1 = await request('http://127.0.0.1:54326')
       .post('/another/api/path')
       .send(query)
       .expect(200);
@@ -76,7 +76,7 @@ describe('CLI', () => {
       'modules.config.js',
     ], {
       indexPath: __dirname,
-      PORT: 54325,
+      PORT: 54327,
       cwd: path.resolve(__dirname, 'test/data/config_file'),
     });
 
@@ -88,7 +88,7 @@ describe('CLI', () => {
       }`,
     };
 
-    const res1 = await request('http://127.0.0.1:54325')
+    const res1 = await request('http://127.0.0.1:54327')
       .post('/api/graphql')
       .send(query)
       .expect(200);
@@ -100,5 +100,37 @@ describe('CLI', () => {
         },
       },
     });
+  });
+});
+
+describe('Middleware', () => {
+  afterEach(async () => {
+    await spawn.anakin();
+  });
+
+  it('can use middleware to set additional headers', async () => {
+    await spawnCLI([
+      '-c',
+      './test/data/config_file/headers.config.js',
+    ], {
+      PORT: 54328,
+    });
+
+    const query = {
+      query: `query {
+        article(input: { id: "some" }) {
+          creationDate
+        }
+      }`,
+    };
+
+    const res1 = await request('http://127.0.0.1:54328')
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
+
+    expect(res1.headers).toEqual(expect.objectContaining({
+      'x-extra-header': 'header from middleware',
+    }));
   });
 });
