@@ -21,16 +21,23 @@ const loadSchema = async ({ datasourcePaths, mockMode, productionMode }) => {
       })
     );
 
-  const { schemas, resolvers, context, contextValidations } = sources
+  const { schemas, resolvers, accessViaContext, contextValidations, context } = sources
     .reduce((p, c) => ({
       schemas: [ ...p.schemas, ...insertIf(c.schema, c.schema), ...insertIf(c.extendTypes, c.extendTypes) ],
       resolvers: [ ...p.resolvers, ...insertIf(c.resolvers, c.resolvers) ],
-      context: { ...p.context, ...c.context },
+      context: [ ...p.context, ...insertIf(c.context, c.context) ],
+      accessViaContext: { ...p.accessViaContext, ...c.accessViaContext },
       contextValidations: [
         ...p.contextValidations,
         ...insertIf(c.validateContext, c.validateContext),
       ],
-  }), { schemas: [], resolvers: [], context: {}, contextValidations: [] });
+  }), {
+    schemas: [],
+    resolvers: [],
+    context: [],
+    accessViaContext: {},
+    contextValidations: [],
+  });
 
   const schema = mergeSchemas({
     schemas,
@@ -38,10 +45,10 @@ const loadSchema = async ({ datasourcePaths, mockMode, productionMode }) => {
   });
 
   for (const validation of contextValidations) {
-    validation(context);
+    validation(accessViaContext);
   }
 
-  return { schema, context };
+  return { schema, accessViaContext, context };
 };
 
 module.exports = {

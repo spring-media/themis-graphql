@@ -338,3 +338,31 @@ describe('Dependencies', () => {
   });
 });
 
+describe('Context', () => {
+  it('lets datasource extend the query context', async () => {
+    const server = await initServer({
+      datasourcePaths: [
+        path.resolve(__dirname, '../test/data/context'),
+      ],
+    });
+
+    const res = await request(server)
+      .post('/api/graphql')
+      .send({
+        query: `query {
+          additionalContext
+        }`,
+      })
+      .expect(200);
+
+    server.close();
+
+    const expected = {
+      data: {
+        additionalContext: 'yay context',
+      },
+    };
+
+    expect(res.body).toMatchObject(expect.objectContaining(expected));
+  });
+});

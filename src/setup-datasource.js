@@ -85,8 +85,7 @@ const setupDatasource = async (sourcePath, { mockMode, productionMode }) => {
       schema,
       resolvers,
     }),
-    context: {
-      ...spreadIf(config.context, config.context),
+    accessViaContext: {
       ...spreadIf(config.accessViaContext, {
         [config.accessViaContext]: schema,
       }),

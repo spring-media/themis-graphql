@@ -15,6 +15,7 @@ const schema = Joi.alternatives().try([
     mocks: Joi.object().required(),
     validateContext: Joi.func(),
     accessViaContext: Joi.string(),
+    context: Joi.func(),
     mount: Joi.bool(),
     dependencies: Joi.array().items(Joi.string()),
   }).with('typeDefs', 'resolvers').with('extendTypes', 'extendResolvers'),
@@ -25,6 +26,7 @@ const schema = Joi.alternatives().try([
     mocks: Joi.object(),
     validateContext: Joi.func(),
     accessViaContext: Joi.string(),
+    context: Joi.func(),
     remote: Joi.object().keys({
       uri: Joi.string().uri().required(),
       schemaPath: Joi.string(),
