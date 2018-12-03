@@ -134,6 +134,23 @@ describe('Middleware', () => {
     }));
   });
 
+  it('can use middleware after apollo server', async () => {
+    await spawnCLI([
+      '-c',
+      './test/data/config_file/after.config.js',
+    ], {
+      PORT: 54318,
+    });
+
+    const res1 = await request('http://127.0.0.1:54318')
+      .get('/other/path')
+      .expect(404);
+
+    expect(res1.headers).toEqual(expect.objectContaining({
+      'x-after-header': 'after header from middleware',
+    }));
+  });
+
   it('can use middleware to set additional context', async () => {
     await spawnCLI([
       '-c',

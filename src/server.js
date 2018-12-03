@@ -39,9 +39,7 @@ async function initServer ({
 
   if (middleware) {
     if (Array.isArray(middleware.before)) {
-      middleware.before.forEach(fn => {
-        app.use(fn);
-      });
+      middleware.before.forEach(fn => app.use(fn));
     }
   }
 
@@ -83,6 +81,12 @@ async function initServer ({
   }
 
   await initializeGraphql(app, gqlOptions);
+
+  if (middleware) {
+    if (Array.isArray(middleware.after)) {
+      middleware.after.forEach(fn => app.use(fn));
+    }
+  }
 
   app.use((err, req, res, next) => {
     logger.error(err);

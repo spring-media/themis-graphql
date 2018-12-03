@@ -34,9 +34,17 @@ const spawnCLI = (args, {
     instance.stderr.on('data', data => {
       const err = data.toString();
 
-      console.error('Spawn:', err);
+      if (process.env.LOG_LEVEL === 'debug') {
+        console.log('Spawn:', err);
+      }
       throw err;
     });
+
+    if (process.env.LOG_LEVEL === 'debug') {
+      instance.stdout.on('data', data => {
+        console.log('Spawn:', data.toString());
+      });
+    }
 
     return cliReady(instance, PORT);
   });
