@@ -3,9 +3,11 @@ const { initServer } = require('./server');
 const request = require('supertest');
 const { buildSchema } = require('./build-schema');
 
+// Note: The remote schemas are recoreded agains `node index test/data/simple`
+
 describe('Build Schema', () => {
   it.nock('stores the remote schema into local dist folder for production use', async () => {
-    const datasourcePath = path.resolve(__dirname, '../test/data/cms');
+    const datasourcePath = path.resolve(__dirname, '../test/data/cms.1');
 
     await buildSchema({
       datasourcePaths: [datasourcePath],
@@ -29,7 +31,7 @@ describe('Build Schema', () => {
   });
 
   it.nock('stores the remote schema into custom local path', async () => {
-    const datasourcePath = path.resolve(__dirname, '../test/data/cms.1');
+    const datasourcePath = path.resolve(__dirname, '../test/data/cms.2');
 
     await buildSchema({
       datasourcePaths: [datasourcePath],
@@ -52,61 +54,44 @@ describe('Build Schema', () => {
     expect(builtSchema).toMatchObject(expect.objectContaining(expected));
   });
 
-  it.nock('can stores a pretty json schema', async () => {
-    const datasourcePath = path.resolve(__dirname, '../test/data/cms.2');
+  it.nock('can store a pretty json schema', async () => {
+    const datasourcePath = path.resolve(__dirname, '../test/data/cms.3');
 
     await buildSchema({
       datasourcePaths: [datasourcePath],
       pretty: true,
     });
 
-    const builtSchema = require(path.join(datasourcePath, 'customDist/schema.json'));
-
-    const expectedSchema = require(path.join(datasourcePath, 'cms.2_pretty_schema.json'));
+    const builtSchema = require(path.join(datasourcePath, 'dist/_remote_schema.json'));
+    const expectedSchema = require(path.join(datasourcePath, 'cms.3_pretty_schema.json'));
 
     expect(builtSchema).toMatchObject(expectedSchema);
   });
 
   it.nock('uses built schema from custom path', async () => {
-    const datasourcePath = path.resolve(__dirname, '../test/data/cms.1');
+    const datasourcePath = path.resolve(__dirname, '../test/data/cms.2');
 
     await buildSchema({
       datasourcePaths: [datasourcePath],
     });
 
     const server = await initServer({
-      datasourcePaths: [
-        path.resolve(__dirname, '../test/data/article'),
-        path.resolve(__dirname, '../test/data/cms.1'),
-      ],
+      datasourcePaths: [datasourcePath],
       productionMode: true,
     });
 
     const res = await request(server)
       .post('/api/graphql')
       .send({
-        query: `query fetchBuiltArticle($input: ArticleInput) {
-          article(input: $input) {
-            state
-            creationDate
-            headlinePlain
-          }
+        query: `query {
+          simple
         }`,
-        variables: {
-          input: {
-            id: '5b5f24ca91a89200015a2e89',
-          },
-        },
       })
       .expect(200);
 
     const expected = {
       data: {
-        article: expect.objectContaining({
-          headlinePlain: 'WURDE VERHAFTET!!!!',
-          state: expect.any(String),
-          creationDate: expect.any(String),
-        }),
+        simple: 'Hello',
       },
     };
 

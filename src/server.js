@@ -1,7 +1,7 @@
 const express = require('express');
 const { createServer } = require('http');
 const { initializeGraphql } = require('./express-gql');
-const { nockMiddleware, replayNocks } = require('./nock-queries');
+const { nockMiddleware, replayNocks } = require('express-nock');
 const expressWinston = require('express-winston');
 const path = require('path');
 const logger = require('./logger');
