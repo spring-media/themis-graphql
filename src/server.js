@@ -3,7 +3,7 @@ const { createServer } = require('http');
 const { initializeGraphql } = require('./express-gql');
 const { nockMiddleware, replayNocks } = require('express-nock');
 const expressWinston = require('express-winston');
-const path = require('path');
+const crypto = require('crypto');
 const logger = require('./logger');
 
 // eslint-disable-next-line complexity
@@ -11,7 +11,7 @@ async function initServer ({
   mockMode = false,
   nockMode = false,
   nockRecord = false,
-  nockPath,
+  nockPath = '__query_nocks__',
   productionMode = true,
   datasourcePaths = [],
   introspection,
@@ -47,16 +47,16 @@ async function initServer ({
   }
 
   if (nockMode) {
-    const resolvedNockPath = nockPath ? path.resolve(nockPath) : path.join(process.cwd(), '/__query_nocks__');
-
     if (nockRecord) {
-      app.use(nockMiddleware({ nockPath: resolvedNockPath }));
+      const hashFn = ({ body }) => crypto.createHash('md5').update(JSON.stringify(body)).digest('hex');
+
+      app.use(nockMiddleware({ nockPath, hashFn }));
     } else {
       // NOTE: To replay nocks we need to set productionMode to use saved remote schema
       // to be in offline mode, maybe the parameter for initializeGraphql can be renamed
       // to `useFileSchema`
       productionMode = true; // eslint-disable-line
-      replayNocks({ nockPath: resolvedNockPath });
+      replayNocks({ nockPath });
     }
   }
 

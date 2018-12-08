@@ -15,7 +15,7 @@
     "casual": "1.5.19",
     "commander": "2.19.0",
     "express": "4.16.4",
-    "express-nock": "0.1.0",
+    "express-nock": "0.1.1",
     "express-winston": "2.5.1",
     "graphql": "14.0.2",
     "graphql-tag": "2.10.0",
