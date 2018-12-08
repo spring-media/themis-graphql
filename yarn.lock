@@ -1894,7 +1894,7 @@ expect@^23.6.0:
     jest-message-util "^23.4.0"
     jest-regex-util "^23.3.0"
 
-express-nock@^0.1.0:
+express-nock@0.1.0:
   version "0.1.0"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/express-nock/-/express-nock-0.1.0.tgz#9b84f5734ce89ee418892bc079199160ec743216"
   integrity sha1-m4T1c0zonuQYiSvAeRmRYOx0MhY=
@@ -3196,10 +3196,10 @@ jest-mock@^23.2.0:
   resolved "https://registry.yarnpkg.com/jest-mock/-/jest-mock-23.2.0.tgz#ad1c60f29e8719d47c26e1138098b6d18b261134"
   integrity sha1-rRxg8p6HGdR8JuETgJi20YsmETQ=
 
-jest-nock@0.1.4:
-  version "0.1.4"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/jest-nock/-/jest-nock-0.1.4.tgz#535d1b020ecf9dc85340eec2c605f1b3e295c00f"
-  integrity sha1-U10bAg7PnchTQO7CxgXxs+KVwA8=
+jest-nock@0.1.6:
+  version "0.1.6"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/jest-nock/-/jest-nock-0.1.6.tgz#c759e0ae49a8e435f5b2f82d04be9d7f1e1daa70"
+  integrity sha1-x1ngrkmo5DX1svgtBL6dfx4dqnA=
   dependencies:
     mkdirp "^0.5.1"
 

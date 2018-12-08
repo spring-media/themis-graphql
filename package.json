@@ -36,7 +36,7 @@
     "eslint": "4.19.1",
     "jest": "23.6.0",
     "jest-cli": "23.6.0",
-    "jest-nock": "0.1.4",
+    "jest-nock": "0.1.6",
     "node-fetch": "2.3.0",
     "nodemon": "1.18.6",
     "request": "2.88.0",
