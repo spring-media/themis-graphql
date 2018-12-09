@@ -5,7 +5,7 @@ const path = require('path');
 
 describe('CLI', () => {
   afterEach(async () => {
-    await spawn.anakin();
+    await spawn.anakin('SIGINT');
   });
 
   it('takes a path to a configuration file', async () => {
