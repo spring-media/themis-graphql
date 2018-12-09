@@ -10,7 +10,7 @@ const { loadDatasource } = require('./load-datasource');
 const { spreadIf } = require('./utils');
 
 const setupRemote = async (config, { mockMode, sourcePath, productionMode }) => {
-  const { transforms } = config;
+  const { transforms } = config.remote;
 
   const remoteResult = await loadRemoteSchema(config, sourcePath, { mockMode, productionMode });
   const { schema, link } = remoteResult;
@@ -56,7 +56,7 @@ const setupLocal = config => {
 
 const setupLocalOrRemoteSource = (config, opts) => {
   if (config.remote) {
-    return setupRemote(config.remote, opts);
+    return setupRemote(config, opts);
   }
   return setupLocal(config, opts);
 };

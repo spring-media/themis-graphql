@@ -1,4 +1,6 @@
 const { setContext } = require('apollo-link-context');
+const { ApolloLink } = require('apollo-link');
+const { onError } = require('apollo-link-error');
 const { HttpLink } = require('apollo-link-http');
 const logger = require('./logger');
 const fetch = require('node-fetch');
@@ -37,32 +39,55 @@ const loadFileSchema = async (config, sourcePath) => {
 	return schema;
 };
 
-const makeRemoteHTTPLink = ({ uri }) => {
-  const link = new HttpLink({
+const makeRemoteHTTPLink = ({ uri, name, sourcePath }) => {
+  const relativePath = path.relative(process.cwd(), sourcePath);
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+      graphQLErrors.forEach(err => Object.assign(err, {
+        message: `[Remote Datasource GraphQL Error in "${name} (${relativePath})"]: ${err.message}`,
+      }));
+    }
+
+    if (networkError) {
+      Object.assign(networkError, {
+        message: `[Remote Datasource Network Error in "${name} (${relativePath})"]: ${networkError.message}`,
+      });
+    }
+  });
+
+  const httpLink = new HttpLink({
     uri,
     fetch: async (...args) => {
-      const result = await fetch(...args);
-
       logger.debug('Remote fetch args:', args);
+
+      const result = await fetch(...args);
 
       return result;
     },
   });
 
+  const link = ApolloLink.from([
+    errorLink,
+    httpLink,
+  ]);
+
   return link;
 };
 
 const loadRemoteSchema = async (config, sourcePath, { mockMode, productionMode }) => {
-  const {
-    linkContext,
+  const { linkContext, uri } = config.remote;
+  const { name } = config;
+
+  const http = makeRemoteHTTPLink({
     uri,
-  } = config;
-  const http = makeRemoteHTTPLink({ uri });
+    sourcePath,
+    name,
+  });
 
   const link = linkContext ? setContext(linkContext).concat(http) : http;
 
   const schema = mockMode || productionMode ?
-    await loadFileSchema(config, sourcePath) :
+    await loadFileSchema(config.remote, sourcePath) :
     await introspectSchema(link);
 
   return { schema, link };

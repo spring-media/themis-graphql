@@ -17,7 +17,8 @@ const spawnCLI = (args, {
   cwd,
   indexPath,
 } = {}) => {
-  return Promise.resolve().then(() => {
+  return new Promise(async (resolve, reject) => {
+    let resolved = false;
     const index = indexPath ? path.join(indexPath, 'index') : 'index';
     const instance = spawn('node', [
       index,
@@ -33,17 +34,19 @@ const spawnCLI = (args, {
     });
 
     instance.stderr.on('data', data => {
-      const err = data.toString();
+      if (!resolved) {
+        resolved = true;
+        const err = data.toString();
 
-      logger.debug('Spawn:', err);
-      throw err;
+        logger.debug('Spawn:', err);
+      }
     });
 
     instance.stdout.on('data', data => {
       logger.debug('Spawn:', data.toString());
     });
 
-    return cliReady(instance, PORT);
+    cliReady(instance, PORT).then(() => resolve());
   });
 };
 

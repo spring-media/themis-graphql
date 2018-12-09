@@ -2,27 +2,30 @@
   "name": "red-gql",
   "version": "0.1.6",
   "description": "GQL Data Aggregation CLI",
-  "main": "index.js",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
   "bin": {
-    "red-gql": "index.js"
+    "red-gql": "index.js",
+    "leto": "index.js"
   },
   "dependencies": {
     "apollo-errors": "1.9.0",
     "apollo-link-context": "1.0.10",
+    "apollo-link-error": "1.1.2",
     "apollo-link-http": "1.5.7",
-    "apollo-server-express": "2.2.2",
+    "apollo-server-express": "2.2.6",
     "body-parser": "1.18.3",
     "casual": "1.5.19",
     "commander": "2.19.0",
     "express": "4.16.4",
     "express-nock": "0.1.1",
     "express-winston": "2.5.1",
-    "graphql": "14.0.2",
+    "graphql": "14.0.3-internal",
     "graphql-tag": "2.10.0",
     "graphql-tools": "4.0.3",
     "joi": "13.4.0",
     "mkdirp": "0.5.1",
-    "nock": "10.0.2",
+    "nock": "10.0.4",
     "winston": "2.4.3"
   },
   "devDependencies": {
