@@ -1,5 +1,6 @@
 const { spawn } = require('./spawn');
 const path = require('path');
+const logger = require('../src/logger');
 
 const cliReady = (instance, PORT) => {
   return new Promise(resolve => {
@@ -34,17 +35,13 @@ const spawnCLI = (args, {
     instance.stderr.on('data', data => {
       const err = data.toString();
 
-      if (process.env.LOG_LEVEL === 'debug') {
-        console.log('Spawn:', err);
-      }
+      logger.debug('Spawn:', err);
       throw err;
     });
 
-    if (process.env.LOG_LEVEL === 'debug') {
-      instance.stdout.on('data', data => {
-        console.log('Spawn:', data.toString());
-      });
-    }
+    instance.stdout.on('data', data => {
+      logger.debug('Spawn:', data.toString());
+    });
 
     return cliReady(instance, PORT);
   });
