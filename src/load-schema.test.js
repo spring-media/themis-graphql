@@ -189,7 +189,7 @@ describe('Schema', () => {
       })
       .catch(e => {
         expect(e).toBeInstanceOf(Error);
-        expect(e.message).toMatch(/Cannot load datasource "article",because missing dependency "cms-article"/);
+        expect(e.message).toMatch(/Cannot load datasource "article", because missing dependency "cms-article"/);
         done();
       });
     });

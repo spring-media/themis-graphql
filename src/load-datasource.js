@@ -12,6 +12,11 @@ const loadDatasource = async sourcePath => {
   if (fs.existsSync(packageJsonPath)) {
     const packageJson = require(packageJsonPath);
 
+    if (config.name) {
+      logger.warn('Datasource name is both in config and package.json');
+    }
+
+    config.name = packageJson.name;
     config.dependencies = packageJson.datasourceDependencies;
   }
 

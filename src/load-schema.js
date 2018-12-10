@@ -15,7 +15,7 @@ const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema }) => {
     .forEach(config => config.dependencies
       .forEach(dependency => {
         if (!sourceNames.includes(dependency)) {
-          throw new Error(`Cannot load datasource "${config.name}",` +
+          throw new Error(`Cannot load datasource "${config.name}", ` +
             `because missing dependency "${dependency}"`);
         }
       })
