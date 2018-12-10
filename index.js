@@ -3,6 +3,7 @@ require('dotenv').config();
 const { initServer } = require('./src/server');
 const { buildSchema } = require('./src/build-schema');
 const { loadFileConfig } = require('./src/load-file-config');
+const { mountServer } = require('./src/mount-server');
 const valideEnv = require('./src/validate-env');
 const logger = require('./src/logger');
 const program = require('commander');
@@ -73,34 +74,8 @@ if (program.build) {
     engineApiKey: process.env.APOLLO_ENGINE_API_KEY,
     onStartup,
     onShutdown,
-  }).then(async ({
-    server,
-    hasSubscriptions,
-    graphQLSubscriptionsPath,
-    graphQLPath,
-    startup,
-    shutdown,
-  }) => {
-    await startup();
-
-    server.listen(process.env.PORT || 8484, () => {
-      const { address, port } = server.address();
-
-      logger.info(`GraphQL Server running at ${address}:${port}${graphQLPath}`);
-      if (hasSubscriptions) {
-        logger.info(`GraphQL Subscriptions Server running at ${address}:${port}${graphQLSubscriptionsPath}`);
-      }
-    });
-
-    const attemptGracefulShutdown = async () => {
-      logger.info('Shutting down...');
-      await shutdown();
-      server.close();
-    };
-
-    process.on('SIGINT', attemptGracefulShutdown);
-    process.on('SIGTERM', attemptGracefulShutdown);
-  });
+  })
+  .then(mountServer);
 }
 
 process.on('unhandledRejection', err => {
