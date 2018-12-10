@@ -6,6 +6,17 @@ const expressWinston = require('express-winston');
 const crypto = require('crypto');
 const logger = require('./logger');
 
+const applyMiddlewares = (app, middlewares) => {
+  if (Array.isArray(middlewares)) {
+    middlewares.forEach(fnOrArr => {
+      if (Array.isArray(fnOrArr)) {
+        return app.use(...fnOrArr);
+      }
+      return app.use(fnOrArr);
+    });
+  }
+};
+
 // eslint-disable-next-line complexity
 async function initServer ({
   mockMode = false,
@@ -41,9 +52,7 @@ async function initServer ({
   }));
 
   if (middleware) {
-    if (Array.isArray(middleware.before)) {
-      middleware.before.forEach(fn => app.use(fn));
-    }
+    applyMiddlewares(app, middleware.before);
   }
 
   if (nockMode) {
@@ -87,9 +96,7 @@ async function initServer ({
   const { hasSubscriptions, startupFns, shutdownFns } = await initializeGraphql(app, server, gqlOptions);
 
   if (middleware) {
-    if (Array.isArray(middleware.after)) {
-      middleware.after.forEach(fn => app.use(fn));
-    }
+    applyMiddlewares(app, middleware.after);
   }
 
   app.use((err, req, res, next) => {

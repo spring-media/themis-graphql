@@ -228,4 +228,21 @@ describe('Middleware', () => {
       },
     });
   });
+
+  it('can use middleware as stack of middlewares with custom route', async () => {
+    await spawnCLI([
+      '-c',
+      './test/data/config_file/custom-route.config.js',
+    ], {
+      PORT: 54328,
+    });
+
+    const res1 = await request('http://127.0.0.1:54328')
+      .post('/custom/path')
+      .expect(200);
+
+    expect(res1.body).toEqual(expect.objectContaining({
+      custom: 'endpoint',
+    }));
+  });
 });
