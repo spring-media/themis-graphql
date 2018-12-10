@@ -2,7 +2,6 @@ const validateConfig = require('./validate-config');
 const path = require('path');
 const fs = require('fs');
 
-// eslint-disable-next-line complexity
 const loadFileConfig = configPath => {
   if (!configPath) {
     return validateConfig({});
@@ -21,17 +20,18 @@ const loadFileConfig = configPath => {
 
   const datasources = fileConfig.datasources
     .map(dsPath => {
-      if (!path.isAbsolute(dsPath)) {
-        if (/^.\//.test(dsPath)) {
-          return path.resolve(process.cwd(), dsPath);
-        }
-        return require.resolve(dsPath, {
-          paths: [
-            ...require.resolve.paths(dsPath),
-            path.join(process.cwd(), 'node_modules') ],
-        });
+      if (path.isAbsolute(dsPath)) {
+        return dsPath;
       }
-      return dsPath;
+      if (/^.\//.test(dsPath)) {
+        return path.resolve(process.cwd(), dsPath);
+      }
+      return require.resolve(dsPath, {
+        paths: [
+          ...require.resolve.paths(dsPath),
+          path.join(process.cwd(), 'node_modules'),
+        ],
+      });
     });
 
   return {
