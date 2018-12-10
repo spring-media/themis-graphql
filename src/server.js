@@ -84,7 +84,7 @@ async function initServer ({
     };
   }
 
-  await initializeGraphql(app, gqlOptions);
+  const { hasSubscriptions } = await initializeGraphql(app, server, gqlOptions);
 
   if (middleware) {
     if (Array.isArray(middleware.after)) {
@@ -101,7 +101,13 @@ async function initServer ({
     return res.send('OK');
   });
 
-  return server;
+  return {
+    app,
+    server,
+    hasSubscriptions,
+    graphQLSubscriptionsPath,
+    graphQLPath,
+  };
 }
 
 module.exports = {

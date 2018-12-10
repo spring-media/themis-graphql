@@ -3,7 +3,7 @@ const { loadSchema } = require('./load-schema');
 const formatError = require('./format-error');
 const { spreadIf } = require('./utils');
 
-const initializeGraphql = async (app, {
+const initializeGraphql = async (app, server, {
   graphQLPath,
   graphQLSubscriptionsPath,
   tracing,
@@ -23,7 +23,8 @@ const initializeGraphql = async (app, {
   } = await loadSchema({ datasourcePaths, mockMode, useFileSchema });
 
   const combinedContext = context.concat(configContext);
-  const hasSubscriptionType = Boolean(schema.getSubscriptionType());
+  const hasSubscriptions = Boolean(schema.getSubscriptionType());
+
   const serverOptions = {
     schema,
     context: (...args) => ({
@@ -38,22 +39,22 @@ const initializeGraphql = async (app, {
     tracing,
     cacheControl,
     introspection,
-    ...spreadIf(hasSubscriptionType, {
+    ...spreadIf(hasSubscriptions, {
       subscriptions: {
         path: graphQLSubscriptionsPath,
-        onConnect: () => {},
+        // onConnect: () => {},
         keepAlive,
       },
     }),
   };
-  const server = new ApolloServer(serverOptions);
+  const apolloServer = new ApolloServer(serverOptions);
 
-  if (hasSubscriptionType) {
-    server.installSubscriptionHandlers(app);
+  if (hasSubscriptions) {
+    apolloServer.installSubscriptionHandlers(server);
   }
-  server.applyMiddleware({ app, path: graphQLPath });
+  apolloServer.applyMiddleware({ app, path: graphQLPath });
 
-  return app;
+  return { app, hasSubscriptions };
 };
 
 module.exports = { initializeGraphql };

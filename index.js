@@ -44,6 +44,8 @@ const middleware = {
   after: [],
 };
 let context = [];
+let onStartup = () => {};
+let onShutdown = () => {};
 
 const resolvedConfigPath = path.isAbsolute(configPath) ?
   configPath :
@@ -78,6 +80,14 @@ if (fs.existsSync(resolvedConfigPath)) {
     middleware.after = dsConfig.middleware.after || [];
   }
 
+  if (typeof dsConfig.onStartup === 'function') {
+    onStartup = dsConfig.onStartup;
+  }
+
+  if (typeof dsConfig.onShutdown === 'function') {
+    onShutdown = dsConfig.onShutdown;
+  }
+
   if (dsConfig.context) {
     context = [].concat(dsConfig.context);
   }
@@ -104,15 +114,26 @@ if (program.build) {
     context,
     keepAlive: program.keepAlive || process.env.GQL_SUBSCRIPTION_KEEPALIVE,
     debug: program.debug || process.env.NODE_ENV === 'development',
-  }).then(server => {
+  }).then(({
+    server,
+    hasSubscriptions,
+    graphQLSubscriptionsPath,
+    graphQLPath,
+  }) => {
+    onStartup(server);
+
     server.listen(process.env.PORT || 8484, () => {
       const { address, port } = server.address();
 
-      logger.info(`RED GQL Aggregation Server running at ${address}:${port}`);
+      logger.info(`GraphQL Server running at ${address}:${port}${graphQLPath}`);
+      if (hasSubscriptions) {
+        logger.info(`GraphQL Subscriptions Server running at ${address}:${port}${graphQLSubscriptionsPath}`);
+      }
     });
 
     const shutdown = () => {
       logger.info('Shutting down...');
+      onShutdown(server);
       server.close();
     };
 

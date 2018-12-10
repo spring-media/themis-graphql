@@ -5,7 +5,7 @@ const path = require('path');
 describe('Schema', () => {
   describe('Extended Types', () => {
     it('allows to extend existing types of another datasource with additional resolvers', async () => {
-      const server = await initServer({
+      const { server } = await initServer({
         datasourcePaths: [
           path.resolve(__dirname, '../test/data/cms_article'),
           path.resolve(__dirname, '../test/data/extend_article'),
@@ -60,7 +60,7 @@ describe('Schema', () => {
     });
 
     it('does not matter which order datasource paths are specified when depending on another', async () => {
-      const server = await initServer({
+      const { server } = await initServer({
         datasourcePaths: [
           path.resolve(__dirname, '../test/data/extend_article'),
           path.resolve(__dirname, '../test/data/cms_article'),
@@ -115,7 +115,7 @@ describe('Schema', () => {
     });
 
     it('allows to extend extension types', async () => {
-      const server = await initServer({
+      const { server } = await initServer({
         datasourcePaths: [
           path.resolve(__dirname, '../test/data/cms_article'),
           path.resolve(__dirname, '../test/data/extend_article'),

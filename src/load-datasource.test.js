@@ -13,7 +13,7 @@ describe('Load Datasource', () => {
   });
 
   it('logs a warning when name is both in config an package.json', async () => {
-    const server = await initServer({
+    const { server } = await initServer({
       datasourcePaths: [
         path.resolve(__dirname, '../test/data/config_file/node_modules/cms-article'),
       ],

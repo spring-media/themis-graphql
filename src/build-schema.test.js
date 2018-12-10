@@ -75,7 +75,7 @@ describe('Build Schema', () => {
       datasourcePaths: [datasourcePath],
     });
 
-    const server = await initServer({
+    const { server } = await initServer({
       datasourcePaths: [datasourcePath],
       useFileSchema: true,
     });

@@ -3,22 +3,14 @@ const request = require('supertest');
 const path = require('path');
 
 describe('Server', () => {
-  let server = null;
-
-  beforeAll.nock(async () => {
-    server = await initServer({
+  it.nock('populates the schema with remote data', async () => {
+    const { server } = await initServer({
       datasourcePaths: [
         path.resolve(__dirname, '../test/data/article'),
         path.resolve(__dirname, '../test/data/cms'),
       ],
     });
-  });
 
-  afterAll(() => {
-    server.close();
-  });
-
-  it.nock('populates the schema with remote data', async () => {
     const res = await request(server)
       .post('/api/graphql')
       .send({
@@ -55,7 +47,7 @@ describe('Server', () => {
 
 describe('Context', () => {
   it('lets datasource extend the query context', async () => {
-    const server = await initServer({
+    const { server } = await initServer({
       datasourcePaths: [
         path.resolve(__dirname, '../test/data/context'),
       ],

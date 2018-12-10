@@ -17,7 +17,7 @@ describe('Server', () => {
     });
 
     it('logs resolver errors', async () => {
-      const server = await initServer({
+      const { server } = await initServer({
         datasourcePaths: [
           path.resolve(__dirname, '../test/data/error'),
         ],
@@ -58,7 +58,7 @@ describe('Server', () => {
     });
 
     it('logs remote link network errors', async () => {
-      const server = await initServer({
+      const { server } = await initServer({
         datasourcePaths: [
           path.resolve(__dirname, '../test/data/unavailable-remote'),
         ],
@@ -110,7 +110,7 @@ describe('Server', () => {
         PORT: 53412,
       });
 
-      const server = await initServer({
+      const { server } = await initServer({
         datasourcePaths: [
           path.resolve(__dirname, '../test/data/error-remote'),
         ],
@@ -156,7 +156,7 @@ describe('Server', () => {
     });
 
     it('logs validation errors', async () => {
-      const server = await initServer({
+      const { server } = await initServer({
         datasourcePaths: [
           path.resolve(__dirname, '../test/data/error'),
         ],

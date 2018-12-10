@@ -16,7 +16,7 @@ describe('Server', () => {
       await spawn.anakin();
     });
 
-    it('enables subscription when given in schema', async () => {
+    it('enables subscription when given in schema', async done => {
       await spawnCLI([
         path.resolve(__dirname, '../test/data/subscription'),
       ], {
@@ -51,12 +51,22 @@ describe('Server', () => {
 
       client.subscribe({
         query: gql`subscription {
-          changedUser {
+          wallet {
             id
+            value
           }
         }`,
       }).subscribe(res => {
-        console.log('Subscribption action', res);
+        expect(res).toMatchObject(expect.objectContaining({
+          data: {
+            wallet: {
+              id: 'baf86a8bf86af8',
+              value: expect.any(Number),
+              __typename: 'Wallet',
+            },
+          },
+        }));
+        done();
       });
     });
   });
