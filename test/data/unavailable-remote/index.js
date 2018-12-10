@@ -3,7 +3,6 @@
  */
 module.exports = {
   name: 'cms',
-  namespace: 'Simple',
   remote: {
     uri: 'http://definitely-not-available.internal/api/graphql',
   },

@@ -3,7 +3,6 @@
  */
 module.exports = {
   name: 'cms',
-  namespace: 'Simple',
   accessViaContext: 'simpleSchema',
   mount: false,
   remote: {

@@ -3,7 +3,6 @@
  */
 module.exports = {
   name: 'nocked-cms',
-  namespace: 'Article',
   accessViaContext: 'cmsSchema',
   mount: false,
   remote: {

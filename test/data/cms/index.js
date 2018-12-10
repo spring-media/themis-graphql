@@ -5,7 +5,6 @@ const { FilterRootFields } = require('graphql-tools');
 
 module.exports = {
   name: 'cms',
-  namespace: 'Article',
   accessViaContext: 'cmsSchema',
   mount: false,
   remote: {

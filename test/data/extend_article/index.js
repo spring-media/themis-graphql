@@ -6,7 +6,6 @@ const mocks = require('./mocks');
 
 module.exports = {
   name: 'extended-article',
-  namespace: 'Article',
   typeDefs,
   resolvers,
   extendTypes,

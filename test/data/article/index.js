@@ -5,7 +5,6 @@ const validateContext = require('./validate-context');
 
 module.exports = {
   name: 'article',
-  namespace: 'Article',
   typeDefs,
   resolvers,
   mocks,

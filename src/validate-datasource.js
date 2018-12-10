@@ -7,7 +7,7 @@ const Joi = require('joi');
 const schema = Joi.alternatives().try([
   Joi.object().keys({
     name: Joi.string().required(),
-    namespace: Joi.string().required(),
+    namespace: Joi.string(),
     typeDefs: Joi.object(),
     extendTypes: Joi.object(),
     resolvers: Joi.object(),
@@ -21,7 +21,7 @@ const schema = Joi.alternatives().try([
   }).with('typeDefs', 'resolvers').with('extendTypes', 'extendResolvers'),
   Joi.object().keys({
     name: Joi.string().required(),
-    namespace: Joi.string().required(),
+    namespace: Joi.string(),
     mount: Joi.bool(),
     mocks: Joi.object(),
     validateContext: Joi.func(),
