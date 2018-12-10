@@ -1,10 +1,13 @@
 const express = require('express');
 const { createServer } = require('http');
-const { initializeGraphql } = require('./express-gql');
 const { nockMiddleware, replayNocks } = require('express-nock');
 const expressWinston = require('express-winston');
 const crypto = require('crypto');
 const logger = require('./logger');
+const { spreadIf } = require('./utils');
+const { ApolloServer } = require('apollo-server-express');
+const { loadSchema } = require('./load-schema');
+const formatError = require('./format-error');
 
 const applyMiddlewares = (app, middlewares) => {
   if (Array.isArray(middlewares)) {
@@ -29,9 +32,11 @@ async function initServer ({
   graphQLPath = '/api/graphql',
   graphQLSubscriptionsPath = '/ws/subscriptions',
   middleware,
-  context = [],
+  context: configContext = [],
   keepAlive = 15000,
   debug = false,
+  tracing = false,
+  engineApiKey,
 } = {}) {
   if (datasourcePaths.length === 0) {
     throw new Error('Need at least one target path with datasources.');
@@ -71,30 +76,50 @@ async function initServer ({
     defaultMaxAge: parseInt(process.env.GQL_CACHE_CONTROL_MAX_AGE, 10) || 15,
   };
 
-  const gqlOptions = {
-    datasourcePaths,
-    mockMode,
-    nockMode,
-    nockRecord,
-    useFileSchema,
-    graphQLPath,
-    graphQLSubscriptionsPath,
-    tracing: process.env.GQL_TRACING === 'true' || false,
+  const {
+    schema,
+    context = [],
+    accessViaContext,
+    startupFns,
+    shutdownFns,
+  } = await loadSchema({ datasourcePaths, mockMode, useFileSchema });
+
+  const combinedContext = context.concat(configContext);
+  const hasSubscriptions = Boolean(schema.getSubscriptionType());
+
+  const serverOptions = {
+    schema,
+    context: (...args) => ({
+      ...combinedContext.reduce((ctx, fn) => ({
+        ...ctx,
+        ...fn(...args),
+      }), {}),
+      ...accessViaContext,
+    }),
+    formatError,
+    debug,
+    tracing,
     cacheControl,
     introspection,
-    context,
-    keepAlive,
-    debug,
+    ...spreadIf(hasSubscriptions, {
+      subscriptions: {
+        path: graphQLSubscriptionsPath,
+        // TODO: configurable onConnect: () => {},
+        keepAlive,
+      },
+    }),
+    ...spreadIf(engineApiKey, {
+      engine: {
+        apiKey: engineApiKey,
+      },
+    }),
   };
+  const apolloServer = new ApolloServer(serverOptions);
 
-  if (process.env.APOLLO_ENGINE_API_KEY) {
-    gqlOptions.engine = {
-      apiKey: process.env.APOLLO_ENGINE_API_KEY,
-    };
+  if (hasSubscriptions) {
+    apolloServer.installSubscriptionHandlers(server);
   }
-
-  const { hasSubscriptions, startupFns, shutdownFns } = await initializeGraphql(app, server, gqlOptions);
-
+  apolloServer.applyMiddleware({ app, path: graphQLPath });
   if (middleware) {
     applyMiddlewares(app, middleware.after);
   }

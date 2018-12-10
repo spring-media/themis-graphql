@@ -69,6 +69,8 @@ if (program.build) {
     context,
     keepAlive: program.keepAlive || process.env.GQL_SUBSCRIPTION_KEEPALIVE,
     debug: program.debug || process.env.NODE_ENV === 'development',
+    tracing: process.env.GQL_TRACING === 'true',
+    engineApiKey: process.env.APOLLO_ENGINE_API_KEY,
   }).then(async ({
     server,
     hasSubscriptions,
