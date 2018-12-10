@@ -4,7 +4,7 @@ const { nockMiddleware, replayNocks } = require('express-nock');
 const expressWinston = require('express-winston');
 const crypto = require('crypto');
 const logger = require('./logger');
-const { spreadIf } = require('./utils');
+const { spreadIf, insertIfValue } = require('./utils');
 const { ApolloServer } = require('apollo-server-express');
 const { loadSchema } = require('./load-schema');
 const formatError = require('./format-error');
@@ -37,6 +37,8 @@ async function initServer ({
   debug = false,
   tracing = false,
   engineApiKey,
+  onStartup,
+  onShutdown,
 } = {}) {
   if (datasourcePaths.length === 0) {
     throw new Error('Need at least one target path with datasources.');
@@ -119,7 +121,9 @@ async function initServer ({
   if (hasSubscriptions) {
     apolloServer.installSubscriptionHandlers(server);
   }
+
   apolloServer.applyMiddleware({ app, path: graphQLPath });
+
   if (middleware) {
     applyMiddlewares(app, middleware.after);
   }
@@ -129,14 +133,24 @@ async function initServer ({
     next(err);
   });
 
+  const startup = () => Promise.all([
+    ...startupFns,
+    ...insertIfValue(onStartup),
+  ].map(fn => fn(server)));
+
+  const shutdown = () => Promise.all([
+    ...shutdownFns,
+    ...insertIfValue(onShutdown),
+  ].map(fn => fn(server)));
+
   return {
     app,
     server,
     hasSubscriptions,
     graphQLSubscriptionsPath,
     graphQLPath,
-    startupFns,
-    shutdownFns,
+    startup,
+    shutdown,
   };
 }
 

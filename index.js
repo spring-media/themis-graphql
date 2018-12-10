@@ -71,15 +71,17 @@ if (program.build) {
     debug: program.debug || process.env.NODE_ENV === 'development',
     tracing: process.env.GQL_TRACING === 'true',
     engineApiKey: process.env.APOLLO_ENGINE_API_KEY,
+    onStartup,
+    onShutdown,
   }).then(async ({
     server,
     hasSubscriptions,
     graphQLSubscriptionsPath,
     graphQLPath,
-    startupFns,
-    shutdownFns,
+    startup,
+    shutdown,
   }) => {
-    await Promise.all(startupFns.concat(onStartup).map(fn => fn(server)));
+    await startup();
 
     server.listen(process.env.PORT || 8484, () => {
       const { address, port } = server.address();
@@ -90,14 +92,14 @@ if (program.build) {
       }
     });
 
-    const shutdown = async () => {
+    const attemptGracefulShutdown = async () => {
       logger.info('Shutting down...');
-      await Promise.all(shutdownFns.concat(onShutdown).map(fn => fn(server)));
+      await shutdown();
       server.close();
     };
 
-    process.on('SIGINT', shutdown);
-    process.on('SIGTERM', shutdown);
+    process.on('SIGINT', attemptGracefulShutdown);
+    process.on('SIGTERM', attemptGracefulShutdown);
   });
 }
 
