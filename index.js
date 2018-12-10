@@ -96,7 +96,7 @@ if (program.build) {
     nockPath: program.nockPath,
     nockRecord: program.record,
     datasourcePaths,
-    productionMode: process.env.NODE_ENV === 'production',
+    useFileSchema: process.env.NODE_ENV === 'production',
     introspection: program.introspection,
     graphQLPath: program.graphQLPath || process.env.GQL_API_PATH,
     graphQLSubscriptionsPath: program.graphQLSubscriptionsPath || process.env.GQL_SUBSCRIPTIONS_PATH,

@@ -11,7 +11,7 @@ const initializeGraphql = async (app, {
   cacheControl,
   mockMode,
   datasourcePaths,
-  productionMode,
+  useFileSchema,
   introspection,
   context: configContext,
   debug,
@@ -20,7 +20,7 @@ const initializeGraphql = async (app, {
     schema,
     context = [],
     accessViaContext,
-  } = await loadSchema({ datasourcePaths, mockMode, productionMode });
+  } = await loadSchema({ datasourcePaths, mockMode, useFileSchema });
 
   const combinedContext = context.concat(configContext);
   const hasSubscriptionType = Boolean(schema.getSubscriptionType());

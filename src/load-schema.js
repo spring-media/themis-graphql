@@ -2,9 +2,9 @@ const { setupDatasource } = require('./setup-datasource');
 const { mergeSchemas } = require('graphql-tools');
 const { insertIf } = require('./utils');
 
-const loadSchema = async ({ datasourcePaths, mockMode, productionMode }) => {
+const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema }) => {
   const sources = await Promise.all(datasourcePaths
-    .map(path => setupDatasource(path, { mockMode, productionMode })));
+    .map(path => setupDatasource(path, { mockMode, useFileSchema })));
 
   // TODO: Implement namespaces
 

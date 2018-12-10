@@ -62,7 +62,7 @@ describe('Server', () => {
         datasourcePaths: [
           path.resolve(__dirname, '../test/data/unavailable-remote'),
         ],
-        productionMode: true,
+        useFileSchema: true,
       });
 
       const res = await request(server)
@@ -114,7 +114,7 @@ describe('Server', () => {
         datasourcePaths: [
           path.resolve(__dirname, '../test/data/error-remote'),
         ],
-        productionMode: false,
+        useFileSchema: false,
       });
 
       const res = await request(server)

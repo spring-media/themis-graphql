@@ -12,7 +12,7 @@ async function initServer ({
   nockMode = false,
   nockRecord = false,
   nockPath = '__query_nocks__',
-  productionMode = true,
+  useFileSchema = true,
   datasourcePaths = [],
   introspection,
   graphQLPath = '/api/graphql',
@@ -52,10 +52,10 @@ async function initServer ({
 
       app.use(nockMiddleware({ nockPath, hashFn }));
     } else {
-      // NOTE: To replay nocks we need to set productionMode to use saved remote schema
+      // NOTE: To replay nocks we need to set useFileSchema to use saved remote schema
       // to be in offline mode, maybe the parameter for initializeGraphql can be renamed
       // to `useFileSchema`
-      productionMode = true; // eslint-disable-line
+      useFileSchema = true; // eslint-disable-line
       replayNocks({ nockPath });
     }
   }
@@ -69,7 +69,7 @@ async function initServer ({
     mockMode,
     nockMode,
     nockRecord,
-    productionMode,
+    useFileSchema,
     graphQLPath,
     graphQLSubscriptionsPath,
     tracing: process.env.GQL_TRACING === 'true' || false,

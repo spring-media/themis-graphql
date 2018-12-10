@@ -77,7 +77,7 @@ describe('Build Schema', () => {
 
     const server = await initServer({
       datasourcePaths: [datasourcePath],
-      productionMode: true,
+      useFileSchema: true,
     });
 
     const res = await request(server)

@@ -9,10 +9,10 @@ const { loadRemoteSchema } = require('./load-remote-schema');
 const { loadDatasource } = require('./load-datasource');
 const { spreadIf } = require('./utils');
 
-const setupRemote = async (config, { mockMode, sourcePath, productionMode }) => {
+const setupRemote = async (config, { mockMode, sourcePath, useFileSchema }) => {
   const { transforms } = config.remote;
 
-  const remoteResult = await loadRemoteSchema(config, sourcePath, { mockMode, productionMode });
+  const remoteResult = await loadRemoteSchema(config, sourcePath, { mockMode, useFileSchema });
   const { schema, link } = remoteResult;
 
   const executableSchema = makeRemoteExecutableSchema({
@@ -61,12 +61,12 @@ const setupLocalOrRemoteSource = (config, opts) => {
   return setupLocal(config, opts);
 };
 
-const setupDatasource = async (sourcePath, { mockMode, productionMode }) => {
+const setupDatasource = async (sourcePath, { mockMode, useFileSchema }) => {
   const config = await loadDatasource(sourcePath);
   const { schema, resolvers } = await setupLocalOrRemoteSource(config, {
     mockMode,
     sourcePath,
-    productionMode,
+    useFileSchema,
   });
 
   if (mockMode) {

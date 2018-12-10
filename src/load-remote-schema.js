@@ -74,7 +74,7 @@ const makeRemoteHTTPLink = ({ uri, name, sourcePath }) => {
   return link;
 };
 
-const loadRemoteSchema = async (config, sourcePath, { mockMode, productionMode }) => {
+const loadRemoteSchema = async (config, sourcePath, { mockMode, useFileSchema }) => {
   const { linkContext, uri } = config.remote;
   const { name } = config;
 
@@ -86,7 +86,7 @@ const loadRemoteSchema = async (config, sourcePath, { mockMode, productionMode }
 
   const link = linkContext ? setContext(linkContext).concat(http) : http;
 
-  const schema = mockMode || productionMode ?
+  const schema = mockMode || useFileSchema ?
     await loadFileSchema(config.remote, sourcePath) :
     await introspectSchema(link);
 
