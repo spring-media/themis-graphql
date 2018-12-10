@@ -101,6 +101,54 @@ describe('CLI', () => {
       },
     });
   });
+
+  it('provides startup and shutdown hook from config', async done => {
+    let counter = 0;
+
+    const server = await spawnCLI([
+      '-c',
+      './test/data/config_file/lifecycle.config.js',
+    ], {
+      PORT: 54329,
+      onStdOut: data => {
+        const str = data.toString();
+
+        if (str.match(/startup hoek/) || str.match(/shutdown hoek/)) {
+          counter++;
+        }
+
+        if (counter === 2) {
+          done();
+        }
+      },
+    });
+
+    setTimeout(() => spawn.killChild(server, 'SIGINT', false), 1500);
+  }, 10000);
+
+  it('provides startup and shutdown hooks from datasources', async done => {
+    let counter = 0;
+
+    const server = await spawnCLI([
+      '-c',
+      './test/data/config_file/lifecycle2.config.js',
+    ], {
+      PORT: 54329,
+      onStdOut: data => {
+        const str = data.toString();
+        const match1 = str.match(/startup hoek/ig);
+        const match2 = str.match(/shutdown hoek/ig);
+
+        counter += (match1 || []).length + (match2 || []).length;
+
+        if (counter === 6) {
+          done();
+        }
+      },
+    });
+
+    setTimeout(() => spawn.killChild(server, 'SIGINT', false), 1500);
+  }, 10000);
 });
 
 describe('Middleware', () => {
@@ -180,52 +228,4 @@ describe('Middleware', () => {
       },
     });
   });
-
-  it('provides startup and shutdown hook from config', async done => {
-    let counter = 0;
-
-    const server = await spawnCLI([
-      '-c',
-      './test/data/config_file/lifecycle.config.js',
-    ], {
-      PORT: 54329,
-      onStdOut: data => {
-        const str = data.toString();
-
-        if (str.match(/startup hoek/) || str.match(/shutdown hoek/)) {
-          counter++;
-        }
-
-        if (counter === 2) {
-          done();
-        }
-      },
-    });
-
-    setTimeout(() => spawn.killChild(server, 'SIGINT', false), 1500);
-  }, 10000);
-
-  it('provides startup and shutdown hooks from datasources', async done => {
-    let counter = 0;
-
-    const server = await spawnCLI([
-      '-c',
-      './test/data/config_file/lifecycle2.config.js',
-    ], {
-      PORT: 54329,
-      onStdOut: data => {
-        const str = data.toString();
-        const match1 = str.match(/startup hoek/ig);
-        const match2 = str.match(/shutdown hoek/ig);
-
-        counter += (match1 || []).length + (match2 || []).length;
-
-        if (counter === 6) {
-          done();
-        }
-      },
-    });
-
-    setTimeout(() => spawn.killChild(server, 'SIGINT', false), 1500);
-  }, 10000);
 });
