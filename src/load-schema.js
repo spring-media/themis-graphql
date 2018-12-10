@@ -1,6 +1,6 @@
 const { setupDatasource } = require('./setup-datasource');
 const { mergeSchemas } = require('graphql-tools');
-const { insertIf } = require('./utils');
+const { insertIfValue } = require('./utils');
 
 const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema }) => {
   const sources = await Promise.all(datasourcePaths
@@ -23,13 +23,13 @@ const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema }) => {
 
   const { schemas, resolvers, accessViaContext, contextValidations, context } = sources
     .reduce((p, c) => ({
-      schemas: [ ...p.schemas, ...insertIf(c.schema, c.schema), ...insertIf(c.extendTypes, c.extendTypes) ],
-      resolvers: [ ...p.resolvers, ...insertIf(c.resolvers, c.resolvers) ],
-      context: [ ...p.context, ...insertIf(c.context, c.context) ],
+      schemas: [ ...p.schemas, ...insertIfValue(c.schema), ...insertIfValue(c.extendTypes) ],
+      resolvers: [ ...p.resolvers, ...insertIfValue(c.resolvers) ],
+      context: [ ...p.context, ...insertIfValue(c.context) ],
       accessViaContext: { ...p.accessViaContext, ...c.accessViaContext },
       contextValidations: [
         ...p.contextValidations,
-        ...insertIf(c.validateContext, c.validateContext),
+        ...insertIfValue(c.validateContext),
       ],
   }), {
     schemas: [],
