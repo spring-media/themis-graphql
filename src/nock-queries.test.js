@@ -161,7 +161,7 @@ describe('Server --nock', () => {
       .expect(200);
 
     gql.server.close();
-    await spawn.anakin(remoteServer);
+    await spawn.killChild(remoteServer, 'SIGINT');
 
     gql = await initServer({
       nockMode: true,

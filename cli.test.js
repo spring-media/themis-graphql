@@ -180,4 +180,28 @@ describe('Middleware', () => {
       },
     });
   });
+
+  it('provides startup and shutdown hook from config', async done => {
+    let counter = 0;
+
+    const server = await spawnCLI([
+      '-c',
+      './test/data/config_file/lifecycle.config.js',
+    ], {
+      PORT: 54329,
+      onStdOut: data => {
+        const str = data.toString();
+
+        if (str.match(/startup hoek/) || str.match(/shutdown hoek/)) {
+          counter++;
+        }
+
+        if (counter === 2) {
+          done();
+        }
+      },
+    });
+
+    setTimeout(() => spawn.killChild(server, 'SIGINT', false), 1500);
+  }, 10000);
 });

@@ -11,7 +11,7 @@ const spawn = (...rest) => {
   return child;
 };
 
-const killChild = (child, killSignal = 'SIGTERM') =>
+const killChild = (child, killSignal = 'SIGTERM', killIO = true) =>
   // eslint-disable-next-line complexity
   new Promise(res => {
     if (child.killed || child.exitCode) {
@@ -27,13 +27,17 @@ const killChild = (child, killSignal = 'SIGTERM') =>
       }
     };
 
-    [ 'stdout', 'stdin', 'stderr' ].forEach(io => {
-      const socket = child[io];
+    if (killIO) {
+      [ 'stdout', 'stdin', 'stderr' ].forEach(io => {
+        const socket = child[io];
 
-      socket.removeAllListeners();
-      socket.end();
-      socket.destroy();
-    });
+        if (socket) {
+          socket.removeAllListeners();
+          socket.end();
+          socket.destroy();
+        }
+      });
+    }
 
     child.on('close', () => {
       child.isClosed = true;

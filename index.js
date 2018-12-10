@@ -114,13 +114,13 @@ if (program.build) {
     context,
     keepAlive: program.keepAlive || process.env.GQL_SUBSCRIPTION_KEEPALIVE,
     debug: program.debug || process.env.NODE_ENV === 'development',
-  }).then(({
+  }).then(async ({
     server,
     hasSubscriptions,
     graphQLSubscriptionsPath,
     graphQLPath,
   }) => {
-    onStartup(server);
+    await onStartup(server);
 
     server.listen(process.env.PORT || 8484, () => {
       const { address, port } = server.address();

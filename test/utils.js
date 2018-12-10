@@ -6,7 +6,7 @@ const cliReady = (instance, PORT) => {
   return new Promise(resolve => {
     instance.stdout.on('data', data => {
       if (new RegExp(`running at :::${PORT}`).test(data.toString())) {
-      resolve();
+        resolve();
       }
     });
   });
@@ -16,6 +16,7 @@ const spawnCLI = (args, {
   PORT = 54325,
   cwd,
   indexPath,
+  onStdOut,
 } = {}) => {
   return new Promise(async (resolve, reject) => {
     let resolved = false;
@@ -34,19 +35,31 @@ const spawnCLI = (args, {
     });
 
     instance.stderr.on('data', data => {
+      const err = data.toString();
+
+      if (process.env.LOG_LEVEL === 'debug') {
+        console.log('Spawn:', err);
+      }
+
       if (!resolved) {
         resolved = true;
-        const err = data.toString();
-
-        logger.debug('Spawn:', err);
+        reject(err);
       }
     });
 
     instance.stdout.on('data', data => {
-      logger.debug('Spawn:', data.toString());
+      if (process.env.LOG_LEVEL === 'debug') {
+        console.log('Spawn:', data.toString());
+      }
+      if (onStdOut) {
+        onStdOut(data);
+      }
     });
 
-    cliReady(instance, PORT).then(() => resolve());
+    cliReady(instance, PORT).then(() => {
+      resolved = true;
+      resolve(instance);
+    });
   });
 };
 
