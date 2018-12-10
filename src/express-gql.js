@@ -20,6 +20,8 @@ const initializeGraphql = async (app, server, {
     schema,
     context = [],
     accessViaContext,
+    startupFns,
+    shutdownFns,
   } = await loadSchema({ datasourcePaths, mockMode, useFileSchema });
 
   const combinedContext = context.concat(configContext);
@@ -54,7 +56,7 @@ const initializeGraphql = async (app, server, {
   }
   apolloServer.applyMiddleware({ app, path: graphQLPath });
 
-  return { app, hasSubscriptions };
+  return { app, hasSubscriptions, startupFns, shutdownFns };
 };
 
 module.exports = { initializeGraphql };

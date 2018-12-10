@@ -84,7 +84,7 @@ async function initServer ({
     };
   }
 
-  const { hasSubscriptions } = await initializeGraphql(app, server, gqlOptions);
+  const { hasSubscriptions, startupFns, shutdownFns } = await initializeGraphql(app, server, gqlOptions);
 
   if (middleware) {
     if (Array.isArray(middleware.after)) {
@@ -107,6 +107,8 @@ async function initServer ({
     hasSubscriptions,
     graphQLSubscriptionsPath,
     graphQLPath,
+    startupFns,
+    shutdownFns,
   };
 }
 

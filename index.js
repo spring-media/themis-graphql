@@ -119,8 +119,10 @@ if (program.build) {
     hasSubscriptions,
     graphQLSubscriptionsPath,
     graphQLPath,
+    startupFns,
+    shutdownFns,
   }) => {
-    await onStartup(server);
+    await Promise.all(startupFns.concat(onStartup).map(fn => fn(server)));
 
     server.listen(process.env.PORT || 8484, () => {
       const { address, port } = server.address();
@@ -131,9 +133,9 @@ if (program.build) {
       }
     });
 
-    const shutdown = () => {
+    const shutdown = async () => {
       logger.info('Shutting down...');
-      onShutdown(server);
+      await Promise.all(shutdownFns.concat(onShutdown).map(fn => fn(server)));
       server.close();
     };
 

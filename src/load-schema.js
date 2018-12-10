@@ -21,22 +21,34 @@ const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema }) => {
       })
     );
 
-  const { schemas, resolvers, accessViaContext, contextValidations, context } = sources
-    .reduce((p, c) => ({
-      schemas: [ ...p.schemas, ...insertIfValue(c.schema), ...insertIfValue(c.extendTypes) ],
-      resolvers: [ ...p.resolvers, ...insertIfValue(c.resolvers) ],
-      context: [ ...p.context, ...insertIfValue(c.context) ],
-      accessViaContext: { ...p.accessViaContext, ...c.accessViaContext },
-      contextValidations: [
-        ...p.contextValidations,
-        ...insertIfValue(c.validateContext),
-      ],
+  const {
+    schemas,
+    resolvers,
+    accessViaContext,
+    contextValidations,
+    context,
+    startupFns,
+    shutdownFns,
+  } = sources
+  .reduce((p, c) => ({
+    schemas: [ ...p.schemas, ...insertIfValue(c.schema), ...insertIfValue(c.extendTypes) ],
+    resolvers: [ ...p.resolvers, ...insertIfValue(c.resolvers) ],
+    context: [ ...p.context, ...insertIfValue(c.context) ],
+    accessViaContext: { ...p.accessViaContext, ...c.accessViaContext },
+    contextValidations: [
+      ...p.contextValidations,
+      ...insertIfValue(c.validateContext),
+    ],
+    startupFns: [ ...p.startupFns, ...insertIfValue(c.onStartup) ],
+    shutdownFns: [ ...p.shutdownFns, ...insertIfValue(c.onShutdown) ],
   }), {
     schemas: [],
     resolvers: [],
     context: [],
     accessViaContext: {},
     contextValidations: [],
+    startupFns: [],
+    shutdownFns: [],
   });
 
   const schema = mergeSchemas({
@@ -48,7 +60,7 @@ const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema }) => {
     validation(accessViaContext);
   }
 
-  return { schema, accessViaContext, context };
+  return { schema, accessViaContext, context, startupFns, shutdownFns };
 };
 
 module.exports = {

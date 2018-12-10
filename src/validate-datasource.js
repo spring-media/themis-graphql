@@ -18,6 +18,8 @@ const schema = Joi.alternatives().try([
     context: Joi.func(),
     mount: Joi.bool(),
     dependencies: Joi.array().items(Joi.string()),
+    onStartup: Joi.func(),
+    onShutdown: Joi.func(),
   }).with('typeDefs', 'resolvers').with('extendTypes', 'extendResolvers'),
   Joi.object().keys({
     name: Joi.string().required(),
@@ -34,6 +36,8 @@ const schema = Joi.alternatives().try([
       transforms: Joi.array(),
     }).required(),
     dependencies: Joi.array().items(Joi.string()),
+    onStartup: Joi.func(),
+    onShutdown: Joi.func(),
   }),
 ]);
 
