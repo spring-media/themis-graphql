@@ -9,6 +9,22 @@ const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema }) => {
   // TODO: Implement namespaces
 
   const sourceNames = sources.map(config => config.name);
+  const { duplicates } = sourceNames.reduce((p, name) => {
+    if (p.checked.includes(name)) {
+      p.duplicates.push(name);
+      return p;
+    }
+    p.checked.push(name);
+    return p;
+  }, {
+    duplicates: [],
+    checked: [],
+  });
+
+  if (duplicates.length) {
+    throw new Error('Datasource names need to be unique, ' +
+      `found duplicates of "${duplicates.join(', ')}"`);
+  }
 
   sources
     .filter(config => config.dependencies)

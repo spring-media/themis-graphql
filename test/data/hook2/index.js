@@ -3,7 +3,7 @@ const resolvers = require('./resolvers');
 const logger = require('../../../src/logger');
 
 module.exports = {
-  name: 'simple',
+  name: 'hook2',
   typeDefs,
   resolvers,
   mocks: {},

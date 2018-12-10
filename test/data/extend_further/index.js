@@ -3,7 +3,7 @@ const extendResolvers = require('./extend-resolvers');
 const mocks = require('./mocks');
 
 module.exports = {
-  name: 'extended-article',
+  name: 'extended-further',
   extendTypes,
   extendResolvers,
   mocks,

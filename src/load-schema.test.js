@@ -193,5 +193,19 @@ describe('Schema', () => {
         done();
       });
     });
+
+    it('throws an error if datasources have the same name', done => {
+      initServer({
+        datasourcePaths: [
+          path.resolve(__dirname, '../test/data/hook1'),
+          path.resolve(__dirname, '../test/data/simple'),
+        ],
+      })
+      .catch(e => {
+        expect(e).toBeInstanceOf(Error);
+        expect(e.message).toMatch(/Datasource names need to be unique, found duplicates of "simple"/);
+        done();
+      });
+    });
   });
 });
