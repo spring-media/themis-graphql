@@ -38,6 +38,18 @@ describe('CLI', () => {
     });
   });
 
+  it('Exits if provided config cannot be found', done => {
+    spawnCLI([
+      '-c',
+      './test/data/abcdefg/not-a-config.config.js',
+    ], {
+      PORT: 54358,
+    }).catch(err => {
+      expect(err).toEqual(expect.stringMatching(/Config file not found/));
+      done();
+    });
+  });
+
   it('Allows to set the graphql api path', async () => {
     await spawnCLI([
       '-c',

@@ -13,24 +13,25 @@ const middleware = Joi.alternatives([
 ]);
 
 const schema = Joi.object().keys({
-  datasources: Joi.array().items(Joi.string()),
+  datasources: Joi.array().items(Joi.string()).default([]),
   middleware: Joi.object().keys({
-    before: Joi.array().items(middleware),
-    after: Joi.array().items(middleware),
+    before: Joi.array().items(middleware).default([]),
+    after: Joi.array().items(middleware).default([]),
   }),
   context: Joi.alternatives([
     Joi.func(),
     Joi.array().items(Joi.func()),
-  ]),
-  onStartup: Joi.func(),
-  onShutdown: Joi.func(),
+  ]).default([]),
+  onStartup: Joi.func().default(() => {}),
+  onShutdown: Joi.func().default(() => {}),
 });
 
 module.exports = function validateConfig (config, configPath) {
-  const { error } = Joi.validate(config, schema);
+  const { error, value } = Joi.validate(config, schema);
 
   if (error) {
     error.message = `${error.message} at ${configPath}`;
     throw new Error(error);
   }
+  return value;
 };

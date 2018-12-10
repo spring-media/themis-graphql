@@ -2,8 +2,8 @@
 require('dotenv').config();
 const { initServer } = require('./src/server');
 const { buildSchema } = require('./src/build-schema');
+const { loadFileConfig } = require('./src/load-file-config');
 const valideEnv = require('./src/validate-env');
-const validateConfig = require('./validate-config');
 const logger = require('./src/logger');
 const program = require('commander');
 const path = require('path');
@@ -38,60 +38,15 @@ const datasourcePaths = program.useSubfolders ?
   }).reduce((p, c) => p.concat(c), []) :
   program.args.map(arg => path.resolve(arg));
 
-const configPath = program.config || 'leto.config';
-const middleware = {
-  before: [],
-  after: [],
-};
-let context = [];
-let onStartup = () => {};
-let onShutdown = () => {};
+const {
+  middleware,
+  context,
+  onStartup,
+  onShutdown,
+  datasources,
+} = loadFileConfig(program.config);
 
-const resolvedConfigPath = path.isAbsolute(configPath) ?
-  configPath :
-  path.resolve(process.cwd(), configPath);
-
-if (fs.existsSync(resolvedConfigPath)) {
-  const dsConfig = require(resolvedConfigPath);
-
-  validateConfig(dsConfig, resolvedConfigPath);
-
-  if (dsConfig.datasources) {
-    const resolvedPaths = dsConfig.datasources
-      .map(dsPath => {
-        if (!path.isAbsolute(dsPath)) {
-          if (/^.\//.test(dsPath)) {
-            return path.resolve(process.cwd(), dsPath);
-          }
-          return require.resolve(dsPath, {
-            paths: [
-              ...require.resolve.paths(dsPath),
-              path.join(process.cwd(), 'node_modules') ],
-          });
-        }
-        return dsPath;
-      });
-
-    datasourcePaths.push(...resolvedPaths);
-  }
-
-  if (dsConfig.middleware) {
-    middleware.before = dsConfig.middleware.before || [];
-    middleware.after = dsConfig.middleware.after || [];
-  }
-
-  if (typeof dsConfig.onStartup === 'function') {
-    onStartup = dsConfig.onStartup;
-  }
-
-  if (typeof dsConfig.onShutdown === 'function') {
-    onShutdown = dsConfig.onShutdown;
-  }
-
-  if (dsConfig.context) {
-    context = [].concat(dsConfig.context);
-  }
-}
+datasourcePaths.push(...datasources);
 
 if (program.build) {
   buildSchema({

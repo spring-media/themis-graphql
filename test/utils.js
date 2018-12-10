@@ -17,6 +17,7 @@ const spawnCLI = (args, {
   cwd,
   indexPath,
   onStdOut,
+  onStdErr,
 } = {}) => {
   return new Promise(async (resolve, reject) => {
     let resolved = false;
@@ -39,6 +40,10 @@ const spawnCLI = (args, {
 
       if (process.env.LOG_LEVEL === 'debug') {
         console.log('Spawn:', err);
+      }
+
+      if (onStdErr) {
+        onStdErr(data);
       }
 
       if (!resolved) {
