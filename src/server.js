@@ -39,6 +39,7 @@ async function initServer ({
   engineApiKey,
   onStartup,
   onShutdown,
+  cacheControl,
 } = {}) {
   if (datasourcePaths.length === 0) {
     throw new Error('Need at least one target path with datasources.');
@@ -73,10 +74,6 @@ async function initServer ({
       replayNocks({ nockPath });
     }
   }
-
-  const cacheControl = {
-    defaultMaxAge: parseInt(process.env.GQL_CACHE_CONTROL_MAX_AGE, 10) || 15,
-  };
 
   const {
     schema,

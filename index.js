@@ -74,6 +74,9 @@ if (program.build) {
     engineApiKey: process.env.APOLLO_ENGINE_API_KEY,
     onStartup,
     onShutdown,
+    cacheControl: {
+      defaultMaxAge: parseInt(process.env.GQL_CACHE_CONTROL_MAX_AGE, 10) || 15,
+    },
   })
   .then(mountServer);
 }
