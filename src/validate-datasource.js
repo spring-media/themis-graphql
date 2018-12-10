@@ -2,11 +2,13 @@
 /**
  * Checks if the imported datasource exports the needed data to stitch and mount it.
  */
-const Joi = require('joi');
+const BaseJoi = require('joi');
+const packageNameExtension = require('./joi-extensions/npm-package-name');
+const Joi = BaseJoi.extend(packageNameExtension);
 
 const schema = Joi.alternatives().try([
   Joi.object().keys({
-    name: Joi.string().required(),
+    name: Joi.string().packageName().required(),
     namespace: Joi.string(),
     typeDefs: Joi.object(),
     extendTypes: Joi.object(),
@@ -22,7 +24,7 @@ const schema = Joi.alternatives().try([
     onShutdown: Joi.func(),
   }).with('typeDefs', 'resolvers').with('extendTypes', 'extendResolvers'),
   Joi.object().keys({
-    name: Joi.string().required(),
+    name: Joi.string().packageName().required(),
     namespace: Joi.string(),
     mount: Joi.bool(),
     mocks: Joi.object(),

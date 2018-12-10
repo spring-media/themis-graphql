@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "apollo-errors": "1.9.0",
-    "apollo-link-context": "1.0.10",
     "apollo-link": "1.2.4",
+    "apollo-link-context": "1.0.10",
     "apollo-link-error": "1.1.2",
     "apollo-link-http": "1.5.7",
     "apollo-server-express": "2.2.6",
@@ -27,6 +27,7 @@
     "joi": "13.4.0",
     "mkdirp": "0.5.1",
     "nock": "10.0.4",
+    "validate-npm-package-name": "3.0.0",
     "winston": "2.4.3"
   },
   "devDependencies": {
