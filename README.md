@@ -78,6 +78,8 @@ To use the CLI in a development environment with a `.env` file, use `node index 
 Run `yarn install`.
 
 # Testing
+Tests are mainly written as integration tests and should mainly be written as integration tests.
+
 Run `yarn test`.
 
 The test setup mocks all external requests (including remote gql resources like lean), with [nock](https://github.com/nock/nock).
