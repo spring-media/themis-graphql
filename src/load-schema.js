@@ -3,6 +3,10 @@ const { mergeSchemas } = require('graphql-tools');
 const { insertIfValue } = require('./utils');
 
 const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema }) => {
+  if (datasourcePaths.length === 0) {
+    throw new Error('Need at least one target path with datasources.');
+  }
+
   const sources = await Promise.all(datasourcePaths
     .map(path => setupDatasource(path, { mockMode, useFileSchema })));
 

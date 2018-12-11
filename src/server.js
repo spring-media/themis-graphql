@@ -20,7 +20,16 @@ const applyMiddlewares = (app, middlewares) => {
   }
 };
 
-// eslint-disable-next-line complexity
+const setupNockMode = (app, nockPath, record) => {
+  if (record) {
+    const hashFn = ({ body }) => crypto.createHash('md5').update(JSON.stringify(body)).digest('hex');
+
+    app.use(nockMiddleware({ nockPath, hashFn }));
+    return;
+  }
+  replayNocks({ nockPath });
+};
+
 async function initServer ({
   mockMode = false,
   nockMode = false,
@@ -30,8 +39,8 @@ async function initServer ({
   datasourcePaths = [],
   introspection,
   graphQLPath = '/api/graphql',
-  graphQLSubscriptionsPath = '/ws/subscriptions',
-  middleware,
+  subscriptionsPath = '/ws/subscriptions',
+  middleware = {},
   context: configContext = [],
   keepAlive = 15000,
   debug = false,
@@ -41,10 +50,6 @@ async function initServer ({
   onShutdown,
   cacheControl,
 } = {}) {
-  if (datasourcePaths.length === 0) {
-    throw new Error('Need at least one target path with datasources.');
-  }
-
   const app = express();
   const server = createServer(app);
 
@@ -59,20 +64,10 @@ async function initServer ({
     statusLevels: true,
   }));
 
-  if (middleware) {
-    applyMiddlewares(app, middleware.before);
-  }
+  applyMiddlewares(app, middleware.before);
 
   if (nockMode) {
-    if (nockRecord) {
-      const hashFn = ({ body }) => crypto.createHash('md5').update(JSON.stringify(body)).digest('hex');
-
-      app.use(nockMiddleware({ nockPath, hashFn }));
-    } else {
-      // NOTE: To replay nocks we need to set useFileSchema to use saved remote schema
-      useFileSchema = true; // eslint-disable-line
-      replayNocks({ nockPath });
-    }
+    setupNockMode(app, nockPath, nockRecord);
   }
 
   const {
@@ -81,7 +76,7 @@ async function initServer ({
     accessViaContext,
     startupFns,
     shutdownFns,
-  } = await loadSchema({ datasourcePaths, mockMode, useFileSchema });
+  } = await loadSchema({ datasourcePaths, mockMode, useFileSchema: nockMode || useFileSchema });
 
   const combinedContext = context.concat(configContext);
   const hasSubscriptions = Boolean(schema.getSubscriptionType());
@@ -102,7 +97,7 @@ async function initServer ({
     introspection,
     ...spreadIf(hasSubscriptions, {
       subscriptions: {
-        path: graphQLSubscriptionsPath,
+        path: subscriptionsPath,
         // TODO: configurable onConnect: () => {},
         keepAlive,
       },
@@ -121,9 +116,7 @@ async function initServer ({
 
   apolloServer.applyMiddleware({ app, path: graphQLPath });
 
-  if (middleware) {
-    applyMiddlewares(app, middleware.after);
-  }
+  applyMiddlewares(app, middleware.after);
 
   app.use((err, req, res, next) => {
     logger.error(err);
@@ -144,7 +137,7 @@ async function initServer ({
     app,
     server,
     hasSubscriptions,
-    graphQLSubscriptionsPath,
+    subscriptionsPath,
     graphQLPath,
     startup,
     shutdown,

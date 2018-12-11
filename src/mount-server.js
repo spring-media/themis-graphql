@@ -3,7 +3,7 @@ const logger = require('./logger');
 const mountServer = async ({
   server,
   hasSubscriptions,
-  graphQLSubscriptionsPath,
+  subscriptionsPath,
   graphQLPath,
   startup,
   shutdown,
@@ -15,7 +15,7 @@ const mountServer = async ({
 
     logger.info(`GraphQL Server running at ${address}:${port}${graphQLPath}`);
     if (hasSubscriptions) {
-      logger.info(`GraphQL Subscriptions Server running at ${address}:${port}${graphQLSubscriptionsPath}`);
+      logger.info(`GraphQL Subscriptions Server running at ${address}:${port}${subscriptionsPath}`);
     }
   });
 
