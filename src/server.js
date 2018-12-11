@@ -53,7 +53,7 @@ async function initServer ({
   const app = express();
   const server = createServer(app);
 
-  if (process.env.LOG_LEVEL === 'debug') {
+  if (debug) {
     const createReqResLog = require('./logger/log-req-res');
 
     app.use(createReqResLog(logger));
