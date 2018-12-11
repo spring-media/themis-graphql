@@ -39,19 +39,25 @@ const loadFileSchema = async (config, sourcePath) => {
 	return schema;
 };
 
-const makeRemoteHTTPLink = ({ uri, name, sourcePath }) => {
-  const relativePath = path.relative(process.cwd(), sourcePath);
+const makeRemoteHTTPLink = ({ uri, name }) => {
   const errorLink = onError(({ graphQLErrors, networkError }) => {
+    // NOTE: We need to always log remote errors here, not just bubbled up to format error,
+    // because when a remote error breaks a local resolver, only the local resolver error
+    // will get through to formatError and we will not know immediately why the local resolver failed.
     if (graphQLErrors) {
-      graphQLErrors.forEach(err => Object.assign(err, {
-        message: `[Remote Datasource GraphQL Error in "${name} (${relativePath})"]: ${err.message}`,
-      }));
+      graphQLErrors.forEach(err => {
+        Object.assign(err, {
+          message: `[Remote GraphQL Error in "${name} (${uri})"]: ${err.message}`,
+        });
+        logger.error(err.message);
+      });
     }
 
     if (networkError) {
       Object.assign(networkError, {
-        message: `[Remote Datasource Network Error in "${name} (${relativePath})"]: ${networkError.message}`,
+        message: `[Remote Network Error in "${name} (${uri})"]: ${networkError.message}`,
       });
+      logger.error(networkError.message);
     }
   });
 

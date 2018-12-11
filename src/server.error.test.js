@@ -79,14 +79,14 @@ describe('Server', () => {
           simple: null,
         },
         errors: [{
-          message: expect.stringContaining('[Remote Datasource Network Error in "cms (test/data/unavailable-remote)"]'),
+          message: expect.stringContaining('[Remote Network Error in "cms (http://definitely-not-available.internal/api/graphql)"]'),
           locations: [{ line: 1, column: 9 }],
           path: ['simple'],
           extensions: {
             code: 'INTERNAL_SERVER_ERROR',
             exception: {
               errors: [{
-                message: expect.stringContaining('[Remote Datasource Network Error in "cms (test/data/unavailable-remote)"]'),
+                message: expect.stringContaining('[Remote Network Error in "cms (http://definitely-not-available.internal/api/graphql)"]'),
                 locations: [],
                 path: ['simple'],
               }],
@@ -97,7 +97,7 @@ describe('Server', () => {
 
       expect(logger.error).toHaveBeenCalledWith(
         expect.stringContaining(
-          '[Remote Datasource Network Error in "cms (test/data/unavailable-remote)"]'
+          '[Remote Network Error in "cms (http://definitely-not-available.internal/api/graphql)"]'
         )
       );
       expect(res.body).toMatchObject(expect.objectContaining(expected));
@@ -131,14 +131,14 @@ describe('Server', () => {
           error: null,
         },
         errors: [{
-          message: expect.stringContaining('[Remote Datasource GraphQL Error in "cms (test/data/error-remote)"]'),
+          message: expect.stringContaining('[Remote GraphQL Error in "error-remote (http://127.0.0.1:53412/api/graphql)"]'),
           locations: [{ line: 1, column: 9 }],
           path: ['error'],
           extensions: {
             code: 'INTERNAL_SERVER_ERROR',
             exception: {
               errors: [{
-                message: expect.stringContaining('[Remote Datasource GraphQL Error in "cms (test/data/error-remote)"]'),
+                message: expect.stringContaining('[Remote GraphQL Error in "error-remote (http://127.0.0.1:53412/api/graphql)"]'),
                 locations: [],
                 path: ['error'],
               }],
@@ -149,7 +149,67 @@ describe('Server', () => {
 
       expect(logger.error).toHaveBeenCalledWith(
         expect.stringContaining(
-          '[Remote Datasource GraphQL Error in "cms (test/data/error-remote)"]'
+          '[Remote GraphQL Error in "error-remote (http://127.0.0.1:53412/api/graphql)"]'
+        )
+      );
+      expect(res.body).toMatchObject(expect.objectContaining(expected));
+    });
+
+    it('logs remote link graphql errors (with failing local resolver)', async () => {
+      await spawnCLI([
+        path.resolve(__dirname, '../test/data/partial-error'),
+      ], {
+        PORT: 53412,
+      });
+
+      const { server } = await initServer({
+        datasourcePaths: [
+          path.resolve(__dirname, '../test/data/error-remote'),
+          path.resolve(__dirname, '../test/data/error-remote-and-local'),
+        ],
+        useFileSchema: false,
+      });
+
+      const res = await request(server)
+        .post('/api/graphql')
+        .send({
+          query: `query {
+            alsoError {
+              id
+              fieldA
+              fieldB
+            }
+          }`,
+        })
+        .expect(200);
+
+      server.close();
+
+      const expected = {
+        data: {
+          alsoError: null,
+        },
+        errors: [{
+          message: expect.stringContaining('Local Error'),
+          locations: [{ line: 2, column: 13 }],
+          path: ['alsoError'],
+          extensions: {
+            code: 'INTERNAL_SERVER_ERROR',
+            exception: {
+              errors: [{
+                message: expect.stringContaining('Local Error'),
+                locations: [],
+                path: ['alsoError'],
+              }],
+            },
+          },
+        }],
+      };
+
+      expect(logger.error).toHaveBeenCalledWith(expect.stringContaining('Local Error'));
+      expect(logger.error).toHaveBeenCalledWith(
+        expect.stringContaining(
+          '[Remote GraphQL Error in "error-remote (http://127.0.0.1:53412/api/graphql)"]'
         )
       );
       expect(res.body).toMatchObject(expect.objectContaining(expected));
