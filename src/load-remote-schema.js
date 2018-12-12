@@ -2,6 +2,11 @@ const { setContext } = require('apollo-link-context');
 const { ApolloLink } = require('apollo-link');
 const { onError } = require('apollo-link-error');
 const { HttpLink } = require('apollo-link-http');
+const { split } = require('apollo-link');
+const { WebSocketLink } = require('apollo-link-ws');
+const { SubscriptionClient } = require('subscriptions-transport-ws');
+const ws = require('ws');
+const { getMainDefinition } = require('apollo-utilities');
 const logger = require('./logger');
 const fetch = require('node-fetch');
 const { introspectionQuery, parse } = require('graphql');
@@ -39,8 +44,47 @@ const loadFileSchema = async (config, sourcePath) => {
 	return schema;
 };
 
-const makeRemoteHTTPLink = ({ uri, name }) => {
-  const errorLink = onError(({ graphQLErrors, networkError }) => {
+const createConnectionLink = ({ uri, wsUri }) => {
+  const httpLink = new HttpLink({
+    uri,
+    fetch: async (...args) => {
+      logger.debug('Remote fetch args:', args);
+
+      const result = await fetch(...args);
+
+      return result;
+    },
+  });
+
+  if (!wsUri) {
+    return httpLink;
+  }
+
+  const client = new SubscriptionClient(
+    wsUri,
+    {
+      reconnect: true,
+    },
+    ws
+  );
+
+  const wsLink = new WebSocketLink(client);
+
+  const splitLink = split(
+    ({ query }) => {
+      const { kind, operation } = getMainDefinition(query);
+
+      return kind === 'OperationDefinition' && operation === 'subscription';
+    },
+    wsLink,
+    httpLink
+  );
+
+  return splitLink;
+};
+
+const createErrorLogLink = ({ uri, name }) => {
+  return onError(({ graphQLErrors, networkError }) => {
     // NOTE: We need to always log remote errors here, not just bubbled up to format error,
     // because when a remote error breaks a local resolver, only the local resolver error
     // will get through to formatError and we will not know immediately why the local resolver failed.
@@ -60,32 +104,26 @@ const makeRemoteHTTPLink = ({ uri, name }) => {
       logger.error(networkError.message);
     }
   });
+};
 
-  const httpLink = new HttpLink({
-    uri,
-    fetch: async (...args) => {
-      logger.debug('Remote fetch args:', args);
-
-      const result = await fetch(...args);
-
-      return result;
-    },
-  });
-
+const makeRemoteHTTPLink = ({ uri, wsUri, name }) => {
+  const errorLogLink = createErrorLogLink({ uri, name });
+  const connectionLink = createConnectionLink({ uri, wsUri });
   const link = ApolloLink.from([
-    errorLink,
-    httpLink,
+    errorLogLink,
+    connectionLink,
   ]);
 
   return link;
 };
 
 const loadRemoteSchema = async (config, sourcePath, { mockMode, useFileSchema }) => {
-  const { linkContext, uri } = config.remote;
+  const { linkContext, uri, wsUri } = config.remote;
   const { name } = config;
 
   const http = makeRemoteHTTPLink({
     uri,
+    wsUri,
     sourcePath,
     name,
   });
