@@ -9,13 +9,23 @@ const { ApolloServer } = require('apollo-server-express');
 const { loadSchema } = require('./load-schema');
 const formatError = require('./format-error');
 
+const wrapMiddleware = middleware => {
+  return (...args) => {
+    const next = args[args.length - 1];
+
+    Promise.resolve().then(() => middleware(...args)).catch(ex => next(ex));
+  };
+};
+
 const applyMiddlewares = (app, middlewares) => {
   if (Array.isArray(middlewares)) {
     middlewares.forEach(fnOrArr => {
       if (Array.isArray(fnOrArr)) {
-        return app.use(...fnOrArr);
+        return app.use(...fnOrArr
+          .map(maybeFn => typeof maybeFn === 'function' ? wrapMiddleware(maybeFn) : maybeFn)
+        );
       }
-      return app.use(fnOrArr);
+      return app.use(wrapMiddleware(fnOrArr));
     });
   }
 };

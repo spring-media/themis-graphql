@@ -194,6 +194,28 @@ describe('Middleware', () => {
     }));
   });
 
+  it('can use async middlewares', async () => {
+    await spawnCLI([
+      '-c',
+      './test/data/config_file/async-middleware.config.js',
+    ], {
+      PORT: 53328,
+    });
+
+    const query = {
+      query: `query {
+        article(input: { id: "some" }) {
+          creationDate
+        }
+      }`,
+    };
+
+    await request('http://127.0.0.1:53328')
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
+  });
+
   it('can use middleware after apollo server', async () => {
     await spawnCLI([
       '-c',
