@@ -2125,8 +2125,8 @@ expect@^23.6.0:
 
 express-nock@0.1.1:
   version "0.1.1"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/express-nock/-/express-nock-0.1.1.tgz#3096ce9a7b05f064abce3267860aab328185dfee"
-  integrity sha1-MJbOmnsF8GSrzjJnhgqrMoGF3+4=
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/express-nock/-/express-nock-0.1.1.tgz#926d9526a8976f343a56f5333b02d0fdca87f082"
+  integrity sha1-km2VJqiXbzQ6VvUzOwLQ/cqH8II=
   dependencies:
     mkdirp "^0.5.1"
 
