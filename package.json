@@ -1,6 +1,6 @@
 {
   "name": "red-gql",
-  "version": "0.2.0-beta.6",
+  "version": "0.2.0-beta.7",
   "description": "GQL Data Aggregation CLI",
   "main": "./src/index.js",
   "module": "./src/index.js",

@@ -26,6 +26,7 @@ program
   .option('-s, --use-subfolders', 'Treat each folder in a datasourcePath as a datasource')
   .option('--introspection', 'Force activate introspection query on Apollo Server')
   .option('--voyager', 'Force activate voyager')
+  .option('--playground', 'Force activate playground')
   .option('-d, --debug', 'Run Apollo Server in debug mode');
 
 program.parse(process.argv);
