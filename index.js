@@ -25,6 +25,7 @@ program
   .option('--keepAlive [keepAlive]', 'Subscription connection keep alive intervall')
   .option('-s, --use-subfolders', 'Treat each folder in a datasourcePath as a datasource')
   .option('--introspection', 'Force activate introspection query on Apollo Server')
+  .option('--voyager', 'Force activate voyager')
   .option('-d, --debug', 'Run Apollo Server in debug mode');
 
 program.parse(process.argv);
@@ -77,6 +78,8 @@ if (program.build) {
     cacheControl: {
       defaultMaxAge: parseInt(process.env.GQL_CACHE_CONTROL_MAX_AGE, 10) || 15,
     },
+    voyager: program.voyager || process.env.NODE_ENV !== 'production',
+    playground: program.playground || process.env.NODE_ENV !== 'production',
   })
   .then(mountServer);
 }

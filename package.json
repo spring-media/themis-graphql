@@ -24,6 +24,7 @@
     "graphql": "14.0.3-internal",
     "graphql-tag": "2.10.0",
     "graphql-tools": "4.0.3",
+    "graphql-voyager": "1.0.0-rc.26",
     "joi": "13.4.0",
     "mkdirp": "0.5.1",
     "nock": "10.0.4",

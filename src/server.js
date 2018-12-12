@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const logger = require('./logger');
 const { spreadIf, insertIfValue } = require('./utils');
 const { ApolloServer } = require('apollo-server-express');
+const { express: voyagerMiddleware } = require('graphql-voyager/middleware');
 const { loadSchema } = require('./load-schema');
 const formatError = require('./format-error');
 
@@ -30,14 +31,22 @@ const applyMiddlewares = (app, middlewares) => {
   }
 };
 
-const setupNockMode = (app, nockPath, record) => {
-  if (record) {
-    const hashFn = ({ body }) => crypto.createHash('md5').update(JSON.stringify(body)).digest('hex');
+const setupNockMode = (app, nockMode, nockPath, record) => {
+  if (nockMode) {
+    if (record) {
+      const hashFn = ({ body }) => crypto.createHash('md5').update(JSON.stringify(body)).digest('hex');
 
-    app.use(nockMiddleware({ nockPath, hashFn }));
-    return;
+      app.use(nockMiddleware({ nockPath, hashFn }));
+      return;
+    }
+    replayNocks({ nockPath });
   }
-  replayNocks({ nockPath });
+};
+
+const setupVoyager = (app, voyager, graphQLPath) => {
+  if (voyager) {
+    app.use('/voyager', voyagerMiddleware({ endpointUrl: graphQLPath }));
+  }
 };
 
 async function initServer ({
@@ -59,6 +68,8 @@ async function initServer ({
   onStartup,
   onShutdown,
   cacheControl,
+  voyager,
+  playground,
 } = {}) {
   const app = express();
   const server = createServer(app);
@@ -76,9 +87,8 @@ async function initServer ({
 
   applyMiddlewares(app, middleware.before);
 
-  if (nockMode) {
-    setupNockMode(app, nockPath, nockRecord);
-  }
+  setupNockMode(app, nockMode, nockPath, nockRecord);
+  setupVoyager(app, voyager, graphQLPath);
 
   const {
     schema,
@@ -105,6 +115,7 @@ async function initServer ({
     tracing,
     cacheControl,
     introspection,
+    playground,
     ...spreadIf(hasSubscriptions, {
       subscriptions: {
         path: subscriptionsPath,
