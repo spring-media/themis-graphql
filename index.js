@@ -4,6 +4,7 @@ const { initServer } = require('./src/server');
 const { buildSchema } = require('./src/build-schema');
 const { loadFileConfig } = require('./src/load-file-config');
 const { mountServer } = require('./src/mount-server');
+const { runTests } = require('./src/run-tests');
 const valideEnv = require('./src/validate-env');
 const logger = require('./src/logger');
 const program = require('commander');
@@ -14,6 +15,7 @@ program
   .name('leto')
   .usage('[options] <datasourcePaths ...>')
   .option('-b, --build', 'Build datasources for production (load and store remote schemas)')
+  .option('-t, --test', 'Test datasources with jest and nock')
   .option('--pretty', 'store remote schema as pretty JSON for scm tracking and comparison')
   .option('-c, --config [configPath]', 'Load configuration from a file (resolved relative to cwd, or absolute)')
   .option('-m, --mock', 'Start server in mock mode')
@@ -57,6 +59,8 @@ if (program.build) {
     pretty: program.pretty,
   })
   .then(() => logger.info('Build Done.'));
+} else if (program.test) {
+  runTests();
 } else {
   initServer({
     mockMode: program.mock || false,
