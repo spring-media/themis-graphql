@@ -1,5 +1,7 @@
 # red-gql
-GQL Data Aggregation CLI
+GraphQL Data Aggregation CLI
+
+[Read the Docs](docs/README.md) or checkout the repository and run `yarn docs:serve`.
 
 # Usage
 ```
@@ -24,18 +26,6 @@ Options:
   -h, --help                         output usage information
 ```
 
-# What
-Inspired by [GrAMPS Datsources](https://gramps.js.org/data-source/data-source-overview/), built with [GraphQL Tools](https://github.com/apollographql/graphql-tools) and [Apollo Server](https://github.com/apollographql/apollo-server), this is an integrated CLI Tool to work with `datasources`. In short, `datasources` are encapsulated subsets of a larger graphql schema and can be [stitched](https://www.apollographql.com/docs/graphql-tools/schema-stitching.html) together as a combined graphql endpoint.
-
-You can point red-gql to a directory containing `datasources` and it will start up a server to stitch and run them.
-```
-node index -s ./datasources
-```
-
-This CLI supports [remote schemas](https://www.apollographql.com/docs/graphql-tools/remote-schemas.html) and uses the introspection result from another GraphQL endpoint. To allow the server to start in _production_, even though the remotes are not available yet, we can run a _build_, to store the remote schemas in a `dist` folder with the `datasource`.
-```
-node index -s ./datasources --build
-```
 
 # Mocks
 Each `datasource` can expose its own `mocks` and in `--mock` mode will will be added as [mock functions](https://www.apollographql.com/docs/graphql-tools/mocking.html) to the schema.

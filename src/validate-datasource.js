@@ -14,7 +14,7 @@ const schema = Joi.alternatives().try([
     extendTypes: Joi.object(),
     resolvers: Joi.object(),
     extendResolvers: Joi.object(),
-    mocks: Joi.object().required(),
+    mocks: Joi.object(),
     validateContext: Joi.func(),
     accessViaContext: Joi.string(),
     context: Joi.func(),
