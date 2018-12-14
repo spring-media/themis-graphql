@@ -31,6 +31,10 @@ program
   .option('--playground', 'Force activate playground')
   .option('-d, --debug', 'Run Apollo Server in debug mode');
 
+if (process.argv.find(arg => /-t|--test/.test(arg))) {
+  program.allowUnknownOption();
+}
+
 program.parse(process.argv);
 
 valideEnv();
