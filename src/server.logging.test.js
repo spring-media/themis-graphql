@@ -245,4 +245,44 @@ describe('Server', () => {
       expect(res.body).toMatchObject(expect.objectContaining(expected));
     });
   });
+
+  describe('Warning', () => {
+    beforeEach(() => {
+      logger.warn.mockReset();
+    });
+
+    it('logs a warning on type collision', async () => {
+      const { server } = await initServer({
+        datasourcePaths: [
+          path.resolve(__dirname, '../test/data/cms_article'),
+          path.resolve(__dirname, '../test/data/collide-article'),
+        ],
+      });
+
+      server.close();
+
+      expect(logger.warn).toHaveBeenCalledWith(
+        expect.stringMatching(
+          'Type Collision for "Article" from "cms-article" to "collide-article".'
+        )
+      );
+    });
+
+    it('logs a warning on field collision', async () => {
+      const { server } = await initServer({
+        datasourcePaths: [
+          path.resolve(__dirname, '../test/data/cms_article'),
+          path.resolve(__dirname, '../test/data/collide-article'),
+        ],
+      });
+
+      server.close();
+
+      expect(logger.warn).toHaveBeenCalledWith(
+        expect.stringMatching(
+          'Field Collision in "Article.headlinePlain" from "cms-article" to "collide-article".'
+        )
+      );
+    });
+  });
 });

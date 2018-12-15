@@ -1,6 +1,9 @@
 const { setupDatasource } = require('./setup-datasource');
 const { mergeSchemas } = require('graphql-tools');
+const { GraphQLSchema } = require('graphql');
 const { insertIfValue } = require('./utils');
+const { findTypeConflict } = require('./find-type-conflict');
+const logger = require('./logger');
 
 const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema }) => {
   if (datasourcePaths.length === 0) {
@@ -69,6 +72,18 @@ const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema }) => {
     contextValidations: [],
     startupFns: [],
     shutdownFns: [],
+  });
+
+  findTypeConflict(schemas.filter(maybeSchema => (maybeSchema instanceof GraphQLSchema)), {
+    ignoreTypeCheck: [ 'Query', 'ID', 'Int', 'String', 'Boolean', 'JSON' ],
+    onTypeConflict: (left, right, info) => {
+      logger.warn(`Type Collision for "${left.name}" from "${info.left.schema.moduleName}" ` +
+        `to "${info.right.schema.moduleName}".`);
+    },
+    onFieldConflict: (fieldName, left, right, info) => {
+      logger.warn(`Field Collision in "${info.left.type.name}.${fieldName}" ` +
+        `from "${info.left.schema.moduleName}" to "${info.right.schema.moduleName}".`);
+    },
   });
 
   const schema = mergeSchemas({

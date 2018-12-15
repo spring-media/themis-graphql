@@ -69,12 +69,12 @@ const setupDatasource = async (sourcePath, { mockMode, useFileSchema }) => {
     useFileSchema,
   });
 
-  if (mockMode) {
-    if (!config.mocks) {
-      logger.warn(`No mocks for ${sourcePath}`);
-    }
+  if (schema) {
+    Object.assign(schema, {
+      moduleName: config.name,
+    });
 
-    if (schema) {
+    if (mockMode && config.mocks) {
       addMockFunctionsToSchema({ schema, mocks: config.mocks });
     }
   }
