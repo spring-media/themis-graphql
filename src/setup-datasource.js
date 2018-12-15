@@ -10,10 +10,8 @@ const { spreadIf } = require('./utils');
 
 const setupRemote = async (config, { mockMode, sourcePath, useFileSchema }) => {
   const { transforms } = config.remote;
-
   const remoteResult = await loadRemoteSchema(config, sourcePath, { mockMode, useFileSchema });
   const { schema, link } = remoteResult;
-
   const executableSchema = makeRemoteExecutableSchema({
     schema,
     link,
@@ -32,7 +30,6 @@ const setupRemote = async (config, { mockMode, sourcePath, useFileSchema }) => {
 
 const setupLocal = config => {
   const { typeDefs, extendTypes, resolvers, extendResolvers } = config;
-
   const source = {};
 
   if (typeDefs) {

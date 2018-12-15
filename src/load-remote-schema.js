@@ -120,16 +120,13 @@ const makeRemoteHTTPLink = ({ uri, wsUri, name }) => {
 const loadRemoteSchema = async (config, sourcePath, { mockMode, useFileSchema }) => {
   const { linkContext, uri, wsUri } = config.remote;
   const { name } = config;
-
   const http = makeRemoteHTTPLink({
     uri,
     wsUri,
     sourcePath,
     name,
   });
-
   const link = linkContext ? setContext(linkContext).concat(http) : http;
-
   const schema = mockMode || useFileSchema ?
     await loadFileSchema(config.remote, sourcePath) :
     await introspectSchema(link);

@@ -97,10 +97,8 @@ async function initServer ({
     startupFns,
     shutdownFns,
   } = await loadSchema({ datasourcePaths, mockMode, useFileSchema: nockMode || useFileSchema });
-
   const combinedContext = context.concat(configContext);
   const hasSubscriptions = Boolean(schema.getSubscriptionType());
-
   const serverOptions = {
     schema,
     context: (...args) => ({
