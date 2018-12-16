@@ -1,9 +1,21 @@
 const { initServer } = require('./server');
 const request = require('supertest');
 const path = require('path');
+const { spawn } = require('../test/spawn');
+const { spawnCLI } = require('../test/utils');
 
 describe('Server', () => {
-  it.nock('populates the schema with remote data', async () => {
+  afterEach(async () => {
+    await spawn.anakin();
+  });
+
+  it('populates the schema with remote data', async () => {
+    await spawnCLI([
+      path.resolve(__dirname, '../test/data/cms_article'),
+    ], {
+      PORT: 51234,
+    });
+
     const { server } = await initServer({
       datasourcePaths: [
         path.resolve(__dirname, '../test/data/article'),
@@ -32,7 +44,7 @@ describe('Server', () => {
     const expected = {
       data: {
         article: expect.objectContaining({
-          headlinePlain: 'WURDE VERHAFTET!!!!',
+          headlinePlain: 'remote headline',
           state: expect.any(String),
           creationDate: expect.any(String),
         }),
@@ -40,8 +52,6 @@ describe('Server', () => {
     };
 
     expect(res.body).toMatchObject(expect.objectContaining(expected));
-  }, {
-    enableNetConnect: ['127.0.0.1'],
   });
 });
 
@@ -68,6 +78,59 @@ describe('Context', () => {
       data: {
         additionalContext: 'yay context',
       },
+    };
+
+    expect(res.body).toMatchObject(expect.objectContaining(expected));
+  });
+});
+
+describe('Transforms', () => {
+  afterEach(async () => {
+    await spawn.anakin();
+  });
+
+  it('applies transformations to a schema', async () => {
+    await spawnCLI([
+      path.resolve(__dirname, '../test/data/cms_article'),
+    ], {
+      PORT: 51324,
+    });
+
+    const { server } = await initServer({
+      datasourcePaths: [
+        path.resolve(__dirname, '../test/data/transformed-remote'),
+      ],
+      useFileSchema: false,
+    });
+
+    const res = await request(server)
+      .post('/api/graphql')
+      .send({
+        query: `query {
+          teaser {
+            id
+          }
+        }`,
+      })
+      .expect(400);
+
+    server.close();
+
+    const expected = {
+      errors: [
+        {
+          extensions: {
+            code: 'GRAPHQL_VALIDATION_FAILED',
+                },
+          locations: [
+            {
+              column: 11,
+              line: 2,
+            },
+          ],
+          message: 'Cannot query field "teaser" on type "Query".',
+        },
+      ],
     };
 
     expect(res.body).toMatchObject(expect.objectContaining(expected));

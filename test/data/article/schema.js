@@ -1,8 +1,6 @@
 const gql = require('graphql-tag');
 
 module.exports = gql`
-  scalar JSON
-
   input ArticleInput {
     id: ID!
     version: Int

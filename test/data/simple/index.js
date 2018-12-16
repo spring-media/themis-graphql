@@ -1,9 +1,18 @@
-const typeDefs = require('./schema');
-const resolvers = require('./resolvers');
+const gql = require('graphql-tag');
 
 module.exports = {
   name: 'simple',
-  typeDefs,
-  resolvers,
+  typeDefs: gql`
+    type Query {
+      simple: String
+    }
+  `,
+  resolvers: {
+    Query: {
+      simple: () => {
+        return 'Hello';
+      },
+    },
+  },
   mocks: {},
 };
