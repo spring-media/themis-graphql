@@ -9,7 +9,6 @@ const { loadDatasource } = require('./load-datasource');
 const { spreadIf } = require('./utils');
 
 const setupRemote = async (config, { mockMode, sourcePath, useFileSchema }) => {
-  const { transforms } = config.remote;
   const remoteResult = await loadRemoteSchema(config, sourcePath, { mockMode, useFileSchema });
   const { schema, link } = remoteResult;
   const executableSchema = makeRemoteExecutableSchema({
@@ -17,14 +16,8 @@ const setupRemote = async (config, { mockMode, sourcePath, useFileSchema }) => {
     link,
   });
 
-  let transformedSchema = executableSchema;
-
-  if (Array.isArray(transforms)) {
-    transformedSchema = transformSchema(executableSchema, transforms);
-  }
-
   return {
-    schema: transformedSchema,
+    schema: executableSchema,
   };
 };
 
@@ -59,31 +52,35 @@ const setupLocalOrRemoteSource = (config, opts) => {
 
 const setupDatasource = async (sourcePath, { mockMode, useFileSchema }) => {
   const config = await loadDatasource(sourcePath);
-  const { schema, resolvers } = await setupLocalOrRemoteSource(config, {
+  const source = await setupLocalOrRemoteSource(config, {
     mockMode,
     sourcePath,
     useFileSchema,
   });
 
-  if (schema) {
-    Object.assign(schema, {
+  if (source.schema) {
+    Object.assign(source.schema, {
       moduleName: config.name,
     });
 
     if (mockMode && config.mocks) {
-      addMockFunctionsToSchema({ schema, mocks: config.mocks });
+      addMockFunctionsToSchema({ schema: source.schema, mocks: config.mocks });
+    }
+
+    if (Array.isArray(config.transforms)) {
+      source.schema = transformSchema(source.schema, config.transforms);
     }
   }
 
   return {
     ...config,
     ...spreadIf(config.mount !== false, {
-      schema,
-      resolvers,
+      schema: source.schema,
+      resolvers: source.resolvers,
     }),
     accessViaContext: {
       ...spreadIf(config.accessViaContext, {
-        [config.accessViaContext]: schema,
+        [config.accessViaContext]: source.schema,
       }),
     },
     sourcePath,

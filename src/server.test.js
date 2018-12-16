@@ -89,7 +89,7 @@ describe('Transforms', () => {
     await spawn.anakin();
   });
 
-  it('applies transformations to a schema', async () => {
+  it('applies transformations to a remote schema', async () => {
     await spawnCLI([
       path.resolve(__dirname, '../test/data/cms_article'),
     ], {
@@ -99,6 +99,47 @@ describe('Transforms', () => {
     const { server } = await initServer({
       datasourcePaths: [
         path.resolve(__dirname, '../test/data/transformed-remote'),
+      ],
+      useFileSchema: false,
+    });
+
+    const res = await request(server)
+      .post('/api/graphql')
+      .send({
+        query: `query {
+          teaser {
+            id
+          }
+        }`,
+      })
+      .expect(400);
+
+    server.close();
+
+    const expected = {
+      errors: [
+        {
+          extensions: {
+            code: 'GRAPHQL_VALIDATION_FAILED',
+                },
+          locations: [
+            {
+              column: 11,
+              line: 2,
+            },
+          ],
+          message: 'Cannot query field "teaser" on type "Query".',
+        },
+      ],
+    };
+
+    expect(res.body).toMatchObject(expect.objectContaining(expected));
+  });
+
+  it('applies transformations to a local schema', async () => {
+    const { server } = await initServer({
+      datasourcePaths: [
+        path.resolve(__dirname, '../test/data/transformed-local'),
       ],
       useFileSchema: false,
     });
