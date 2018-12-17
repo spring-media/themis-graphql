@@ -4,6 +4,7 @@ const { setupDatasource } = require('./setup-datasource');
 const graphql = require('graphql');
 const tools = require('graphql-tools');
 const gql = require('graphql-tag');
+const supertest = require('supertest');
 
 module.exports = {
   gql,
@@ -12,4 +13,5 @@ module.exports = {
   setupDatasource,
   graphql,
   tools,
+  supertest,
 };
