@@ -1,3 +1,6 @@
 .storybook
 node_modules
 coverage
+__query_nocks__
+.vs
+docs
