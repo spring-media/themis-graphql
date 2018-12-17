@@ -60,10 +60,14 @@ const createConnectionLink = ({ uri, wsUri }) => {
     return httpLink;
   }
 
+  // TODO: call unsubscribeAll on server shutdown
+  // TODO: handle errors
   const client = new SubscriptionClient(
     wsUri,
     {
       reconnect: true,
+      lazy: true,
+      inactivityTimeout: 15000,
     },
     ws
   );

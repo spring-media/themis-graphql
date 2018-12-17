@@ -5,6 +5,7 @@ const { buildSchema } = require('./src/build-schema');
 const { loadFileConfig } = require('./src/load-file-config');
 const { mountServer } = require('./src/mount-server');
 const { runTests } = require('./src/run-tests');
+const { spreadIf } = require('./src/utils');
 const valideEnv = require('./src/validate-env');
 const logger = require('./src/logger');
 const program = require('commander');
@@ -23,8 +24,9 @@ program
   .option('-r, --record', 'Record external requests with nock (use with --nock)')
   .option('--nockPath [nockPath]', 'Where external request records should go')
   .option('--graphQLPath [graphQLPath]', 'Server path at which the API will be mounted (default: /api/graphql)')
-  .option('--graphQLSubscriptionsPath [path]', 'Server path at which the API will be mounted (default: /api/graphql)')
+  .option('--subscriptionsPath [path]', 'Server path at which the Subscriptions will be mounted (default: /ws/subscriptions)')
   .option('--keepAlive [keepAlive]', 'Subscription connection keep alive intervall')
+  .option('--no-subscriptions', 'Will filter out all subscriptions from schemas')
   .option('-s, --use-subfolders', 'Treat each folder in a datasourcePath as a datasource')
   .option('--introspection', 'Force activate introspection query on Apollo Server')
   .option('--voyager', 'Force activate voyager')
@@ -75,10 +77,16 @@ if (program.build) {
     useFileSchema: process.env.NODE_ENV === 'production',
     introspection: program.introspection,
     graphQLPath: program.graphQLPath || process.env.GQL_API_PATH,
-    graphQLSubscriptionsPath: program.graphQLSubscriptionsPath || process.env.GQL_SUBSCRIPTIONS_PATH,
+    ...spreadIf(program.subscriptions, {
+      subscriptions: {
+        path: program.subscriptionsPath || process.env.GQL_SUBSCRIPTIONS_PATH,
+        keepAlive: program.keepAlive || process.env.GQL_SUBSCRIPTION_KEEPALIVE,
+      },
+    }, {
+      subscriptions: false,
+    }),
     middleware,
     context,
-    keepAlive: program.keepAlive || process.env.GQL_SUBSCRIPTION_KEEPALIVE,
     debug: program.debug || process.env.NODE_ENV === 'development',
     tracing: process.env.GQL_TRACING === 'true',
     engineApiKey: process.env.APOLLO_ENGINE_API_KEY,

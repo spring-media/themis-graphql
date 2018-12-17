@@ -5,13 +5,13 @@ const { insertIfValue } = require('./utils');
 const { findTypeConflict } = require('./find-type-conflict');
 const logger = require('./logger');
 
-const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema }) => {
+const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema, filterSubscriptions }) => {
   if (datasourcePaths.length === 0) {
     throw new Error('Need at least one target path with datasources.');
   }
 
   const sources = await Promise.all(datasourcePaths
-    .map(path => setupDatasource(path, { mockMode, useFileSchema })));
+    .map(path => setupDatasource(path, { mockMode, useFileSchema, filterSubscriptions })));
 
   // TODO: Implement namespaces
 

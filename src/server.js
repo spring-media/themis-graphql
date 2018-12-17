@@ -58,10 +58,9 @@ async function initServer ({
   datasourcePaths = [],
   introspection,
   graphQLPath = '/api/graphql',
-  subscriptionsPath = '/ws/subscriptions',
+  subscriptions = {},
   middleware = {},
   context: configContext = [],
-  keepAlive = 15000,
   debug = false,
   tracing = false,
   engineApiKey,
@@ -73,6 +72,15 @@ async function initServer ({
 } = {}) {
   const app = express();
   const server = createServer(app);
+
+  if (subscriptions !== false) {
+    Object.assign(subscriptions, {
+      path: '/ws/subscriptions',
+      keepAlive: 15000,
+      ...Object.keys(subscriptions).reduce((p, k) =>
+        subscriptions[k] ? { ...p, [k]: subscriptions[k] } : p, {}),
+    });
+  }
 
   if (debug) {
     const createReqResLog = require('./logger/log-req-res');
@@ -96,7 +104,12 @@ async function initServer ({
     accessViaContext,
     startupFns,
     shutdownFns,
-  } = await loadSchema({ datasourcePaths, mockMode, useFileSchema: nockMode || useFileSchema });
+  } = await loadSchema({
+    datasourcePaths,
+    mockMode,
+    useFileSchema: nockMode || useFileSchema,
+    filterSubscriptions: subscriptions === false,
+  });
   const combinedContext = context.concat(configContext);
   const hasSubscriptions = Boolean(schema.getSubscriptionType());
   const serverOptions = {
@@ -115,11 +128,7 @@ async function initServer ({
     introspection,
     playground,
     ...spreadIf(hasSubscriptions, {
-      subscriptions: {
-        path: subscriptionsPath,
-        // TODO: configurable onConnect: () => {},
-        keepAlive,
-      },
+      subscriptions,
     }),
     ...spreadIf(engineApiKey, {
       engine: {
@@ -134,6 +143,10 @@ async function initServer ({
   }
 
   apolloServer.applyMiddleware({ app, path: graphQLPath });
+
+  server.on('close', () => {
+    apolloServer.stop();
+  });
 
   applyMiddlewares(app, middleware.after);
 
@@ -156,7 +169,7 @@ async function initServer ({
     app,
     server,
     hasSubscriptions,
-    subscriptionsPath,
+    subscriptionsPath: subscriptions.path,
     graphQLPath,
     startup,
     shutdown,

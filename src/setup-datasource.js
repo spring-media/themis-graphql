@@ -3,6 +3,7 @@ const {
   makeRemoteExecutableSchema,
   transformSchema,
   addMockFunctionsToSchema,
+  FilterRootFields,
 } = require('graphql-tools');
 const { loadRemoteSchema } = require('./load-remote-schema');
 const { loadDatasource } = require('./load-datasource');
@@ -50,7 +51,8 @@ const setupLocalOrRemoteSource = (config, opts) => {
   return setupLocal(config, opts);
 };
 
-const setupDatasource = async (sourcePath, { mockMode, useFileSchema }) => {
+// eslint-disable-next-line complexity
+const setupDatasource = async (sourcePath, { mockMode, useFileSchema, filterSubscriptions }) => {
   const config = await loadDatasource(sourcePath);
   const source = await setupLocalOrRemoteSource(config, {
     mockMode,
@@ -65,6 +67,11 @@ const setupDatasource = async (sourcePath, { mockMode, useFileSchema }) => {
 
     if (mockMode && config.mocks) {
       addMockFunctionsToSchema({ schema: source.schema, mocks: config.mocks });
+    }
+
+    if (filterSubscriptions) {
+      config.transforms = config.transforms || [];
+      config.transforms.push(new FilterRootFields(op => op !== 'Subscription'));
     }
 
     if (Array.isArray(config.transforms)) {

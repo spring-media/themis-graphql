@@ -1,6 +1,7 @@
 const request = require('supertest');
 const { spawn } = require('./test/spawn');
-const { spawnCLI } = require('./test/utils');
+const { spawnCLI, createClient } = require('./test/utils');
+const gql = require('graphql-tag');
 const path = require('path');
 
 describe('CLI', () => {
@@ -161,6 +162,76 @@ describe('CLI', () => {
 
     setTimeout(() => spawn.killChild(server, 'SIGINT', false), 1500);
   }, 10000);
+});
+
+describe('Subscriptions', () => {
+  afterEach(async () => {
+    await spawn.anakin();
+  });
+
+  it('sets a custom subscriptions path with --subscriptionsPath', async done => {
+    await spawnCLI([
+      path.resolve(__dirname, 'test/data/subscription'),
+      '--subscriptionsPath',
+      '/custom/ws/path',
+    ], {
+      PORT: 54301,
+    });
+
+    const client = createClient({ port: 54301, subPath: '/custom/ws/path' });
+
+    const subscription = client.subscribe({
+      query: gql`subscription {
+        wallet {
+          id
+          value
+        }
+      }`,
+    }).subscribe({
+      next: res => {
+        subscription.unsubscribe();
+        expect(res).toMatchObject(expect.objectContaining({
+          data: {
+            wallet: {
+              id: 'baf86a8bf86af8',
+              value: expect.any(Number),
+              __typename: 'Wallet',
+            },
+          },
+        }));
+        done();
+      },
+    });
+  });
+
+  it('disables subscriptions with the --no-subscriptions flag', async done => {
+    await spawnCLI([
+      path.resolve(__dirname, 'test/data/subscription'),
+      '--no-subscriptions',
+    ], {
+      PORT: 54301,
+    });
+
+    const client = createClient({
+      port: 54301,
+      errorHandler: () => {
+        done();
+      },
+    });
+
+    const subscription = client.subscribe({
+      query: gql`subscription {
+        wallet {
+          id
+          value
+        }
+      }`,
+      errorPolicy: 'all',
+    }).subscribe(() => {
+      subscription.unsubscribe();
+      done(new Error('We should not get here'));
+    });
+  });
 });
 
 describe('Middleware', () => {

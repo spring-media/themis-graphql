@@ -3,9 +3,11 @@ const path = require('path');
 const { ApolloClient } = require('apollo-client');
 const { InMemoryCache } = require('apollo-cache-inmemory');
 const { HttpLink } = require('apollo-link-http');
-const { split } = require('apollo-link');
+const { onError } = require('apollo-link-error');
+const { ApolloLink, split } = require('apollo-link');
 const { WebSocketLink } = require('apollo-link-ws');
 const { getMainDefinition } = require('apollo-utilities');
+const { SubscriptionClient } = require('subscriptions-transport-ws');
 const fetch = require('node-fetch');
 
 const cliReady = (instance, PORT) => {
@@ -74,26 +76,34 @@ const spawnCLI = (args, {
   });
 };
 
-const createClient = ({ port }) => {
-  const wsLink = new WebSocketLink({
-    uri: `ws://127.0.0.1:${port}/ws/subscriptions`,
-  });
+const createClient = ({
+  port,
+  subPath = '/ws/subscriptions',
+  errorHandler = () => {},
+}) => {
+  const subClient = new SubscriptionClient(`ws://127.0.0.1:${port}${subPath}`);
+
+  subClient.on('error', errorHandler);
+  const wsLink = new WebSocketLink(subClient);
 
   const httpLink = new HttpLink({
     uri: `http://127.0.0.1:${port}/api/graphql`,
     fetch,
   });
 
-  const link = split(
-    // split based on operation type
-    ({ query }) => {
-      const { kind, operation } = getMainDefinition(query);
+  const link = ApolloLink.from([
+    onError(errorHandler),
+    split(
+      // split based on operation type
+      ({ query }) => {
+        const { kind, operation } = getMainDefinition(query);
 
-      return kind === 'OperationDefinition' && operation === 'subscription';
-    },
-    wsLink,
-    httpLink
-  );
+        return kind === 'OperationDefinition' && operation === 'subscription';
+      },
+      wsLink,
+      httpLink
+    ),
+  ]);
 
   const cache = new InMemoryCache();
   const client = new ApolloClient({
