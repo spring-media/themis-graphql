@@ -27,10 +27,10 @@
     "graphql-tag": "2.10.0",
     "graphql-tools": "4.0.3",
     "graphql-voyager": "1.0.0-rc.26",
-    "joi": "13.4.0",
     "jest": "23.6.0",
     "jest-cli": "23.6.0",
     "jest-nock": "0.1.6",
+    "joi": "13.4.0",
     "mkdirp": "0.5.1",
     "nock": "10.0.4",
     "subscriptions-transport-ws": "0.9.15",
@@ -45,7 +45,6 @@
     "apollo-utilities": "1.0.26",
     "babel-eslint": "8.2.3",
     "eslint": "4.19.1",
-    "gitbook-cli": "2.3.2",
     "node-fetch": "2.3.0",
     "nodemon": "1.18.6",
     "request": "2.88.0",
@@ -56,9 +55,7 @@
     "test": "jest --config test/config/jest.config.json",
     "test:coverage": "npm run test:integration -- --coverage",
     "lint": "yarn test:eslint",
-    "test:eslint": "./node_modules/.bin/eslint --quiet '**/*.js'",
-    "docs:serve": "gitbook serve ./docs",
-    "docs:build": "gitbook build ./docs"
+    "test:eslint": "./node_modules/.bin/eslint --quiet '**/*.js'"
   },
   "repository": {
     "type": "git",

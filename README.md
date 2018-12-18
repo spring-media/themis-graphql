@@ -1,11 +1,11 @@
-# red-gql
+# Themis
 GraphQL Data Aggregation CLI
 
-[Read the Docs](docs/README.md) or checkout the repository and run `yarn docs:serve`.
+[Read the Docs](docs/getting-started.md) or checkout the repository, goto `./website` and run `yarn && yarn start`.
 
 # Usage
 ```
-red-gql git:(master) ✗ node index --help
+themis git:(master) ✗ node index --help
 
 Usage: node index [options] <datasourcePaths ...>
 
@@ -34,7 +34,7 @@ node index -s ./datasources --mock
 ```
 
 ## Nocks
-A special case for mocking are remote datasources or external requests to third parties, when mainly using red-gql as an aggregation/transformation layer. External requests from datasources can be recorded on a _per query_ basis. The recorded requests can then be automatically replayed in `--nock` mode for the queries or be used to create manual mocks for `--mock` mode.
+A special case for mocking are remote datasources or external requests to third parties, when mainly using themis as an aggregation/transformation layer. External requests from datasources can be recorded on a _per query_ basis. The recorded requests can then be automatically replayed in `--nock` mode for the queries or be used to create manual mocks for `--mock` mode.
 
 To record external requests for automatic replay use:
 ```
