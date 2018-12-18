@@ -1,24 +1,11 @@
 /**
  * This is a TEST remote data source
  */
-const { FilterRootFields } = require('graphql-tools');
-
 module.exports = {
-  namespace: 'Article',
-  accessViaContext: 'cmsSchema',
-  mount: false,
+  name: 'cms',
+  accessViaContext: 'simpleSchema',
   remote: {
-    uri: 'https://editor.bild-stg.leancms.de/api/graphql',
+    uri: 'http://127.0.0.1:54125/api/graphql',
     schemaPath: 'customDist/schema.json',
-    linkContext: () => ({
-      headers: {
-        'authorization': 'dummy-test-token',
-      },
-    }),
-    transforms: [
-      new FilterRootFields((op, fieldname) => {
-        return op === 'Query' && [ 'article', 'articles', 'teaser', 'channels' ].includes(fieldname);
-      }),
-    ],
   },
 };

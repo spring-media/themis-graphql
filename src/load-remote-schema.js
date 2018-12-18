@@ -1,5 +1,12 @@
 const { setContext } = require('apollo-link-context');
+const { ApolloLink } = require('apollo-link');
+const { onError } = require('apollo-link-error');
 const { HttpLink } = require('apollo-link-http');
+const { split } = require('apollo-link');
+const { WebSocketLink } = require('apollo-link-ws');
+const { SubscriptionClient } = require('subscriptions-transport-ws');
+const ws = require('ws');
+const { getMainDefinition } = require('apollo-utilities');
 const logger = require('./logger');
 const fetch = require('node-fetch');
 const { introspectionQuery, parse } = require('graphql');
@@ -37,32 +44,95 @@ const loadFileSchema = async (config, sourcePath) => {
 	return schema;
 };
 
-const makeRemoteHTTPLink = ({ uri }) => {
-  const link = new HttpLink({
+const createConnectionLink = ({ uri, wsUri }) => {
+  const httpLink = new HttpLink({
     uri,
     fetch: async (...args) => {
-      const result = await fetch(...args);
-
       logger.debug('Remote fetch args:', args);
+
+      const result = await fetch(...args);
 
       return result;
     },
   });
 
+  if (!wsUri) {
+    return httpLink;
+  }
+
+  // TODO: call unsubscribeAll on server shutdown
+  // TODO: handle errors
+  const client = new SubscriptionClient(
+    wsUri,
+    {
+      reconnect: true,
+      lazy: true,
+      inactivityTimeout: 15000,
+    },
+    ws
+  );
+
+  const wsLink = new WebSocketLink(client);
+
+  const splitLink = split(
+    ({ query }) => {
+      const { kind, operation } = getMainDefinition(query);
+
+      return kind === 'OperationDefinition' && operation === 'subscription';
+    },
+    wsLink,
+    httpLink
+  );
+
+  return splitLink;
+};
+
+const createErrorLogLink = ({ uri, name }) => {
+  return onError(({ graphQLErrors, networkError }) => {
+    // NOTE: We need to always log remote errors here, not just bubbled up to format error,
+    // because when a remote error breaks a local resolver, only the local resolver error
+    // will get through to formatError and we will not know immediately why the local resolver failed.
+    if (graphQLErrors) {
+      graphQLErrors.forEach(err => {
+        Object.assign(err, {
+          message: `[Remote GraphQL Error in "${name} (${uri})"]: ${err.message}`,
+        });
+        logger.error(err.message);
+      });
+    }
+
+    if (networkError) {
+      Object.assign(networkError, {
+        message: `[Remote Network Error in "${name} (${uri})"]: ${networkError.message}`,
+      });
+      logger.error(networkError.message);
+    }
+  });
+};
+
+const makeRemoteHTTPLink = ({ uri, wsUri, name }) => {
+  const errorLogLink = createErrorLogLink({ uri, name });
+  const connectionLink = createConnectionLink({ uri, wsUri });
+  const link = ApolloLink.from([
+    errorLogLink,
+    connectionLink,
+  ]);
+
   return link;
 };
 
-const loadRemoteSchema = async (config, sourcePath, { mockMode, productionMode }) => {
-  const {
-    linkContext,
+const loadRemoteSchema = async (config, sourcePath, { mockMode, useFileSchema }) => {
+  const { linkContext, uri, wsUri } = config.remote;
+  const { name } = config;
+  const http = makeRemoteHTTPLink({
     uri,
-  } = config;
-  const http = makeRemoteHTTPLink({ uri });
-
+    wsUri,
+    sourcePath,
+    name,
+  });
   const link = linkContext ? setContext(linkContext).concat(http) : http;
-
-  const schema = mockMode || productionMode ?
-    await loadFileSchema(config, sourcePath) :
+  const schema = mockMode || useFileSchema ?
+    await loadFileSchema(config.remote, sourcePath) :
     await introspectSchema(link);
 
   return { schema, link };

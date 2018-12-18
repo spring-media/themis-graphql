@@ -1,6 +1,6 @@
 {
   "bail": false,
-  "rootDir": "../../src",
+  "rootDir": "../../",
   "testRegex": "(\\.(test))\\.js$",
   "moduleFileExtensions": [
     "js",
@@ -12,5 +12,5 @@
   "setupFiles": [
     "dotenv/config"
   ],
-  "setupTestFrameworkScriptFile": "../test/framework.js"
+  "setupTestFrameworkScriptFile": "./test/framework.js"
 }

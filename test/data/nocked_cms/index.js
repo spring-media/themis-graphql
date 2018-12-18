@@ -2,7 +2,7 @@
  * This is a TEST remote data source
  */
 module.exports = {
-  namespace: 'Article',
+  name: 'nocked-cms',
   accessViaContext: 'cmsSchema',
   mount: false,
   remote: {

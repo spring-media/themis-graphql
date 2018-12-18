@@ -1,37 +1,31 @@
 # red-gql
-GQL Data Aggregation CLI
+GraphQL Data Aggregation CLI
+
+[Read the Docs](docs/README.md) or checkout the repository and run `yarn docs:serve`.
 
 # Usage
 ```
 red-gql git:(master) ✗ node index --help
 
-  Usage: node index [options] <datasourcePaths ...>
+Usage: node index [options] <datasourcePaths ...>
 
-  Options:
-
-    -b, --build                Build datasources for production (load and store remote schemas)
-    --pretty                   store remote schema as pretty JSON for scm tracking and comparison
-    -m, --mock                 Start server in mock mode
-    -n, --nock                 Start server in nock mode (Load recorded nocks)
-    -r, --record               Record external requests with nock
-    -p, --nockPath [nockPath]  Where external request records should go
-    -s, --use-subfolders       Treat each folder in a datasourcePath as a datasource
-    --introspection            Force activate introspection query on Apollo Server
-    -h, --help                 output usage information
+Options:
+  -b, --build                        Build datasources for production (load and store remote schemas)
+  --pretty                           store remote schema as pretty JSON for scm tracking and comparison
+  -c, --config [configPath]          Load configuration from a file (resolved relative to cwd, or absolute)
+  -m, --mock                         Start server in mock mode
+  -n, --nock                         Start server in nock mode (Load recorded nocks)
+  -r, --record                       Record external requests with nock (use with --nock)
+  --nockPath [nockPath]              Where external request records should go
+  --graphQLPath [graphQLPath]        Server path at which the API will be mounted (default: /api/graphql)
+  --graphQLSubscriptionsPath [path]  Server path at which the API will be mounted (default: /api/graphql)
+  --keepAlive [keepAlive]            Subscription connection keep alive intervall
+  -s, --use-subfolders               Treat each folder in a datasourcePath as a datasource
+  --introspection                    Force activate introspection query on Apollo Server
+  -d, --debug                        Run Apollo Server in debug mode
+  -h, --help                         output usage information
 ```
 
-# What
-Inspired by [GrAMPS Datsources](https://gramps.js.org/data-source/data-source-overview/), built with [GraphQL Tools](https://github.com/apollographql/graphql-tools) and [Apollo Server](https://github.com/apollographql/apollo-server), this is an integrated CLI Tool to work with `datasources`. In short, `datasources` are encapsulated subsets of a larger graphql schema and can be [stitched](https://www.apollographql.com/docs/graphql-tools/schema-stitching.html) together as a combined graphql endpoint.
-
-You can point red-gql to a directory containing `datasources` and it will start up a server to stitch and run them.
-```
-node index -s ./datasources
-```
-
-This CLI supports [remote schemas](https://www.apollographql.com/docs/graphql-tools/remote-schemas.html) and uses the introspection result from another GraphQL endpoint. To allow the server to start in _production_, even though the remotes are not available yet, we can run a _build_, to store the remote schemas in a `dist` folder with the `datasource`.
-```
-node index -s ./datasources --build
-```
 
 # Mocks
 Each `datasource` can expose its own `mocks` and in `--mock` mode will will be added as [mock functions](https://www.apollographql.com/docs/graphql-tools/mocking.html) to the schema.
@@ -57,11 +51,15 @@ Replaying is currently only possible in production mode, as it needs an existing
 
 # Configuration
 Create a `.env` file and/or provide the following environment configurations:
-- PORT = (INT)
-- NODE_ENV = (development|production)
-- LOG_LEVEL = (debug|warn|error|info)
-- GQL_TRACING = (true|false)
-- GQL_CACHE_CONTROL = (true|false)
+- PORT = INT
+- NODE_ENV = STRING (development|production)
+- LOG_LEVEL = STRING (debug|warn|error|info)
+- GQL_API_PATH = STRING (default: '/api/graphql')
+- GQL_SUBSCRIPTIONS_PATH = STRING (default: '/ws/subscriptions')
+- GQL_SUBSCRIPTION_KEEPALIVE = INT (ms, default: 15000)
+- GQL_TRACING = BOOLEAN
+- GQL_CACHE_CONTROL_MAX_AGE = INT (seconds)
+- APOLLO_ENGINE_API_KEY = [See Apollo Engine Docs](https://www.apollographql.com/docs/engine/)
 
 To use the CLI in a development environment with a `.env` file, use `node index -r dotenv/config ...`.
 
@@ -70,6 +68,8 @@ To use the CLI in a development environment with a `.env` file, use `node index 
 Run `yarn install`.
 
 # Testing
+Tests are mainly written as integration tests and should mainly be written as integration tests.
+
 Run `yarn test`.
 
 The test setup mocks all external requests (including remote gql resources like lean), with [nock](https://github.com/nock/nock).

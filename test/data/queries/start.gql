@@ -1,0 +1,5 @@
+#import "./import1.gql"
+AAA
+AAA
+#import "./import2.gql"
+AAA

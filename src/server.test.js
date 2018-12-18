@@ -1,26 +1,28 @@
-jest.mock('./logger');
-const logger = require('./logger');
 const { initServer } = require('./server');
 const request = require('supertest');
 const path = require('path');
+const { spawn } = require('../test/spawn');
+const { spawnCLI } = require('../test/utils');
 
 describe('Server', () => {
-  let server = null;
+  afterEach(async () => {
+    await spawn.anakin();
+  });
 
-  beforeAll.nock(async () => {
-    server = await initServer({
+  it('populates the schema with remote data', async () => {
+    await spawnCLI([
+      path.resolve(__dirname, '../test/data/cms_article'),
+    ], {
+      PORT: 51234,
+    });
+
+    const { server } = await initServer({
       datasourcePaths: [
         path.resolve(__dirname, '../test/data/article'),
         path.resolve(__dirname, '../test/data/cms'),
       ],
     });
-  });
 
-  afterAll(() => {
-    server.close();
-  });
-
-  it.nock('populates the schema with remote data', async () => {
     const res = await request(server)
       .post('/api/graphql')
       .send({
@@ -42,7 +44,7 @@ describe('Server', () => {
     const expected = {
       data: {
         article: expect.objectContaining({
-          headlinePlain: 'WURDE VERHAFTET!!!!',
+          headlinePlain: 'remote headline',
           state: expect.any(String),
           creationDate: expect.any(String),
         }),
@@ -50,27 +52,23 @@ describe('Server', () => {
     };
 
     expect(res.body).toMatchObject(expect.objectContaining(expected));
-  }, {
-    enableNetConnect: ['127.0.0.1'],
   });
 });
 
-describe('Error', () => {
-  beforeEach(() => {
-    logger.error.mockReset();
-  });
-
-  it('logs resolver errors', async () => {
-    const server = await initServer({
+describe('Context', () => {
+  it('lets datasource extend the query context', async () => {
+    const { server } = await initServer({
       datasourcePaths: [
-        path.resolve(__dirname, '../test/data/error'),
+        path.resolve(__dirname, '../test/data/context'),
       ],
     });
 
     const res = await request(server)
       .post('/api/graphql')
       .send({
-        query: 'query { error }',
+        query: `query {
+          additionalContext
+        }`,
       })
       .expect(200);
 
@@ -78,56 +76,104 @@ describe('Error', () => {
 
     const expected = {
       data: {
-        error: null,
+        additionalContext: 'yay context',
       },
-      errors: [{
-        message: 'resolver error in datasource',
-        locations: [{ line: 1, column: 9 }],
-        path: ['error'],
-        extensions: {
-          code: 'INTERNAL_SERVER_ERROR',
-          exception: {
-            errors: [{
-              message: 'resolver error in datasource',
-              locations: [],
-              path: ['error'],
-            }],
-          },
-        },
-      }],
     };
 
-    expect(logger.error).toHaveBeenCalledWith(expect.stringMatching('Error: resolver error in datasource\n'));
     expect(res.body).toMatchObject(expect.objectContaining(expected));
   });
+});
 
-  it('logs validation errors', async () => {
-    const server = await initServer({
+describe('Transforms', () => {
+  afterEach(async () => {
+    await spawn.anakin();
+  });
+
+  it('applies transformations to a remote schema', async () => {
+    await spawnCLI([
+      path.resolve(__dirname, '../test/data/cms_article'),
+    ], {
+      PORT: 51324,
+    });
+
+    const { server } = await initServer({
       datasourcePaths: [
-        path.resolve(__dirname, '../test/data/error'),
+        path.resolve(__dirname, '../test/data/transformed-remote'),
       ],
+      useFileSchema: false,
     });
 
     const res = await request(server)
       .post('/api/graphql')
       .send({
-        query: 'query { imageStuff }',
+        query: `query {
+          teaser {
+            id
+          }
+        }`,
       })
       .expect(400);
 
     server.close();
 
     const expected = {
-      errors: [{
-        message: 'Cannot query field "imageStuff" on type "Query".',
-        locations: [{ line: 1, column: 9 }],
-        extensions: {
-          code: 'GRAPHQL_VALIDATION_FAILED',
+      errors: [
+        {
+          extensions: {
+            code: 'GRAPHQL_VALIDATION_FAILED',
+                },
+          locations: [
+            {
+              column: 11,
+              line: 2,
+            },
+          ],
+          message: 'Cannot query field "teaser" on type "Query".',
         },
-      }],
+      ],
     };
 
-    expect(logger.error).toHaveBeenCalledWith(expect.stringMatching('Cannot query field "imageStuff" on type "Query".'));
+    expect(res.body).toMatchObject(expect.objectContaining(expected));
+  });
+
+  it('applies transformations to a local schema', async () => {
+    const { server } = await initServer({
+      datasourcePaths: [
+        path.resolve(__dirname, '../test/data/transformed-local'),
+      ],
+      useFileSchema: false,
+    });
+
+    const res = await request(server)
+      .post('/api/graphql')
+      .send({
+        query: `query {
+          teaser {
+            id
+          }
+        }`,
+      })
+      .expect(400);
+
+    server.close();
+
+    const expected = {
+      errors: [
+        {
+          extensions: {
+            code: 'GRAPHQL_VALIDATION_FAILED',
+                },
+          locations: [
+            {
+              column: 11,
+              line: 2,
+            },
+          ],
+          message: 'Cannot query field "teaser" on type "Query".',
+        },
+      ],
+    };
+
     expect(res.body).toMatchObject(expect.objectContaining(expected));
   });
 });

@@ -1,29 +1,88 @@
 const express = require('express');
 const { createServer } = require('http');
-const { initializeGraphql } = require('./express-gql');
-const { nockMiddleware, replayNocks } = require('./nock-queries');
+const { nockMiddleware, replayNocks } = require('express-nock');
 const expressWinston = require('express-winston');
-const path = require('path');
+const crypto = require('crypto');
 const logger = require('./logger');
+const { spreadIf, insertIfValue } = require('./utils');
+const { ApolloServer } = require('apollo-server-express');
+const { express: voyagerMiddleware } = require('graphql-voyager/middleware');
+const { loadSchema } = require('./load-schema');
+const formatError = require('./format-error');
 
-// eslint-disable-next-line complexity
+const wrapMiddleware = middleware => {
+  return (...args) => {
+    const next = args[args.length - 1];
+
+    Promise.resolve().then(() => middleware(...args)).catch(ex => next(ex));
+  };
+};
+
+const applyMiddlewares = (app, middlewares) => {
+  if (Array.isArray(middlewares)) {
+    middlewares.forEach(fnOrArr => {
+      if (Array.isArray(fnOrArr)) {
+        return app.use(...fnOrArr
+          .map(maybeFn => typeof maybeFn === 'function' ? wrapMiddleware(maybeFn) : maybeFn)
+        );
+      }
+      return app.use(wrapMiddleware(fnOrArr));
+    });
+  }
+};
+
+const setupNockMode = (app, nockMode, nockPath, record) => {
+  if (nockMode) {
+    if (record) {
+      const hashFn = ({ body }) => crypto.createHash('md5').update(JSON.stringify(body)).digest('hex');
+
+      app.use(nockMiddleware({ nockPath, hashFn }));
+      return;
+    }
+    replayNocks({ nockPath });
+  }
+};
+
+const setupVoyager = (app, voyager, graphQLPath) => {
+  if (voyager) {
+    app.use('/voyager', voyagerMiddleware({ endpointUrl: graphQLPath }));
+  }
+};
+
 async function initServer ({
   mockMode = false,
   nockMode = false,
   nockRecord = false,
-  nockPath,
-  productionMode = true,
+  nockPath = '__query_nocks__',
+  useFileSchema = true,
   datasourcePaths = [],
   introspection,
+  graphQLPath = '/api/graphql',
+  subscriptions = {},
+  middleware = {},
+  context: configContext = [],
+  debug = false,
+  tracing = false,
+  engineApiKey,
+  onStartup,
+  onShutdown,
+  cacheControl,
+  voyager,
+  playground,
 } = {}) {
-  if (datasourcePaths.length === 0) {
-    throw new Error('Need at least one target path with datasources.');
-  }
-
   const app = express();
   const server = createServer(app);
 
-  if (process.env.LOG_LEVEL === 'debug') {
+  if (subscriptions !== false) {
+    Object.assign(subscriptions, {
+      path: '/ws/subscriptions',
+      keepAlive: 15000,
+      ...Object.keys(subscriptions).reduce((p, k) =>
+        subscriptions[k] ? { ...p, [k]: subscriptions[k] } : p, {}),
+    });
+  }
+
+  if (debug) {
     const createReqResLog = require('./logger/log-req-res');
 
     app.use(createReqResLog(logger));
@@ -34,42 +93,87 @@ async function initServer ({
     statusLevels: true,
   }));
 
-  if (nockMode) {
-    const resolvedNockPath = nockPath ? path.resolve(nockPath) : path.join(process.cwd(), '/__query_nocks__');
+  applyMiddlewares(app, middleware.before);
 
-    if (nockRecord) {
-      app.use(nockMiddleware({ nockPath: resolvedNockPath }));
-    } else {
-      // NOTE: To replay nocks we need to set productionMode to use saved remote schema
-      // to be in offline mode, maybe the parameter for initializeGraphql can be renamed
-      // to `useFileSchema`
-      productionMode = true; // eslint-disable-line
-      replayNocks({ nockPath: resolvedNockPath });
-    }
-  }
+  setupNockMode(app, nockMode, nockPath, nockRecord);
+  setupVoyager(app, voyager, graphQLPath);
 
-  await initializeGraphql(app, {
+  const {
+    schema,
+    context = [],
+    accessViaContext,
+    startupFns,
+    shutdownFns,
+  } = await loadSchema({
     datasourcePaths,
     mockMode,
-    nockMode,
-    nockRecord,
-    productionMode,
-    graphQLPath: '/api/graphql',
-    tracing: process.env.GQL_TRACING === 'true' || false,
-    cacheControl: process.env.GQL_CACHE_CONTROL === 'true' || false,
-    introspection,
+    useFileSchema: nockMode || useFileSchema,
+    filterSubscriptions: subscriptions === false,
   });
+  const combinedContext = context.concat(configContext);
+  const hasSubscriptions = Boolean(schema.getSubscriptionType());
+  const serverOptions = {
+    schema,
+    context: (...args) => ({
+      ...combinedContext.reduce((ctx, fn) => ({
+        ...ctx,
+        ...fn(...args),
+      }), {}),
+      ...accessViaContext,
+    }),
+    formatError,
+    debug,
+    tracing,
+    cacheControl,
+    introspection,
+    playground,
+    ...spreadIf(hasSubscriptions, {
+      subscriptions,
+    }),
+    ...spreadIf(engineApiKey, {
+      engine: {
+        apiKey: engineApiKey,
+      },
+    }),
+  };
+  const apolloServer = new ApolloServer(serverOptions);
+
+  if (hasSubscriptions) {
+    apolloServer.installSubscriptionHandlers(server);
+  }
+
+  apolloServer.applyMiddleware({ app, path: graphQLPath });
+
+  server.on('close', () => {
+    apolloServer.stop();
+  });
+
+  applyMiddlewares(app, middleware.after);
 
   app.use((err, req, res, next) => {
     logger.error(err);
     next(err);
   });
 
-  app.get('/health', (req, res) => {
-    return res.send('OK');
-  });
+  const startup = () => Promise.all([
+    ...startupFns,
+    ...insertIfValue(onStartup),
+  ].map(fn => fn(server)));
 
-  return server;
+  const shutdown = () => Promise.all([
+    ...shutdownFns,
+    ...insertIfValue(onShutdown),
+  ].map(fn => fn(server)));
+
+  return {
+    app,
+    server,
+    hasSubscriptions,
+    subscriptionsPath: subscriptions.path,
+    graphQLPath,
+    startup,
+    shutdown,
+  };
 }
 
 module.exports = {

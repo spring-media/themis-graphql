@@ -6,13 +6,15 @@ describe('Server', () => {
   let server = null;
 
   beforeAll.nock(async () => {
-    server = await initServer({
+    const { server: gqlServer } = await initServer({
       mockMode: true,
       datasourcePaths: [
         path.resolve(__dirname, '../test/data/article'),
         path.resolve(__dirname, '../test/data/cms'),
       ],
     });
+
+    server = gqlServer;
   });
 
   afterAll(() => {
@@ -23,8 +25,8 @@ describe('Server', () => {
     const res = await request(server)
       .post('/api/graphql')
       .send({
-        query: `query fetchArticle($input: ArticleInput) { 
-          article(input: $input) { 
+        query: `query fetchArticle($input: ArticleInput) {
+          article(input: $input) {
             state
             creationDate
             headlinePlain

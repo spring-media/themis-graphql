@@ -6,10 +6,11 @@ const nock = require('nock');
 const rimraf = require('rimraf');
 const fs = require('fs');
 const { spawn } = require('../test/spawn');
+const { spawnCLI } = require('../test/utils');
 
 describe('Server --nock', () => {
   let testServer = null;
-  let gqlServer = null;
+  let gql = null;
 
   beforeEach(() => {
     testServer = testEndpoint.listen('54321');
@@ -17,14 +18,14 @@ describe('Server --nock', () => {
 
   afterEach(async () => {
     testServer.close();
-    if (gqlServer) {
-      gqlServer.close();
+    if (gql) {
+      gql.server.close();
     }
     await spawn.anakin();
   });
 
   it('can record and replay external requests', async () => {
-    gqlServer = await initServer({
+    gql = await initServer({
       nockMode: true,
       nockRecord: true,
       datasourcePaths: [
@@ -45,25 +46,25 @@ describe('Server --nock', () => {
       },
     };
 
-    const res1 = await request(gqlServer)
+    const res1 = await request(gql.server)
       .post('/api/graphql')
       .send(query)
       .expect(200);
 
-    gqlServer.close();
+    gql.server.close();
     testServer.close();
 
-    gqlServer = await initServer({
+    gql = await initServer({
       nockMode: true,
       datasourcePaths: [
         path.resolve(__dirname, '../test/data/nocked'),
       ],
     });
-    gqlServer.listen(12345);
+    gql.server.listen(12345);
 
     nock.enableNetConnect(/\:12345/);
 
-    const res2 = await request(gqlServer)
+    const res2 = await request(gql.server)
       .post('/api/graphql')
       .send(query)
       .expect(200);
@@ -74,7 +75,7 @@ describe('Server --nock', () => {
   });
 
   it('can replay recorded requests as persisted nock scopes', async () => {
-    gqlServer = await initServer({
+    gql = await initServer({
       nockMode: true,
       nockRecord: true,
       datasourcePaths: [
@@ -95,30 +96,30 @@ describe('Server --nock', () => {
       },
     };
 
-    const res1 = await request(gqlServer)
+    const res1 = await request(gql.server)
       .post('/api/graphql')
       .send(query)
       .expect(200);
 
-    gqlServer.close();
+    gql.server.close();
     testServer.close();
 
-    gqlServer = await initServer({
+    gql = await initServer({
       nockMode: true,
       datasourcePaths: [
         path.resolve(__dirname, '../test/data/nocked'),
       ],
     });
-    gqlServer.listen(12345);
+    gql.server.listen(12345);
 
     nock.enableNetConnect(/\:12345/);
 
-    await request(gqlServer)
+    await request(gql.server)
       .post('/api/graphql')
       .send(query)
       .expect(200);
 
-    const res2 = await request(gqlServer)
+    const res2 = await request(gql.server)
       .post('/api/graphql')
       .send(query)
       .expect(200);
@@ -129,33 +130,16 @@ describe('Server --nock', () => {
   });
 
   it('can replay recorded gql requests as persisted nock scopes', async () => {
-    const remoteServer = spawn('node', [
-      'index',
+    const remoteServer = await spawnCLI([
       path.resolve(__dirname, '../test/data/cms_article'),
-    ], {
-      env: {
-        ...process.env,
-        PORT: 54325,
-        LOG_LEVEL: 'info',
-      },
-      detached: true,
-    });
-
-    await new Promise(resolve => {
-      // eslint-disable-next-line max-nested-callbacks
-      remoteServer.stdout.on('data', data => {
-        if (/running at :::54325/.test(data.toString())) {
-          resolve();
-        }
-      });
-    });
+    ]);
 
     const datasourcePaths = [
       path.resolve(__dirname, '../test/data/article'),
       path.resolve(__dirname, '../test/data/nocked_cms'),
     ];
 
-    gqlServer = await initServer({
+    gql = await initServer({
       nockMode: true,
       nockRecord: true,
       datasourcePaths,
@@ -171,33 +155,28 @@ describe('Server --nock', () => {
       }`,
     };
 
-    const res1 = await request(gqlServer)
+    const res1 = await request(gql.server)
       .post('/api/graphql')
       .send(query)
       .expect(200);
 
-    gqlServer.close();
-    await new Promise(resolve => {
-      remoteServer.on('close', () => {
-        resolve();
-      });
-      process.kill(-remoteServer.pid, 'SIGINT');
-    });
+    gql.server.close();
+    await spawn.killChild(remoteServer, 'SIGINT');
 
-    gqlServer = await initServer({
+    gql = await initServer({
       nockMode: true,
       datasourcePaths,
     });
-    gqlServer.listen(12345);
+    gql.server.listen(12345);
 
     nock.enableNetConnect(/\:12345/);
 
-    await request(gqlServer)
+    await request(gql.server)
       .post('/api/graphql')
       .send(query)
       .expect(200);
 
-    const res2 = await request(gqlServer)
+    const res2 = await request(gql.server)
       .post('/api/graphql')
       .send(query)
       .expect(200);
@@ -213,7 +192,7 @@ describe('Server --nock', () => {
 
     await new Promise((resolve, reject) => rimraf(fullPath, err => err ? reject(err) : resolve())); // eslint-disable-line
 
-    gqlServer = await initServer({
+    gql = await initServer({
       nockMode: true,
       nockRecord: true,
       nockPath,
@@ -235,7 +214,7 @@ describe('Server --nock', () => {
       },
     };
 
-    await request(gqlServer)
+    await request(gql.server)
       .post('/api/graphql')
       .send(query)
       .expect(200);

@@ -1,85 +1,93 @@
-const logger = require('./logger');
 const {
   makeExecutableSchema,
   makeRemoteExecutableSchema,
   transformSchema,
   addMockFunctionsToSchema,
+  FilterRootFields,
 } = require('graphql-tools');
 const { loadRemoteSchema } = require('./load-remote-schema');
 const { loadDatasource } = require('./load-datasource');
 const { spreadIf } = require('./utils');
 
-const setupRemote = async (config, { mockMode, sourcePath, productionMode }) => {
-  const { transforms } = config;
-
-  const remoteResult = await loadRemoteSchema(config, sourcePath, { mockMode, productionMode });
+const setupRemote = async (config, { mockMode, sourcePath, useFileSchema }) => {
+  const remoteResult = await loadRemoteSchema(config, sourcePath, { mockMode, useFileSchema });
   const { schema, link } = remoteResult;
-
   const executableSchema = makeRemoteExecutableSchema({
     schema,
     link,
   });
 
-  let transformedSchema = executableSchema;
-
-  if (Array.isArray(transforms)) {
-    transformedSchema = transformSchema(executableSchema, transforms);
-  }
-
   return {
-    schema: transformedSchema,
+    schema: executableSchema,
   };
 };
 
 const setupLocal = config => {
-  const { typeDefs, resolvers } = config;
-  const schema = makeExecutableSchema({
-    typeDefs,
-    resolvers,
-    resolverValidationOptions: {
-      requireResolversForResolveType: false,
-    },
-  });
+  const { typeDefs, extendTypes, resolvers, extendResolvers } = config;
+  const source = {};
 
-  return {
-    schema,
-  };
+  if (typeDefs) {
+    source.schema = makeExecutableSchema({
+      typeDefs,
+      resolvers,
+      resolverValidationOptions: {
+        requireResolversForResolveType: false,
+      },
+    });
+  }
+
+  if (extendTypes) {
+    source.extendTypes = extendTypes;
+    source.resolvers = extendResolvers;
+  }
+
+  return source;
 };
 
 const setupLocalOrRemoteSource = (config, opts) => {
   if (config.remote) {
-    return setupRemote(config.remote, opts);
+    return setupRemote(config, opts);
   }
   return setupLocal(config, opts);
 };
 
-const setupDatasource = async (sourcePath, { mockMode, productionMode }) => {
+// eslint-disable-next-line complexity
+const setupDatasource = async (sourcePath, { mockMode, useFileSchema, filterSubscriptions }) => {
   const config = await loadDatasource(sourcePath);
-  const { schema } = await setupLocalOrRemoteSource(config, {
+  const source = await setupLocalOrRemoteSource(config, {
     mockMode,
     sourcePath,
-    productionMode,
+    useFileSchema,
   });
 
-  if (mockMode) {
-    if (!config.mocks) {
-      logger.warn(`No mocks for ${sourcePath}`);
+  if (source.schema) {
+    Object.assign(source.schema, {
+      moduleName: config.name,
+    });
+
+    if (mockMode && config.mocks) {
+      addMockFunctionsToSchema({ schema: source.schema, mocks: config.mocks });
     }
 
-    if (schema) {
-      addMockFunctionsToSchema({ schema, mocks: config.mocks });
+    if (filterSubscriptions) {
+      config.transforms = config.transforms || [];
+      config.transforms.push(new FilterRootFields(op => op !== 'Subscription'));
+    }
+
+    if (Array.isArray(config.transforms)) {
+      source.schema = transformSchema(source.schema, config.transforms);
     }
   }
 
   return {
     ...config,
     ...spreadIf(config.mount !== false, {
-      schema,
+      schema: source.schema,
+      resolvers: source.resolvers,
     }),
-    context: {
-      ...spreadIf(config.context, config.context),
+    accessViaContext: {
       ...spreadIf(config.accessViaContext, {
-        [config.accessViaContext]: schema,
+        [config.accessViaContext]: source.schema,
       }),
     },
     sourcePath,
