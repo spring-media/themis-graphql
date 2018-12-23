@@ -28,7 +28,7 @@ describe('Server --nock', () => {
     gql = await initServer({
       nockMode: true,
       nockRecord: true,
-      datasourcePaths: [
+      modulePaths: [
         path.resolve(__dirname, '../test/data/nocked'),
       ],
     });
@@ -56,7 +56,7 @@ describe('Server --nock', () => {
 
     gql = await initServer({
       nockMode: true,
-      datasourcePaths: [
+      modulePaths: [
         path.resolve(__dirname, '../test/data/nocked'),
       ],
     });
@@ -78,7 +78,7 @@ describe('Server --nock', () => {
     gql = await initServer({
       nockMode: true,
       nockRecord: true,
-      datasourcePaths: [
+      modulePaths: [
         path.resolve(__dirname, '../test/data/nocked'),
       ],
     });
@@ -106,7 +106,7 @@ describe('Server --nock', () => {
 
     gql = await initServer({
       nockMode: true,
-      datasourcePaths: [
+      modulePaths: [
         path.resolve(__dirname, '../test/data/nocked'),
       ],
     });
@@ -134,7 +134,7 @@ describe('Server --nock', () => {
       path.resolve(__dirname, '../test/data/cms_article'),
     ]);
 
-    const datasourcePaths = [
+    const modulePaths = [
       path.resolve(__dirname, '../test/data/article'),
       path.resolve(__dirname, '../test/data/nocked_cms'),
     ];
@@ -142,7 +142,7 @@ describe('Server --nock', () => {
     gql = await initServer({
       nockMode: true,
       nockRecord: true,
-      datasourcePaths,
+      modulePaths,
     });
 
     const query = {
@@ -165,7 +165,7 @@ describe('Server --nock', () => {
 
     gql = await initServer({
       nockMode: true,
-      datasourcePaths,
+      modulePaths,
     });
     gql.server.listen(12345);
 
@@ -196,7 +196,7 @@ describe('Server --nock', () => {
       nockMode: true,
       nockRecord: true,
       nockPath,
-      datasourcePaths: [
+      modulePaths: [
         path.resolve(__dirname, '../test/data/nocked'),
       ],
     });

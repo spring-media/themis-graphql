@@ -17,7 +17,7 @@ describe('Server', () => {
     });
 
     const { server } = await initServer({
-      datasourcePaths: [
+      modulePaths: [
         path.resolve(__dirname, '../test/data/article'),
         path.resolve(__dirname, '../test/data/cms'),
       ],
@@ -56,9 +56,9 @@ describe('Server', () => {
 });
 
 describe('Context', () => {
-  it('lets datasource extend the query context', async () => {
+  it('lets module extend the query context', async () => {
     const { server } = await initServer({
-      datasourcePaths: [
+      modulePaths: [
         path.resolve(__dirname, '../test/data/context'),
       ],
     });
@@ -97,7 +97,7 @@ describe('Transforms', () => {
     });
 
     const { server } = await initServer({
-      datasourcePaths: [
+      modulePaths: [
         path.resolve(__dirname, '../test/data/transformed-remote'),
       ],
       useFileSchema: false,
@@ -138,7 +138,7 @@ describe('Transforms', () => {
 
   it('applies transformations to a local schema', async () => {
     const { server } = await initServer({
-      datasourcePaths: [
+      modulePaths: [
         path.resolve(__dirname, '../test/data/transformed-local'),
       ],
       useFileSchema: false,

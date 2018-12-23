@@ -1,7 +1,7 @@
 const logger = require('../../../src/logger');
 
 module.exports = {
-  datasources: [
+  modules: [
     './test/data/hook1',
     './test/data/hook2',
   ],

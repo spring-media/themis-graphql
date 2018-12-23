@@ -55,7 +55,7 @@ async function initServer ({
   nockRecord = false,
   nockPath = '__query_nocks__',
   useFileSchema = true,
-  datasourcePaths = [],
+  modulePaths = [],
   introspection,
   graphQLPath = '/api/graphql',
   subscriptions = {},
@@ -105,7 +105,7 @@ async function initServer ({
     startupFns,
     shutdownFns,
   } = await loadSchema({
-    datasourcePaths,
+    modulePaths,
     mockMode,
     useFileSchema: nockMode || useFileSchema,
     filterSubscriptions: subscriptions === false,

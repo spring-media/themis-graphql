@@ -1,6 +1,6 @@
 
 /**
- * Checks if the imported datasource exports the needed data to stitch and mount it.
+ * Checks if the imported module exports the needed data to stitch and mount it.
  */
 const BaseJoi = require('joi');
 const packageNameExtension = require('./joi-extensions/npm-package-name');
@@ -45,7 +45,7 @@ const schema = Joi.alternatives().try([
   }),
 ]);
 
-module.exports = function validateDatasource (source, sourcePath) {
+module.exports = function validateModule (source, sourcePath) {
   const { error } = Joi.validate(source, schema);
 
   if (error) {

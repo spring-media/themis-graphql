@@ -1,6 +1,6 @@
 const { initServer } = require('./server');
-const { buildDatasource } = require('./build-datasource');
-const { setupDatasource } = require('./setup-datasource');
+const { buildModule } = require('./build-module');
+const { setupModule } = require('./setup-module');
 const { loadFileQuery } = require('./load-query');
 const { loadFileConfig } = require('./load-file-config');
 const graphql = require('graphql');
@@ -11,8 +11,8 @@ const supertest = require('supertest');
 module.exports = {
   gql,
   initServer,
-  buildDatasource,
-  setupDatasource,
+  buildModule,
+  setupModule,
   graphql,
   tools,
   supertest,

@@ -7,10 +7,10 @@ GraphQL Data Aggregation CLI
 ```
 themis git:(master) ✗ node index --help
 
-Usage: node index [options] <datasourcePaths ...>
+Usage: node index [options] <modulePaths ...>
 
 Options:
-  -b, --build                        Build datasources for production (load and store remote schemas)
+  -b, --build                        Build modules for production (load and store remote schemas)
   --pretty                           store remote schema as pretty JSON for scm tracking and comparison
   -c, --config [configPath]          Load configuration from a file (resolved relative to cwd, or absolute)
   -m, --mock                         Start server in mock mode
@@ -20,7 +20,7 @@ Options:
   --graphQLPath [graphQLPath]        Server path at which the API will be mounted (default: /api/graphql)
   --graphQLSubscriptionsPath [path]  Server path at which the API will be mounted (default: /api/graphql)
   --keepAlive [keepAlive]            Subscription connection keep alive intervall
-  -s, --use-subfolders               Treat each folder in a datasourcePath as a datasource
+  -s, --use-subfolders               Treat each folder in a modulePath as a module
   --introspection                    Force activate introspection query on Apollo Server
   -d, --debug                        Run Apollo Server in debug mode
   -h, --help                         output usage information
@@ -28,25 +28,25 @@ Options:
 
 
 # Mocks
-Each `datasource` can expose its own `mocks` and in `--mock` mode will will be added as [mock functions](https://www.apollographql.com/docs/graphql-tools/mocking.html) to the schema.
+Each `module` can expose its own `mocks` and in `--mock` mode will will be added as [mock functions](https://www.apollographql.com/docs/graphql-tools/mocking.html) to the schema.
 ```
-node index -s ./datasources --mock
+node index -s ./modules --mock
 ```
 
 ## Nocks
-A special case for mocking are remote datasources or external requests to third parties, when mainly using themis as an aggregation/transformation layer. External requests from datasources can be recorded on a _per query_ basis. The recorded requests can then be automatically replayed in `--nock` mode for the queries or be used to create manual mocks for `--mock` mode.
+A special case for mocking are remote modules or external requests to third parties, when mainly using themis as an aggregation/transformation layer. External requests from modules can be recorded on a _per query_ basis. The recorded requests can then be automatically replayed in `--nock` mode for the queries or be used to create manual mocks for `--mock` mode.
 
 To record external requests for automatic replay use:
 ```
-node index -s ./datasources --nock --record
+node index -s ./modules --nock --record
 ```
 All requests will be recorded to `path.join(process.cwd(), '/__query_nocks__')` by default.
 
 To start the server in replay mode use:
 ```
-node index -s ./datasources --nock
+node index -s ./modules --nock
 ```
-Replaying is currently only possible in production mode, as it needs an existing remote schema for remote datasources.
+Replaying is currently only possible in production mode, as it needs an existing remote schema for remote modules.
 
 
 # Configuration

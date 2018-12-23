@@ -6,7 +6,7 @@ const {
   FilterRootFields,
 } = require('graphql-tools');
 const { loadRemoteSchema } = require('./load-remote-schema');
-const { loadDatasource } = require('./load-datasource');
+const { loadModule } = require('./load-module');
 const { spreadIf } = require('./utils');
 
 const setupRemote = async (config, { mockMode, sourcePath, useFileSchema }) => {
@@ -52,8 +52,8 @@ const setupLocalOrRemoteSource = (config, opts) => {
 };
 
 // eslint-disable-next-line complexity
-const setupDatasource = async (sourcePath, { mockMode, useFileSchema, filterSubscriptions }) => {
-  const config = await loadDatasource(sourcePath);
+const setupModule = async (sourcePath, { mockMode, useFileSchema, filterSubscriptions }) => {
+  const config = await loadModule(sourcePath);
   const source = await setupLocalOrRemoteSource(config, {
     mockMode,
     sourcePath,
@@ -94,4 +94,4 @@ const setupDatasource = async (sourcePath, { mockMode, useFileSchema, filterSubs
   };
 };
 
-module.exports = { setupDatasource };
+module.exports = { setupModule };

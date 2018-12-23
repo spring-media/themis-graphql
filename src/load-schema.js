@@ -1,17 +1,17 @@
-const { setupDatasource } = require('./setup-datasource');
+const { setupModule } = require('./setup-module');
 const { mergeSchemas } = require('graphql-tools');
 const { GraphQLSchema } = require('graphql');
 const { insertIfValue } = require('./utils');
 const { findTypeConflict } = require('./find-type-conflict');
 const logger = require('./logger');
 
-const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema, filterSubscriptions }) => {
-  if (datasourcePaths.length === 0) {
-    throw new Error('Need at least one target path with datasources.');
+const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscriptions }) => {
+  if (modulePaths.length === 0) {
+    throw new Error('Need at least one target path with modules.');
   }
 
-  const sources = await Promise.all(datasourcePaths
-    .map(path => setupDatasource(path, { mockMode, useFileSchema, filterSubscriptions })));
+  const sources = await Promise.all(modulePaths
+    .map(path => setupModule(path, { mockMode, useFileSchema, filterSubscriptions })));
 
   // TODO: Implement namespaces
 
@@ -29,7 +29,7 @@ const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema, filterSubs
   });
 
   if (duplicates.length) {
-    throw new Error('Datasource names need to be unique, ' +
+    throw new Error('Module names need to be unique, ' +
       `found duplicates of "${duplicates.join(', ')}"`);
   }
 
@@ -38,7 +38,7 @@ const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema, filterSubs
     .forEach(config => config.dependencies
       .forEach(dependency => {
         if (!sourceNames.includes(dependency)) {
-          throw new Error(`Cannot load datasource "${config.name}", ` +
+          throw new Error(`Cannot load module "${config.name}", ` +
             `because missing dependency "${dependency}"`);
         }
       })

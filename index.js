@@ -14,9 +14,9 @@ const fs = require('fs');
 
 program
   .name('leto')
-  .usage('[options] <datasourcePaths ...>')
-  .option('-b, --build', 'Build datasources for production (load and store remote schemas)')
-  .option('-t, --test', 'Test datasources with jest and nock')
+  .usage('[options] <modulePaths ...>')
+  .option('-b, --build', 'Build modules for production (load and store remote schemas)')
+  .option('-t, --test', 'Test modules with jest and nock')
   .option('--pretty', 'store remote schema as pretty JSON for scm tracking and comparison')
   .option('-c, --config [configPath]', 'Load configuration from a file (resolved relative to cwd, or absolute)')
   .option('-m, --mock', 'Start server in mock mode')
@@ -27,7 +27,7 @@ program
   .option('--subscriptionsPath [path]', 'Server path at which the Subscriptions will be mounted (default: /ws/subscriptions)')
   .option('--keepAlive [keepAlive]', 'Subscription connection keep alive intervall')
   .option('--no-subscriptions', 'Will filter out all subscriptions from schemas')
-  .option('-s, --use-subfolders', 'Treat each folder in a datasourcePath as a datasource')
+  .option('-s, --use-subfolders', 'Treat each folder in a modulePath as a module')
   .option('--introspection', 'Force activate introspection query on Apollo Server')
   .option('--voyager', 'Force activate voyager')
   .option('--playground', 'Force activate playground')
@@ -41,7 +41,7 @@ program.parse(process.argv);
 
 valideEnv();
 
-const datasourcePaths = program.useSubfolders ?
+const modulePaths = program.useSubfolders ?
   program.args.map(arg => {
     const dir = fs.readdirSync(arg);
 
@@ -54,14 +54,14 @@ const {
   context,
   onStartup,
   onShutdown,
-  datasources,
+  modules,
 } = loadFileConfig(program.config);
 
-datasourcePaths.push(...datasources);
+modulePaths.push(...modules);
 
 if (program.build) {
   buildSchema({
-    datasourcePaths,
+    modulePaths,
     pretty: program.pretty,
   })
   .then(() => logger.info('Build Done.'));
@@ -73,7 +73,7 @@ if (program.build) {
     nockMode: program.nock,
     nockPath: program.nockPath,
     nockRecord: program.record,
-    datasourcePaths,
+    modulePaths,
     useFileSchema: process.env.NODE_ENV === 'production',
     introspection: program.introspection,
     graphQLPath: program.graphQLPath || process.env.GQL_API_PATH,
