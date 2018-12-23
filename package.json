@@ -1,12 +1,12 @@
 {
-  "name": "red-gql",
+  "name": "themis-graphql",
   "version": "0.2.0",
   "description": "GQL Data Aggregation CLI",
   "main": "./src/index.js",
   "module": "./src/index.js",
   "bin": {
     "red-gql": "index.js",
-    "leto": "index.js"
+    "themis": "index.js"
   },
   "dependencies": {
     "apollo-errors": "1.9.0",
@@ -59,14 +59,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spring-media/red-gql.git"
+    "url": "git+https://github.com/spring-media/themis-graphql.git"
   },
-  "author": "",
+  "author": "Sebastian Herrlinger <sebastian.herrlinger@spring-media.de>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/spring-media/red-gql/issues"
+    "url": "https://github.com/spring-media/themis-graphql/issues"
   },
-  "homepage": "https://github.com/spring-media/red-gql#readme",
+  "homepage": "https://github.com/spring-media/themis-graphql#readme",
   "publishConfig": {
     "registry": "https://spring.jfrog.io/spring/api/npm/npm-local-red/"
   }
