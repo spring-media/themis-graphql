@@ -29,7 +29,7 @@ module.exports = {
 ```
 
 You can point themis to a file/directory containing a `module` and it will start up an apollo-graphql server:
-```
+```bash
 themis hello.js
 ```
 

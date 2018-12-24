@@ -13,13 +13,29 @@
         "title": "Configuration File",
         "sidebar_label": "Configuration File"
       },
+      "env": {
+        "title": "Environment Configuration",
+        "sidebar_label": "ENV"
+      },
       "getting-started": {
         "title": "Getting Started",
         "sidebar_label": "Getting Started"
       },
+      "middlewares": {
+        "title": "Middlewares",
+        "sidebar_label": "Middlewares"
+      },
+      "mocks": {
+        "title": "Mocks",
+        "sidebar_label": "Mocks"
+      },
       "module": {
         "title": "Module",
         "sidebar_label": "Module"
+      },
+      "nocks": {
+        "title": "Nocks",
+        "sidebar_label": "Nocks"
       },
       "remote-module": {
         "title": "Remote Module",
@@ -39,7 +55,7 @@
     "categories": {
       "Introduction": "Introduction",
       "API": "API",
-      "Config File": "Config File"
+      "Configuration": "Configuration"
     }
   },
   "pages-strings": {

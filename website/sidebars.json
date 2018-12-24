@@ -7,9 +7,15 @@
     "API": [
       "module",
       "remote-module",
+      "mocks",
+      "nocks",
       "transforms",
       "cli"
     ],
-    "Config File": ["config-file"]
+    "Configuration": [
+      "env",
+      "config-file",
+      "middlewares"
+    ]
   }
 }
