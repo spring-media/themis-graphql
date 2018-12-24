@@ -13,7 +13,7 @@ const path = require('path');
 const fs = require('fs');
 
 program
-  .name('leto')
+  .name('themis')
   .usage('[options] <modulePaths ...>')
   .option('-b, --build', 'Build modules for production (load and store remote schemas)')
   .option('-t, --test', 'Test modules with jest and nock')

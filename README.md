@@ -3,29 +3,6 @@ GraphQL Data Aggregation CLI
 
 [Read the Docs](docs/getting-started.md) or checkout the repository, goto `./website` and run `yarn && yarn start`.
 
-# Usage
-```
-themis git:(master) ✗ node index --help
-
-Usage: node index [options] <modulePaths ...>
-
-Options:
-  -b, --build                        Build modules for production (load and store remote schemas)
-  --pretty                           store remote schema as pretty JSON for scm tracking and comparison
-  -c, --config [configPath]          Load configuration from a file (resolved relative to cwd, or absolute)
-  -m, --mock                         Start server in mock mode
-  -n, --nock                         Start server in nock mode (Load recorded nocks)
-  -r, --record                       Record external requests with nock (use with --nock)
-  --nockPath [nockPath]              Where external request records should go
-  --graphQLPath [graphQLPath]        Server path at which the API will be mounted (default: /api/graphql)
-  --graphQLSubscriptionsPath [path]  Server path at which the API will be mounted (default: /api/graphql)
-  --keepAlive [keepAlive]            Subscription connection keep alive intervall
-  -s, --use-subfolders               Treat each folder in a modulePath as a module
-  --introspection                    Force activate introspection query on Apollo Server
-  -d, --debug                        Run Apollo Server in debug mode
-  -h, --help                         output usage information
-```
-
 
 # Mocks
 Each `module` can expose its own `mocks` and in `--mock` mode will will be added as [mock functions](https://www.apollographql.com/docs/graphql-tools/mocking.html) to the schema.

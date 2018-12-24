@@ -1,6 +1,15 @@
 {
   "docs": {
-    "What?": ["what"],
-    "Getting Started": ["getting-started"]
+    "Introduction": [
+      "what",
+      "getting-started"
+    ],
+    "API": [
+      "module",
+      "remote-module",
+      "transforms",
+      "cli"
+    ],
+    "Config File": ["config-file"]
   }
 }

@@ -5,9 +5,29 @@
     "previous": "Previous",
     "tagline": "A CLI to support a modular GraphQL server.",
     "docs": {
+      "cli": {
+        "title": "CLI",
+        "sidebar_label": "CLI Commands"
+      },
+      "config-file": {
+        "title": "Configuration File",
+        "sidebar_label": "Configuration File"
+      },
       "getting-started": {
         "title": "Getting Started",
-        "sidebar_label": "Introduction"
+        "sidebar_label": "Getting Started"
+      },
+      "module": {
+        "title": "Module",
+        "sidebar_label": "Module"
+      },
+      "remote-module": {
+        "title": "Remote Module",
+        "sidebar_label": "Remote Module"
+      },
+      "transforms": {
+        "title": "Transforms",
+        "sidebar_label": "Transforms"
       },
       "what": {
         "title": "What is this about?"
@@ -17,8 +37,9 @@
       "Docs": "Docs"
     },
     "categories": {
-      "What?": "What?",
-      "Getting Started": "Getting Started"
+      "Introduction": "Introduction",
+      "API": "API",
+      "Config File": "Config File"
     }
   },
   "pages-strings": {
