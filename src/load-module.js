@@ -16,7 +16,7 @@ const loadModule = async sourcePath => {
     }
 
     config.name = packageJson.name;
-    config.dependencies = packageJson.moduleDependencies;
+    config.dependencies = packageJson.gqlDependencies;
   }
 
   validateModule(config, sourcePath);
