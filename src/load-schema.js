@@ -48,7 +48,6 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     schemas,
     resolvers,
     accessViaContext,
-    contextValidations,
     context,
     startupFns,
     shutdownFns,
@@ -58,10 +57,6 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     resolvers: [ ...p.resolvers, ...insertIfValue(c.resolvers) ],
     context: [ ...p.context, ...insertIfValue(c.context) ],
     accessViaContext: { ...p.accessViaContext, ...c.accessViaContext },
-    contextValidations: [
-      ...p.contextValidations,
-      ...insertIfValue(c.validateContext),
-    ],
     startupFns: [ ...p.startupFns, ...insertIfValue(c.onStartup) ],
     shutdownFns: [ ...p.shutdownFns, ...insertIfValue(c.onShutdown) ],
   }), {
@@ -69,7 +64,6 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     resolvers: [],
     context: [],
     accessViaContext: {},
-    contextValidations: [],
     startupFns: [],
     shutdownFns: [],
   });
@@ -90,10 +84,6 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     schemas,
     resolvers,
   });
-
-  for (const validation of contextValidations) {
-    validation(accessViaContext);
-  }
 
   return { schema, accessViaContext, context, startupFns, shutdownFns };
 };

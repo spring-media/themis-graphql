@@ -15,7 +15,6 @@ const schema = Joi.alternatives().try([
     resolvers: Joi.object(),
     extendResolvers: Joi.object(),
     mocks: Joi.object(),
-    validateContext: Joi.func(),
     accessViaContext: Joi.string(),
     context: Joi.func(),
     mount: Joi.bool(),
@@ -29,7 +28,6 @@ const schema = Joi.alternatives().try([
     namespace: Joi.string(),
     mount: Joi.bool(),
     mocks: Joi.object(),
-    validateContext: Joi.func(),
     accessViaContext: Joi.string(),
     context: Joi.func(),
     remote: Joi.object().keys({
