@@ -32,3 +32,6 @@ You can point themis to a file/directory containing a `module` and it will start
 ```
 themis hello.js
 ```
+
+## No lock-in
+If the need for deeper server customisation may arise, or an important feature is missing, Themis GraphQL modules can be used manually with Apollo Server and GraphQL Tools at any time. You just have to set up an Apollo Server and stitch them yourself. We'd be happy to integrate support for advanced use cases though.
