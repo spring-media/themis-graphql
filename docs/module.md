@@ -37,7 +37,7 @@ module.exports = {
 
 GrapqhQL module dependencies can be specified in a `package.json` as well with the `gqlDependencies` key as a list of module names. 
 
-## Exposed Schemas
+## Schema Delegation
 The schemas from all modules are made available in the resolver `context` as the reserved attribute `schemas`, which is a map with the module name as a key and the executable schema as a value.
 
 Assume you have two modules, `article` and `teaser`, then you can access the teaser schema in an article resolver for [schema delegation](https://www.apollographql.com/docs/graphql-tools/schema-delegation.html#delegateToSchema) like so:

@@ -18,6 +18,7 @@ class Roadmap extends React.Component {
             <ul>
               <li>Persisted Queries</li>
               <li>Query depth limiting</li>
+              <li>Query complexity/execution cost limiting</li>
               <li>Subscription transport middlewares</li>
             </ul>
             <h2>v0.4</h2>
@@ -25,6 +26,10 @@ class Roadmap extends React.Component {
               <li>--no-extend flag to start modules without their type extensions (no dependency check)</li>
               <li>Development watch mode for modules</li>
               <li>Port to Typescript</li>
+            </ul>
+            <h2>v0.5</h2>
+            <ul>
+              <li>Windows Support</li>
             </ul>
           </div>
           </div>
