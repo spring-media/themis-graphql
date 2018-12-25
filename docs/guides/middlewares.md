@@ -1,6 +1,6 @@
 ---
 id: middlewares
-title: Middlewares
+title: Middlewares Guide
 sidebar_label: Middlewares
 ---
 

@@ -5,7 +5,7 @@ const { buildSchema } = require('./src/build-schema');
 const { loadFileConfig } = require('./src/load-file-config');
 const { mountServer } = require('./src/mount-server');
 const { runTests } = require('./src/run-tests');
-const { spreadIf } = require('./src/utils');
+const { spreadIf, isProd, isDev } = require('./src/utils');
 const valideEnv = require('./src/validate-env');
 const logger = require('./src/logger');
 const program = require('commander');
@@ -74,7 +74,7 @@ if (program.build) {
     nockPath: program.nockPath,
     nockRecord: program.record,
     modulePaths,
-    useFileSchema: process.env.NODE_ENV === 'production',
+    useFileSchema: isProd,
     introspection: program.introspection,
     graphQLPath: program.graphQLPath || process.env.GQL_API_PATH,
     ...spreadIf(program.subscriptions, {
@@ -87,7 +87,7 @@ if (program.build) {
     }),
     middleware,
     context,
-    debug: program.debug || process.env.NODE_ENV === 'development',
+    debug: program.debug || isDev,
     tracing: process.env.GQL_TRACING === 'true',
     engineApiKey: process.env.APOLLO_ENGINE_API_KEY,
     onStartup,
@@ -95,8 +95,8 @@ if (program.build) {
     cacheControl: {
       defaultMaxAge: parseInt(process.env.GQL_CACHE_CONTROL_MAX_AGE, 10) || 15,
     },
-    voyager: program.voyager || process.env.NODE_ENV !== 'production',
-    playground: program.playground || process.env.NODE_ENV !== 'production',
+    voyager: program.voyager || !isProd,
+    playground: program.playground || !isProd,
   })
   .then(mountServer);
 }

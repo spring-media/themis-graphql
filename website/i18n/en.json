@@ -21,9 +21,9 @@
         "title": "Create a Module",
         "sidebar_label": "Create a Module"
       },
-      "guides/mocks": {
-        "title": "Mocks Guide",
-        "sidebar_label": "Mocks"
+      "guides/middlewares": {
+        "title": "Middlewares Guide",
+        "sidebar_label": "Middlewares"
       },
       "guides/nocks": {
         "title": "Nocks Guide",
@@ -36,10 +36,6 @@
       "installation": {
         "title": "Installation",
         "sidebar_label": "Installation"
-      },
-      "middlewares": {
-        "title": "Middlewares",
-        "sidebar_label": "Middlewares"
       },
       "module": {
         "title": "Module",

@@ -27,8 +27,9 @@ class Roadmap extends React.Component {
               <li>Development watch mode for modules</li>
               <li>Port to Typescript</li>
             </ul>
-            <h2>v0.5</h2>
+            <h2>Not Scheduled</h2>
             <ul>
+              <li>Allow global install to detect local themis installations and use the local one.</li>
               <li>Windows Support</li>
             </ul>
           </div>
