@@ -86,9 +86,7 @@ const setupModule = async (sourcePath, { mockMode, useFileSchema, filterSubscrip
       resolvers: source.resolvers,
     }),
     accessViaContext: {
-      ...spreadIf(config.accessViaContext, {
-        [config.accessViaContext]: source.schema,
-      }),
+      [config.name]: source.schema,
     },
     sourcePath,
   };

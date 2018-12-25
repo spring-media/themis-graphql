@@ -119,7 +119,7 @@ async function initServer ({
         ...ctx,
         ...fn(...args),
       }), {}),
-      ...accessViaContext,
+      schemas: accessViaContext,
     }),
     formatError,
     debug,

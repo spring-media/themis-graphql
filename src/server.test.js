@@ -9,7 +9,7 @@ describe('Server', () => {
     await spawn.anakin();
   });
 
-  it('populates the schema with remote data', async () => {
+  it('populates the schema with remote data (context schema access, no remote mount)', async () => {
     await spawnCLI([
       path.resolve(__dirname, '../test/data/cms_article'),
     ], {
