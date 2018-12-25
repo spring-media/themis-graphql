@@ -11,3 +11,4 @@ Themis can be used to support a standalone module, to combine multiple modules (
 - Reduce the boilerplate of setting up a graphql server
 - Make it easy to split a large graph into subsets that can be freely combined
 - Cover advanced and complex use cases out of the box
+- Sane defaults
