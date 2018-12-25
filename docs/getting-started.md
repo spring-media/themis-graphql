@@ -8,8 +8,10 @@ Themis is a CLI Layer on top of [Apollo Server](https://github.com/apollographql
 
 _Note:_ To run the demos you can install themis globally `yarn global add themis-graphql`, or create a new package in an empty folder with `yarn init --yes`, install themis locally `yarn add themis-graphql` and use it in the shell examples like `./node_modules/.bin/themis --help`.
 
+[All examples](https://github.com/spring-media/themis-graphql/blob/master/examples) can be found in the repository as well.
+
 ## Creating a GraphQL Module
-A `module` in its most basic form consists of a GraphQL schema (Type Definition) and resolvers. If you don't know what a schema and resolvers are, checkout [graphql.org/learn](https://graphql.org/learn/).
+A `module` in its most basic form consists of a GraphQL schema (Type Definition) and resolvers. If you don't know what a schema and resolvers are, checkout [graphql.org/learn](https://graphql.org/learn/). For convenience, Themis exposes the packages it uses, like `graphql-tag`, `graphql-tools` and `apollo-server`, plus other convenvient helpers for testing.
 
 Create a file called `hello.js` with the following contents:
 ```js
