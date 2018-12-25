@@ -6,6 +6,20 @@ sidebar_label: Module
 
 Modules can be either local Type Definitions (`typeDefs`) and resolvers, or a remote schema. Both can be freely combined and stitched together.
 
+A module can expose the following values:
+- name
+- typeDefs
+- resolvers
+- extendTypes
+- extendResolvers
+- mocks
+- mount
+- transforms
+- context
+- dependencies
+- onStartup
+- onShutdown
+
 ## Naming
 A GraphQL module needs a unique name, compatible with NPM naming restrictions, as a module can also be published as an NPM package. 
 
@@ -50,3 +64,11 @@ Assume you have two modules, `article` and `teaser`, then you can access the tea
 ## Transforms
 Both a local and a remote module can export `transforms`, which will be applied after creating an executable schema. Read more about it in the [Transforms docs](./transforms).
 
+## Context
+The `context` can be either a function or an array of functions, which will be called in a request/response query cycle. The function may return an object to be merged with the remaining context. Context functions will be called in the order the modules are loaded. Context functions from the configuration file are called before all others. If different context functions try to expose the same key on the context, they may override each other.
+
+A `context` function gets an object with the `req` and `res` of the query. When using _Subscriptions_, the object will contain the `connection` key.
+
+
+## Lifecycle Hooks
+Lifecycle hooks allow to execute something `onStartup`, just before the server will be mounted at the given port and `onShutdown`, after a kill signal has been received (SIGTERM|SIGNINT).

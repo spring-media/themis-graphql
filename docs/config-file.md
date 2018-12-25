@@ -65,11 +65,22 @@ The `context` can be either a function or an array of functions, which will be c
 
 A `context` function gets an object with the `req` and `res` of the query. When using _Subscriptions_, the object will contain the `connection` key.
 
-Example configurations:
+Example configuration:
 ```js
 module.exports = {
   context: () => ({
     myKey: 'myValue'
   })
+}
+```
+
+## Lifecycle Hooks
+Lifecycle hooks allow to execute something `onStartup`, just before the server will be mounted at the given port and `onShutdown`, after a kill signal has been received (SIGTERM|SIGNINT).
+
+Example configuration:
+```js
+module.exports = {
+  onStartup: () => doSetupWork(),
+  onShutdown: () => doTeardownWork()
 }
 ```
