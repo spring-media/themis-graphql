@@ -7,8 +7,7 @@
     ],
     "Guides": [
       "guides/remote-module-guide",
-      "guides/nocks",
-      "guides/middlewares"
+      "guides/nocks"
     ],
     "API": [
       "module",
@@ -17,8 +16,8 @@
       "cli"
     ],
     "Configuration": [
-      "env",
-      "config-file"
+      "config-file",
+      "env"
     ]
   }
 }

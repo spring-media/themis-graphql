@@ -21,10 +21,6 @@
         "title": "Create a Module",
         "sidebar_label": "Create a Module"
       },
-      "guides/middlewares": {
-        "title": "Middlewares Guide",
-        "sidebar_label": "Middlewares"
-      },
       "guides/nocks": {
         "title": "Nocks Guide",
         "sidebar_label": "Nocks"
