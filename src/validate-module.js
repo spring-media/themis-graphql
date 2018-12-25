@@ -35,7 +35,6 @@ const schema = Joi.alternatives().try([
       linkContext: Joi.func(),
     }).required(),
     transforms: Joi.array(),
-    dependencies: Joi.array().items(Joi.string()),
     onStartup: Joi.func(),
     onShutdown: Joi.func(),
   }),

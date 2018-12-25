@@ -1,6 +1,6 @@
 ---
 id: nocks
-title: Nocks
+title: Nocks Guide
 sidebar_label: Nocks
 ---
 

@@ -7,7 +7,7 @@
     "docs": {
       "cli": {
         "title": "CLI",
-        "sidebar_label": "CLI Commands"
+        "sidebar_label": "CLI"
       },
       "config-file": {
         "title": "Configuration File",
@@ -18,24 +18,32 @@
         "sidebar_label": "ENV"
       },
       "getting-started": {
-        "title": "Getting Started",
-        "sidebar_label": "Getting Started"
+        "title": "Create a Module",
+        "sidebar_label": "Create a Module"
+      },
+      "guides/mocks": {
+        "title": "Mocks Guide",
+        "sidebar_label": "Mocks"
+      },
+      "guides/nocks": {
+        "title": "Nocks Guide",
+        "sidebar_label": "Nocks"
+      },
+      "guides/remote-module-guide": {
+        "title": "Remote Module Guide",
+        "sidebar_label": "Remote Module"
+      },
+      "installation": {
+        "title": "Installation",
+        "sidebar_label": "Installation"
       },
       "middlewares": {
         "title": "Middlewares",
         "sidebar_label": "Middlewares"
       },
-      "mocks": {
-        "title": "Mocks",
-        "sidebar_label": "Mocks"
-      },
       "module": {
         "title": "Module",
         "sidebar_label": "Module"
-      },
-      "nocks": {
-        "title": "Nocks",
-        "sidebar_label": "Nocks"
       },
       "remote-module": {
         "title": "Remote Module",
@@ -54,7 +62,8 @@
       "Roadmap": "Roadmap"
     },
     "categories": {
-      "Introduction": "Introduction",
+      "Getting Started": "Getting Started",
+      "Guides": "Guides",
       "API": "API",
       "Configuration": "Configuration"
     }

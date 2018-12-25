@@ -1,6 +1,6 @@
 ---
 id: mocks
-title: Mocks
+title: Mocks Guide
 sidebar_label: Mocks
 ---
 

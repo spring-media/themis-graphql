@@ -1,7 +1,7 @@
 ---
 id: getting-started
-title: Getting Started
-sidebar_label: Getting Started
+title: Create a Module
+sidebar_label: Create a Module
 ---
 
 Themis is a CLI Layer on top of [Apollo Server](https://github.com/apollographql/apollo-server) and [GraphQL Tools](https://github.com/apollographql/graphql-tools), to encapsulate subsets of a Graph into modules. Modules can also be NPM packages.

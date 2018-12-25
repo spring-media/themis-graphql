@@ -3,6 +3,8 @@ const { buildModule } = require('./build-module');
 const { setupModule } = require('./setup-module');
 const { loadFileQuery } = require('./load-query');
 const { loadFileConfig } = require('./load-file-config');
+const SelectionFilter = require('./transforms/selection-filter');
+const DropFieldFilter = require('./transforms/drop-field-filter');
 const graphql = require('graphql');
 const tools = require('graphql-tools');
 const gql = require('graphql-tag');
@@ -18,4 +20,8 @@ module.exports = {
   supertest,
   loadFileQuery,
   loadFileConfig,
+  transforms: {
+    SelectionFilter,
+    DropFieldFilter,
+  },
 };

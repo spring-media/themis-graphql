@@ -7,6 +7,12 @@ Inspired by [GrAMPS Datsources](https://gramps.js.org/data-source/data-source-ov
 
 Themis can be used to support a standalone module, to combine multiple modules (local/remote), or as a gateway with remote modules only.
 
+## Good To Know
+As prerequisites, you should be familiar with, or at least have heard of the following technologies:
+- [Node.js](https://nodejs.org)
+- [GraphQL](https://graphql.org/)
+- [Apollo Server](https://www.apollographql.com/docs/apollo-server/)
+
 ## Goals
 - Reduce the boilerplate of setting up a graphql server
 - Make it easy to split a large graph into subsets that can be freely combined

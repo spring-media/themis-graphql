@@ -1,14 +1,18 @@
 {
   "docs": {
-    "Introduction": [
+    "Getting Started": [
       "what",
+      "installation",
       "getting-started"
+    ],
+    "Guides": [
+      "guides/remote-module-guide",
+      "guides/mocks",
+      "guides/nocks"
     ],
     "API": [
       "module",
       "remote-module",
-      "mocks",
-      "nocks",
       "transforms",
       "cli"
     ],

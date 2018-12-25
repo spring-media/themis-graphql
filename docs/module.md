@@ -47,3 +47,6 @@ Assume you have two modules, `article` and `teaser`, then you can access the tea
 }
 ```
 
+## Transforms
+Both a local and a remote module can export `transforms`, which will be applied after creating an executable schema. Read more about it in the [Transforms docs](./transforms).
+

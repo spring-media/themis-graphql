@@ -1,7 +1,7 @@
 ---
 id: cli
 title: CLI
-sidebar_label: CLI Commands
+sidebar_label: CLI
 ---
 
 To get all options for the CLI use `themis --help`.
