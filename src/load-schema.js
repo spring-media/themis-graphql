@@ -1,5 +1,9 @@
 const { setupModule } = require('./setup-module');
-const { mergeSchemas } = require('graphql-tools');
+const {
+  mergeSchemas,
+  FilterRootFields,
+  transformSchema,
+} = require('graphql-tools');
 const { GraphQLSchema } = require('graphql');
 const { insertIfValue } = require('./utils');
 const { findTypeConflict } = require('./find-type-conflict');
@@ -54,7 +58,7 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
   } = sources
   .reduce((p, c) => ({
     schemas: [ ...p.schemas, ...insertIfValue(c.schema), ...insertIfValue(c.extendTypes) ],
-    resolvers: [ ...p.resolvers, ...insertIfValue(c.resolvers) ],
+    resolvers: [ ...p.resolvers, ...insertIfValue(c.resolvers), ...insertIfValue(c.extendResolvers) ],
     context: [ ...p.context, ...insertIfValue(c.context) ],
     accessViaContext: { ...p.accessViaContext, ...c.accessViaContext },
     startupFns: [ ...p.startupFns, ...insertIfValue(c.onStartup) ],
@@ -80,10 +84,16 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     },
   });
 
-  const schema = mergeSchemas({
+  let schema = mergeSchemas({
     schemas,
     resolvers,
   });
+
+  if (filterSubscriptions) {
+    schema = transformSchema(schema, [
+      new FilterRootFields(op => op !== 'Subscription'),
+    ]);
+  }
 
   return { schema, accessViaContext, context, startupFns, shutdownFns };
 };

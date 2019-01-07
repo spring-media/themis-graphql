@@ -4,7 +4,7 @@ title: Module
 sidebar_label: Module
 ---
 
-Modules can be either local Type Definitions (`typeDefs`) and resolvers, or a remote schema. Both can be freely combined and stitched together.
+Modules can be either local type definitions and resolvers, or a [remote schema](./remote-module). Both can be freely combined and stitched together.
 
 A module can expose the following values:
 - name
@@ -32,6 +32,18 @@ module-root
 └── schema.js
 ```
 You can see how a basic module looks like in the [Getting Started guide](./getting-started).
+
+## typeDefs
+Parsed GraphQL type definitions. A plain text schema can be parsed with [graphql-tag](https://github.com/apollographql/graphql-tag) for example, which is also exposed by Themis.
+
+## resolvers
+Resolvers to be mapped on the type definitions to create an executable schema.
+
+## extendTypes
+To [extend types](https://www.apollographql.com/docs/graphql-tools/generate-schema.html#extend-types) of other modules, we must provide these in addition to possible local types. Must be used in conjunction with `extendResolvers`.
+
+## extendResolvers
+Extends the existing resolvers of other modules.
 
 ## Dependencies
 A module can express the dependency on another GraphQL module by exporting a list with module names.
