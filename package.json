@@ -62,7 +62,7 @@
     "url": "git+https://github.com/spring-media/themis-graphql.git"
   },
   "author": "Sebastian Herrlinger <sebastian.herrlinger@spring-media.de>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/spring-media/themis-graphql/issues"
   },
