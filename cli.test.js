@@ -12,7 +12,7 @@ describe('CLI', () => {
   it('takes a path to a configuration file', async () => {
     await spawnCLI([
       '-c',
-      './test/data/config_file/datasource.config.js',
+      './test/data/config_file/module.config.js',
     ], {
       PORT: 54325,
     });
@@ -54,7 +54,7 @@ describe('CLI', () => {
   it('Allows to set the graphql api path', async () => {
     await spawnCLI([
       '-c',
-      './test/data/config_file/datasource.config.js',
+      './test/data/config_file/module.config.js',
       '--graphQLPath',
       '/another/api/path',
     ], {
@@ -83,7 +83,7 @@ describe('CLI', () => {
     });
   });
 
-  it('resolves datasources in node_modules', async () => {
+  it('resolves modules in node_modules', async () => {
     await spawnCLI([
       '-c',
       'modules.config.js',
@@ -139,7 +139,7 @@ describe('CLI', () => {
     setTimeout(() => spawn.killChild(server, 'SIGINT', false), 1500);
   }, 10000);
 
-  it('provides startup and shutdown hooks from datasources', async done => {
+  it('provides startup and shutdown hooks from modules', async done => {
     let counter = 0;
 
     const server = await spawnCLI([

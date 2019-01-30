@@ -1,12 +1,12 @@
 {
-  "name": "red-gql",
+  "name": "themis-graphql",
   "version": "0.2.0",
   "description": "GQL Data Aggregation CLI",
   "main": "./src/index.js",
   "module": "./src/index.js",
   "bin": {
     "red-gql": "index.js",
-    "leto": "index.js"
+    "themis": "index.js"
   },
   "dependencies": {
     "apollo-errors": "1.9.0",
@@ -27,10 +27,10 @@
     "graphql-tag": "2.10.0",
     "graphql-tools": "4.0.3",
     "graphql-voyager": "1.0.0-rc.26",
-    "joi": "13.4.0",
     "jest": "23.6.0",
     "jest-cli": "23.6.0",
     "jest-nock": "0.1.6",
+    "joi": "13.4.0",
     "mkdirp": "0.5.1",
     "nock": "10.0.4",
     "subscriptions-transport-ws": "0.9.15",
@@ -45,7 +45,6 @@
     "apollo-utilities": "1.0.26",
     "babel-eslint": "8.2.3",
     "eslint": "4.19.1",
-    "gitbook-cli": "2.3.2",
     "node-fetch": "2.3.0",
     "nodemon": "1.18.6",
     "request": "2.88.0",
@@ -56,20 +55,18 @@
     "test": "jest --config test/config/jest.config.json",
     "test:coverage": "npm run test:integration -- --coverage",
     "lint": "yarn test:eslint",
-    "test:eslint": "./node_modules/.bin/eslint --quiet '**/*.js'",
-    "docs:serve": "gitbook serve ./docs",
-    "docs:build": "gitbook build ./docs"
+    "test:eslint": "./node_modules/.bin/eslint --quiet '**/*.js'"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spring-media/red-gql.git"
+    "url": "git+https://github.com/spring-media/themis-graphql.git"
   },
-  "author": "",
+  "author": "Sebastian Herrlinger <sebastian.herrlinger@spring-media.de>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/spring-media/red-gql/issues"
+    "url": "https://github.com/spring-media/themis-graphql/issues"
   },
-  "homepage": "https://github.com/spring-media/red-gql#readme",
+  "homepage": "https://github.com/spring-media/themis-graphql#readme",
   "publishConfig": {
     "registry": "https://spring.jfrog.io/spring/api/npm/npm-local-red/"
   }

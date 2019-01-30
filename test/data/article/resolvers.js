@@ -4,7 +4,7 @@ module.exports = {
   Query: {
     article: (parent, args, context, info) => {
       return delegateToSchema({
-        schema: context.cmsSchema,
+        schema: context.schemas['cms'],
         operation: 'query',
         fieldName: 'article',
         args,

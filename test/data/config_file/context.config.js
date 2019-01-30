@@ -1,5 +1,5 @@
 module.exports = {
-  datasources: [
+  modules: [
     './test/data/config_file/context',
   ],
   middleware: {

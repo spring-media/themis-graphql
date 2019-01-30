@@ -1,10 +1,10 @@
-const { buildDatasource } = require('./build-datasource');
+const { buildModule } = require('./build-module');
 
-const buildSchema = async ({ datasourcePaths, pretty = false }) => {
-  const sources = new Array(datasourcePaths.length);
+const buildSchema = async ({ modulePaths, pretty = false }) => {
+  const sources = new Array(modulePaths.length);
 
-  for (const path of datasourcePaths) {
-    const source = await buildDatasource(path, { pretty });
+  for (const path of modulePaths) {
+    const source = await buildModule(path, { pretty });
 
     sources.push(source);
   }

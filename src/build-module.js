@@ -1,5 +1,5 @@
 const logger = require('./logger');
-const { loadDatasource } = require('./load-datasource');
+const { loadModule } = require('./load-module');
 const { makeRemoteHTTPLink, loadIntrospectionSchema, distPathForConfig } = require('./load-remote-schema');
 const { promisify } = require('util');
 const fs = require('fs');
@@ -26,9 +26,9 @@ const buildLocal = (/* config, sourcePath */) => {
   // nothing to build yet
 };
 
-const buildDatasource = async (sourcePath, { pretty }) => {
-  logger.info(`Building datasource at ${sourcePath}`);
-  const config = await loadDatasource(sourcePath);
+const buildModule = async (sourcePath, { pretty }) => {
+  logger.info(`Building module at ${sourcePath}`);
+  const config = await loadModule(sourcePath);
 
   if (config.remote) {
     const source = await buildRemote(config, sourcePath, { pretty });
@@ -39,4 +39,4 @@ const buildDatasource = async (sourcePath, { pretty }) => {
   return buildLocal(config, sourcePath, { pretty });
 };
 
-module.exports = { buildDatasource };
+module.exports = { buildModule };

@@ -1,6 +1,6 @@
 
 /**
- * Checks if the imported datasource exports the needed data to stitch and mount it.
+ * Checks if the imported module exports the needed data to stitch and mount it.
  */
 const BaseJoi = require('joi');
 const packageNameExtension = require('./joi-extensions/npm-package-name');
@@ -15,8 +15,6 @@ const schema = Joi.alternatives().try([
     resolvers: Joi.object(),
     extendResolvers: Joi.object(),
     mocks: Joi.object(),
-    validateContext: Joi.func(),
-    accessViaContext: Joi.string(),
     context: Joi.func(),
     mount: Joi.bool(),
     transforms: Joi.array(),
@@ -29,8 +27,6 @@ const schema = Joi.alternatives().try([
     namespace: Joi.string(),
     mount: Joi.bool(),
     mocks: Joi.object(),
-    validateContext: Joi.func(),
-    accessViaContext: Joi.string(),
     context: Joi.func(),
     remote: Joi.object().keys({
       uri: Joi.string().uri().required(),
@@ -39,13 +35,12 @@ const schema = Joi.alternatives().try([
       linkContext: Joi.func(),
     }).required(),
     transforms: Joi.array(),
-    dependencies: Joi.array().items(Joi.string()),
     onStartup: Joi.func(),
     onShutdown: Joi.func(),
   }),
 ]);
 
-module.exports = function validateDatasource (source, sourcePath) {
+module.exports = function validateModule (source, sourcePath) {
   const { error } = Joi.validate(source, schema);
 
   if (error) {

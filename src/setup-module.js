@@ -3,11 +3,11 @@ const {
   makeRemoteExecutableSchema,
   transformSchema,
   addMockFunctionsToSchema,
-  FilterRootFields,
 } = require('graphql-tools');
 const { loadRemoteSchema } = require('./load-remote-schema');
-const { loadDatasource } = require('./load-datasource');
+const { loadModule } = require('./load-module');
 const { spreadIf } = require('./utils');
+const logger = require('./logger');
 
 const setupRemote = async (config, { mockMode, sourcePath, useFileSchema }) => {
   const remoteResult = await loadRemoteSchema(config, sourcePath, { mockMode, useFileSchema });
@@ -15,6 +15,7 @@ const setupRemote = async (config, { mockMode, sourcePath, useFileSchema }) => {
   const executableSchema = makeRemoteExecutableSchema({
     schema,
     link,
+    logger,
   });
 
   return {
@@ -33,12 +34,13 @@ const setupLocal = config => {
       resolverValidationOptions: {
         requireResolversForResolveType: false,
       },
+      logger,
     });
   }
 
   if (extendTypes) {
     source.extendTypes = extendTypes;
-    source.resolvers = extendResolvers;
+    source.extendResolvers = extendResolvers;
   }
 
   return source;
@@ -52,8 +54,8 @@ const setupLocalOrRemoteSource = (config, opts) => {
 };
 
 // eslint-disable-next-line complexity
-const setupDatasource = async (sourcePath, { mockMode, useFileSchema, filterSubscriptions }) => {
-  const config = await loadDatasource(sourcePath);
+const setupModule = async (sourcePath, { mockMode, useFileSchema }) => {
+  const config = await loadModule(sourcePath);
   const source = await setupLocalOrRemoteSource(config, {
     mockMode,
     sourcePath,
@@ -69,11 +71,6 @@ const setupDatasource = async (sourcePath, { mockMode, useFileSchema, filterSubs
       addMockFunctionsToSchema({ schema: source.schema, mocks: config.mocks });
     }
 
-    if (filterSubscriptions) {
-      config.transforms = config.transforms || [];
-      config.transforms.push(new FilterRootFields(op => op !== 'Subscription'));
-    }
-
     if (Array.isArray(config.transforms)) {
       source.schema = transformSchema(source.schema, config.transforms);
     }
@@ -86,12 +83,10 @@ const setupDatasource = async (sourcePath, { mockMode, useFileSchema, filterSubs
       resolvers: source.resolvers,
     }),
     accessViaContext: {
-      ...spreadIf(config.accessViaContext, {
-        [config.accessViaContext]: source.schema,
-      }),
+      [config.name]: source.schema,
     },
     sourcePath,
   };
 };
 
-module.exports = { setupDatasource };
+module.exports = { setupModule };

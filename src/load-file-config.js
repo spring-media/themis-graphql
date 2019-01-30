@@ -18,7 +18,7 @@ const loadFileConfig = configPath => {
   const dsConfig = require(resolvedConfigPath);
   const fileConfig = validateConfig(dsConfig, resolvedConfigPath);
 
-  const datasources = fileConfig.datasources
+  const modules = fileConfig.modules
     .map(dsPath => {
       if (path.isAbsolute(dsPath)) {
         return dsPath;
@@ -36,7 +36,7 @@ const loadFileConfig = configPath => {
 
   return {
     ...fileConfig,
-    datasources,
+    modules,
   };
 };
 

@@ -19,7 +19,7 @@ module.exports = {
     Query: {
       alsoError: async (_, args, context, info) => {
         await delegateToSchema({
-          schema: context.remote,
+          schema: context.schemas['error-remote'],
           operation: 'query',
           fieldName: 'partialError',
           args,

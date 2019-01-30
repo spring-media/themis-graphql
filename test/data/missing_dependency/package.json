@@ -1,7 +1,7 @@
 {
     "name": "article",
-    "description": "A datasource dependent on another",
-    "datasourceDependencies": [
+    "description": "A module dependent on another",
+    "gqlDependencies": [
         "cms-article"
     ]
 }

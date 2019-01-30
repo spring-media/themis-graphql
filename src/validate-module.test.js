@@ -2,9 +2,9 @@ const { initServer } = require('./server');
 const path = require('path');
 
 describe('Validation', () => {
-  it('throws for datasources without a name', done => {
+  it('throws for modules without a name', done => {
     initServer({
-      datasourcePaths: [
+      modulePaths: [
         path.resolve(__dirname, '../test/data/noname'),
       ],
     })

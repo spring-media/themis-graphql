@@ -8,7 +8,7 @@ describe('Server', () => {
   beforeAll.nock(async () => {
     const { server: gqlServer } = await initServer({
       mockMode: true,
-      datasourcePaths: [
+      modulePaths: [
         path.resolve(__dirname, '../test/data/article'),
         path.resolve(__dirname, '../test/data/cms'),
       ],

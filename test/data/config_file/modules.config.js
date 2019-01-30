@@ -1,5 +1,5 @@
 module.exports = {
-  datasources: [
+  modules: [
     'cms-article',
   ],
 };

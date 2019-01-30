@@ -4,8 +4,7 @@ const schema = Joi.object().keys({
   PORT: Joi.string().alphanum().min(2).max(5),
   NODE_ENV: Joi
     .string()
-    .valid([ 'production', 'development', 'test' ])
-    .required(),
+    .valid([ 'production', 'development', 'test' ]),
   LOG_LEVEL: Joi
     .string()
     .valid([ 'debug', 'warn', 'error', 'info' ]),

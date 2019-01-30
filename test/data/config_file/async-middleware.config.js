@@ -4,7 +4,7 @@ const asyncMiddleware = async (req, res, next) => {
 };
 
 module.exports = {
-  datasources: [
+  modules: [
     './test/data/cms_article',
   ],
   middleware: {

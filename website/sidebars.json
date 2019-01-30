@@ -1,0 +1,23 @@
+{
+  "docs": {
+    "Getting Started": [
+      "what",
+      "installation",
+      "getting-started"
+    ],
+    "Guides": [
+      "guides/remote-module-guide",
+      "guides/nocks"
+    ],
+    "API": [
+      "module",
+      "remote-module",
+      "transforms",
+      "cli"
+    ],
+    "Configuration": [
+      "config-file",
+      "env"
+    ]
+  }
+}

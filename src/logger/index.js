@@ -1,8 +1,7 @@
 const { Logger, transports } = require('winston');
-const isProd = process.env.NODE_ENV === 'production';
-
+const { isProd } = require('../utils');
 const logger = new (Logger)({
-  level: process.env.LOG_LEVEL || 'warn',
+  level: process.env.LOG_LEVEL || 'info',
   transports: [
     new transports.Console({
       colorize: !isProd,

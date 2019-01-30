@@ -1,5 +1,5 @@
 module.exports = {
-  datasources: [
+  modules: [
     './test/data/cms_article',
   ],
   middleware: {

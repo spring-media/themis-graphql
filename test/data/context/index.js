@@ -7,6 +7,6 @@ module.exports = {
   resolvers,
   mocks: {},
   context: () => ({
-    setByDatasource: 'yay context',
+    setByModule: 'yay context',
   }),
 };

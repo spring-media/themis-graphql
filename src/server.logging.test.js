@@ -18,7 +18,7 @@ describe('Server', () => {
 
     it('logs resolver errors', async () => {
       const { server } = await initServer({
-        datasourcePaths: [
+        modulePaths: [
           path.resolve(__dirname, '../test/data/error'),
         ],
       });
@@ -37,14 +37,14 @@ describe('Server', () => {
           error: null,
         },
         errors: [{
-          message: 'resolver error in datasource',
+          message: 'resolver error in module',
           locations: [{ line: 1, column: 9 }],
           path: ['error'],
           extensions: {
             code: 'INTERNAL_SERVER_ERROR',
             exception: {
               errors: [{
-                message: 'resolver error in datasource',
+                message: 'resolver error in module',
                 locations: [],
                 path: ['error'],
               }],
@@ -53,13 +53,13 @@ describe('Server', () => {
         }],
       };
 
-      expect(logger.error).toHaveBeenCalledWith(expect.stringMatching('Error: resolver error in datasource\n'));
+      expect(logger.error).toHaveBeenCalledWith(expect.stringMatching('Error: resolver error in module\n'));
       expect(res.body).toMatchObject(expect.objectContaining(expected));
     });
 
     it('logs remote link network errors', async () => {
       const { server } = await initServer({
-        datasourcePaths: [
+        modulePaths: [
           path.resolve(__dirname, '../test/data/unavailable-remote'),
         ],
         useFileSchema: true,
@@ -111,7 +111,7 @@ describe('Server', () => {
       });
 
       const { server } = await initServer({
-        datasourcePaths: [
+        modulePaths: [
           path.resolve(__dirname, '../test/data/error-remote'),
         ],
         useFileSchema: false,
@@ -163,7 +163,7 @@ describe('Server', () => {
       });
 
       const { server } = await initServer({
-        datasourcePaths: [
+        modulePaths: [
           path.resolve(__dirname, '../test/data/error-remote'),
           path.resolve(__dirname, '../test/data/error-remote-and-local'),
         ],
@@ -217,7 +217,7 @@ describe('Server', () => {
 
     it('logs validation errors', async () => {
       const { server } = await initServer({
-        datasourcePaths: [
+        modulePaths: [
           path.resolve(__dirname, '../test/data/error'),
         ],
       });
@@ -253,7 +253,7 @@ describe('Server', () => {
 
     it('logs a warning on type collision', async () => {
       const { server } = await initServer({
-        datasourcePaths: [
+        modulePaths: [
           path.resolve(__dirname, '../test/data/cms_article'),
           path.resolve(__dirname, '../test/data/collide-article'),
         ],
@@ -270,7 +270,7 @@ describe('Server', () => {
 
     it('logs a warning on field collision', async () => {
       const { server } = await initServer({
-        datasourcePaths: [
+        modulePaths: [
           path.resolve(__dirname, '../test/data/cms_article'),
           path.resolve(__dirname, '../test/data/collide-article'),
         ],

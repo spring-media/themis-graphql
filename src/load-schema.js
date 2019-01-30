@@ -1,17 +1,21 @@
-const { setupDatasource } = require('./setup-datasource');
-const { mergeSchemas } = require('graphql-tools');
+const { setupModule } = require('./setup-module');
+const {
+  mergeSchemas,
+  FilterRootFields,
+  transformSchema,
+} = require('graphql-tools');
 const { GraphQLSchema } = require('graphql');
 const { insertIfValue } = require('./utils');
 const { findTypeConflict } = require('./find-type-conflict');
 const logger = require('./logger');
 
-const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema, filterSubscriptions }) => {
-  if (datasourcePaths.length === 0) {
-    throw new Error('Need at least one target path with datasources.');
+const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscriptions }) => {
+  if (modulePaths.length === 0) {
+    throw new Error('Need at least one target path with modules.');
   }
 
-  const sources = await Promise.all(datasourcePaths
-    .map(path => setupDatasource(path, { mockMode, useFileSchema, filterSubscriptions })));
+  const sources = await Promise.all(modulePaths
+    .map(path => setupModule(path, { mockMode, useFileSchema, filterSubscriptions })));
 
   // TODO: Implement namespaces
 
@@ -29,7 +33,7 @@ const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema, filterSubs
   });
 
   if (duplicates.length) {
-    throw new Error('Datasource names need to be unique, ' +
+    throw new Error('Module names need to be unique, ' +
       `found duplicates of "${duplicates.join(', ')}"`);
   }
 
@@ -38,7 +42,7 @@ const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema, filterSubs
     .forEach(config => config.dependencies
       .forEach(dependency => {
         if (!sourceNames.includes(dependency)) {
-          throw new Error(`Cannot load datasource "${config.name}", ` +
+          throw new Error(`Cannot load module "${config.name}", ` +
             `because missing dependency "${dependency}"`);
         }
       })
@@ -48,20 +52,15 @@ const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema, filterSubs
     schemas,
     resolvers,
     accessViaContext,
-    contextValidations,
     context,
     startupFns,
     shutdownFns,
   } = sources
   .reduce((p, c) => ({
     schemas: [ ...p.schemas, ...insertIfValue(c.schema), ...insertIfValue(c.extendTypes) ],
-    resolvers: [ ...p.resolvers, ...insertIfValue(c.resolvers) ],
+    resolvers: [ ...p.resolvers, ...insertIfValue(c.resolvers), ...insertIfValue(c.extendResolvers) ],
     context: [ ...p.context, ...insertIfValue(c.context) ],
     accessViaContext: { ...p.accessViaContext, ...c.accessViaContext },
-    contextValidations: [
-      ...p.contextValidations,
-      ...insertIfValue(c.validateContext),
-    ],
     startupFns: [ ...p.startupFns, ...insertIfValue(c.onStartup) ],
     shutdownFns: [ ...p.shutdownFns, ...insertIfValue(c.onShutdown) ],
   }), {
@@ -69,7 +68,6 @@ const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema, filterSubs
     resolvers: [],
     context: [],
     accessViaContext: {},
-    contextValidations: [],
     startupFns: [],
     shutdownFns: [],
   });
@@ -86,13 +84,15 @@ const loadSchema = async ({ datasourcePaths, mockMode, useFileSchema, filterSubs
     },
   });
 
-  const schema = mergeSchemas({
+  let schema = mergeSchemas({
     schemas,
     resolvers,
   });
 
-  for (const validation of contextValidations) {
-    validation(accessViaContext);
+  if (filterSubscriptions) {
+    schema = transformSchema(schema, [
+      new FilterRootFields(op => op !== 'Subscription'),
+    ]);
   }
 
   return { schema, accessViaContext, context, startupFns, shutdownFns };

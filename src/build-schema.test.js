@@ -7,13 +7,13 @@ const { buildSchema } = require('./build-schema');
 
 describe('Build Schema', () => {
   it.nock('stores the remote schema into local dist folder for production use', async () => {
-    const datasourcePath = path.resolve(__dirname, '../test/data/cms.1');
+    const modulePath = path.resolve(__dirname, '../test/data/cms.1');
 
     await buildSchema({
-      datasourcePaths: [datasourcePath],
+      modulePaths: [modulePath],
     });
 
-    const builtSchema = require(path.join(datasourcePath, 'dist/_remote_schema.json'));
+    const builtSchema = require(path.join(modulePath, 'dist/_remote_schema.json'));
 
     const expected = {
       data: {
@@ -31,13 +31,13 @@ describe('Build Schema', () => {
   });
 
   it.nock('stores the remote schema into custom local path', async () => {
-    const datasourcePath = path.resolve(__dirname, '../test/data/cms.2');
+    const modulePath = path.resolve(__dirname, '../test/data/cms.2');
 
     await buildSchema({
-      datasourcePaths: [datasourcePath],
+      modulePaths: [modulePath],
     });
 
-    const builtSchema = require(path.join(datasourcePath, 'customDist/schema.json'));
+    const builtSchema = require(path.join(modulePath, 'customDist/schema.json'));
 
     const expected = {
       data: {
@@ -55,28 +55,28 @@ describe('Build Schema', () => {
   });
 
   it.nock('can store a pretty json schema', async () => {
-    const datasourcePath = path.resolve(__dirname, '../test/data/cms.3');
+    const modulePath = path.resolve(__dirname, '../test/data/cms.3');
 
     await buildSchema({
-      datasourcePaths: [datasourcePath],
+      modulePaths: [modulePath],
       pretty: true,
     });
 
-    const builtSchema = require(path.join(datasourcePath, 'dist/_remote_schema.json'));
-    const expectedSchema = require(path.join(datasourcePath, 'cms.3_pretty_schema.json'));
+    const builtSchema = require(path.join(modulePath, 'dist/_remote_schema.json'));
+    const expectedSchema = require(path.join(modulePath, 'cms.3_pretty_schema.json'));
 
     expect(builtSchema).toMatchObject(expectedSchema);
   });
 
   it.nock('uses built schema from custom path', async () => {
-    const datasourcePath = path.resolve(__dirname, '../test/data/cms.2');
+    const modulePath = path.resolve(__dirname, '../test/data/cms.2');
 
     await buildSchema({
-      datasourcePaths: [datasourcePath],
+      modulePaths: [modulePath],
     });
 
     const { server } = await initServer({
-      datasourcePaths: [datasourcePath],
+      modulePaths: [modulePath],
       useFileSchema: true,
     });
 
