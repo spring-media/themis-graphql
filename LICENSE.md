@@ -1,21 +1,3 @@
-# Themis
-GraphQL Data Aggregation CLI
-
-[Read the Docs](docs/getting-started.md) or checkout the repository, goto `./website` and run `yarn && yarn start`.
-
-
-# Development Setup
-Run `yarn install`.
-
-# Testing
-Tests are mainly written as integration tests and should mainly be written as integration tests.
-
-Run `yarn test`.
-
-The test setup mocks all external requests (including remote gql resources like lean), with [jest-nock](https://www.npmjs.com/package/jest-nock).
-
-
----
 Copyright (c) 2018-2019 SPRING AS Digital News Media GmbH
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
