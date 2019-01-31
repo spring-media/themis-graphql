@@ -1,3 +1,5 @@
+jest.mock('./logger');
+const logger = require('./logger');
 const { initServer } = require('./server');
 const request = require('supertest');
 const path = require('path');
@@ -253,8 +255,12 @@ describe('Schema', () => {
     });
   });
 
-  describe('Import Types', () => {
-    it('can import types from other modules', async () => {
+  describe('Import Interfaces', () => {
+    beforeEach(() => {
+      logger.warn.mockReset();
+    });
+
+    it('can import interfaces from other modules', async () => {
       const { server } = await initServer({
         modulePaths: [
           path.resolve(__dirname, '../test/data/base'),
@@ -283,6 +289,59 @@ describe('Schema', () => {
             title: 'Extended Base Article',
           }),
         },
+      };
+
+      expect(res.body).toMatchObject(expect.objectContaining(expected));
+    });
+
+    it('does not cause type conflict for imported interfaces', async () => {
+      await initServer({
+        modulePaths: [
+          path.resolve(__dirname, '../test/data/base'),
+          path.resolve(__dirname, '../test/data/use-base'),
+        ],
+      });
+
+      expect(logger.warn).not.toHaveBeenCalled();
+    });
+
+    it('only merges interfaces from imported modules', async () => {
+      const { server } = await initServer({
+        modulePaths: [
+          path.resolve(__dirname, '../test/data/base'),
+          path.resolve(__dirname, '../test/data/use-base'),
+        ],
+      });
+
+      const res = await request(server)
+        .post('/api/graphql')
+        .send({
+          query: `mutation {
+            baseMutation
+          }`,
+        });
+
+      server.close();
+
+      const expected = {
+        data: {
+          baseMutation: null,
+        },
+        errors: [{
+          extensions: {
+            code: 'INTERNAL_SERVER_ERROR',
+                },
+          locations: [
+            {
+              column: 13,
+              line: 2,
+            },
+          ],
+          message: 'Query root type must be provided.',
+          path: [
+            'baseMutation',
+          ],
+        }],
       };
 
       expect(res.body).toMatchObject(expect.objectContaining(expected));
