@@ -7,6 +7,7 @@ const {
 const { GraphQLSchema } = require('graphql');
 const { insertIfValue } = require('./utils');
 const { findTypeConflict } = require('./find-type-conflict');
+const { loadModule } = require('./load-module');
 const logger = require('./logger');
 
 const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscriptions }) => {
@@ -14,12 +15,12 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     throw new Error('Need at least one target path with modules.');
   }
 
-  const sources = await Promise.all(modulePaths
-    .map(path => setupModule(path, { mockMode, useFileSchema, filterSubscriptions })));
+  const configs = await Promise.all(modulePaths
+    .map(path => loadModule(path)));
 
   // TODO: Implement namespaces
 
-  const sourceNames = sources.map(config => config.name);
+  const sourceNames = configs.map(config => config.name);
   const { duplicates } = sourceNames.reduce((p, name) => {
     if (p.checked.includes(name)) {
       p.duplicates.push(name);
@@ -37,16 +38,28 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
       `found duplicates of "${duplicates.join(', ')}"`);
   }
 
-  sources
+  const moduleMap = configs.reduce((prev, curr) => Object.assign(prev, {
+    [curr.name]: curr,
+  }), {});
+
+  configs
     .filter(config => config.dependencies)
-    .forEach(config => config.dependencies
-      .forEach(dependency => {
-        if (!sourceNames.includes(dependency)) {
-          throw new Error(`Cannot load module "${config.name}", ` +
-            `because missing dependency "${dependency}"`);
-        }
-      })
+    .forEach(config => {
+      config.resolvedDependencies = config.dependencies
+        .reduce((prev, dependencyName) => {
+          if (!moduleMap[dependencyName]) {
+            throw new Error(`Cannot load module "${config.name}", ` +
+              `because missing dependency "${dependencyName}"`);
+          }
+          return Object.assign(prev, {
+            [dependencyName]: moduleMap[dependencyName],
+          });
+        }, {});
+      }
     );
+
+  const sources = await Promise.all(configs
+    .map(config => setupModule(config, { mockMode, useFileSchema, filterSubscriptions })));
 
   const {
     schemas,
