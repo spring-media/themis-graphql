@@ -5,7 +5,6 @@ const {
   addMockFunctionsToSchema,
 } = require('graphql-tools');
 const { loadRemoteSchema } = require('./load-remote-schema');
-const { loadModule } = require('./load-module');
 const { spreadIf } = require('./utils');
 const logger = require('./logger');
 
@@ -24,12 +23,27 @@ const setupRemote = async (config, { mockMode, sourcePath, useFileSchema }) => {
 };
 
 const setupLocal = config => {
-  const { typeDefs, extendTypes, resolvers, extendResolvers } = config;
+  const {
+    typeDefs = [],
+    extendTypes,
+    resolvers,
+    extendResolvers,
+    importTypes, // ['base']
+    resolvedDependencies,
+  } = config;
   const source = {};
 
-  if (typeDefs) {
+  const types = [].concat(typeDefs);
+
+  if (Array.isArray(importTypes)) {
+    importTypes.forEach(moduleName => {
+      types.push(resolvedDependencies[moduleName].typeDefs);
+    });
+  }
+
+  if (types.length) {
     source.schema = makeExecutableSchema({
-      typeDefs,
+      typeDefs: types,
       resolvers,
       resolverValidationOptions: {
         requireResolversForResolveType: false,
@@ -54,11 +68,10 @@ const setupLocalOrRemoteSource = (config, opts) => {
 };
 
 // eslint-disable-next-line complexity
-const setupModule = async (sourcePath, { mockMode, useFileSchema }) => {
-  const config = await loadModule(sourcePath);
+const setupModule = async (config, { mockMode, useFileSchema }) => {
   const source = await setupLocalOrRemoteSource(config, {
     mockMode,
-    sourcePath,
+    sourcePath: config.sourcePath,
     useFileSchema,
   });
 
@@ -85,7 +98,6 @@ const setupModule = async (sourcePath, { mockMode, useFileSchema }) => {
     accessViaContext: {
       [config.name]: source.schema,
     },
-    sourcePath,
   };
 };
 
