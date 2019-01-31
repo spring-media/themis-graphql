@@ -22,7 +22,7 @@ module.exports = {
   dependencies: [
     'base',
   ],
-  importTypes: [
+  importInterfaces: [
     'base',
   ],
 };
