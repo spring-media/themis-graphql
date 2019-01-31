@@ -4,6 +4,9 @@ const {
   transformSchema,
   addMockFunctionsToSchema,
 } = require('graphql-tools');
+const {
+  Kind,
+} = require('graphql');
 const { loadRemoteSchema } = require('./load-remote-schema');
 const { spreadIf } = require('./utils');
 const logger = require('./logger');
@@ -28,16 +31,33 @@ const setupLocal = config => {
     extendTypes,
     resolvers,
     extendResolvers,
-    importTypes, // ['base']
+    importInterfaces, // ['base']
     resolvedDependencies,
   } = config;
-  const source = {};
+  const source = {
+    importedInterfaces: [],
+  };
 
   const types = [].concat(typeDefs);
 
-  if (Array.isArray(importTypes)) {
-    importTypes.forEach(moduleName => {
-      types.push(resolvedDependencies[moduleName].typeDefs);
+  if (Array.isArray(importInterfaces)) {
+    importInterfaces.forEach(moduleName => {
+      const importedTypeDefs = resolvedDependencies[moduleName].typeDefs;
+      const interfaceTypes = {
+        ...importedTypeDefs,
+        definitions: importedTypeDefs.definitions.filter(definition => {
+          if (definition.kind === Kind.INTERFACE_TYPE_DEFINITION) {
+            source.importedInterfaces.push({
+              moduleName,
+              definition,
+            });
+            return true;
+          }
+          return false;
+        }),
+      };
+
+      types.push(interfaceTypes);
     });
   }
 
@@ -98,6 +118,7 @@ const setupModule = async (config, { mockMode, useFileSchema }) => {
     accessViaContext: {
       [config.name]: source.schema,
     },
+    importedInterfaces: source.importedInterfaces,
   };
 };
 

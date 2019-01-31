@@ -68,6 +68,7 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     context,
     startupFns,
     shutdownFns,
+    importedInterfaces,
   } = sources
   .reduce((p, c) => ({
     schemas: [ ...p.schemas, ...insertIfValue(c.schema), ...insertIfValue(c.extendTypes) ],
@@ -76,6 +77,7 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     accessViaContext: { ...p.accessViaContext, ...c.accessViaContext },
     startupFns: [ ...p.startupFns, ...insertIfValue(c.onStartup) ],
     shutdownFns: [ ...p.shutdownFns, ...insertIfValue(c.onShutdown) ],
+    importedInterfaces: [ ...p.importedInterfaces, ...c.importedInterfaces ],
   }), {
     schemas: [],
     resolvers: [],
@@ -83,11 +85,17 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     accessViaContext: {},
     startupFns: [],
     shutdownFns: [],
+    importedInterfaces: [],
   });
 
   findTypeConflict(schemas.filter(maybeSchema => (maybeSchema instanceof GraphQLSchema)), {
     ignoreTypeCheck: [ 'Query', 'ID', 'Int', 'String', 'Boolean', 'JSON' ],
     onTypeConflict: (left, right, info) => {
+      // Ignore interface types that were imported
+      if (importedInterfaces.find(imported => imported.moduleName === info.left.schema.moduleName &&
+        imported.definition.name.value === left.name)) {
+        return;
+      }
       logger.warn(`Type Collision for "${left.name}" from "${info.left.schema.moduleName}" ` +
         `to "${info.right.schema.moduleName}".`);
     },

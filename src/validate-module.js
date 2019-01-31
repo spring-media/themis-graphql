@@ -11,7 +11,7 @@ const schema = Joi.alternatives().try([
     name: Joi.string().packageName().required(),
     namespace: Joi.string(),
     typeDefs: Joi.object(), // TODO: Allow array of typeDefs
-    importTypes: Joi.array().items(Joi.string()),
+    importInterfaces: Joi.array().items(Joi.string()),
     extendTypes: Joi.object(),
     resolvers: Joi.object(),
     extendResolvers: Joi.object(),
