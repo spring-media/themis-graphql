@@ -3,7 +3,6 @@ const { delegateToSchema } = require('graphql-tools');
 
 module.exports = {
   name: 'error-remote-and-local',
-  mocks: {},
   typeDefs: gql`
     type Query {
       alsoError: LocalFullObject

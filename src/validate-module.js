@@ -11,7 +11,7 @@ const schema = Joi.alternatives().try([
     name: Joi.string().packageName().required(),
     namespace: Joi.string(),
     typeDefs: Joi.object(), // TODO: Allow array of typeDefs (test covered)
-    importInterfaces: Joi.array().items(Joi.string()),
+    importTypes: Joi.object(),
     extendTypes: Joi.object(), // TODO: Allow array (test covered)
     resolvers: Joi.object(), // TODO: Allow array (test covered)
     extendResolvers: Joi.object(), // TODO: Allow array (test covered)

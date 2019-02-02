@@ -1,7 +1,7 @@
 const gql = require('graphql-tag');
 
 module.exports = {
-  name: 'error',
+  name: 'partial-error',
   typeDefs: gql`
   type Query {
     partialError: FullObject
@@ -28,5 +28,4 @@ module.exports = {
       fieldB: p => p.fieldB.text,
     },
   },
-  mocks: {},
 };

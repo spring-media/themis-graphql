@@ -5,6 +5,7 @@ module.exports = {
   typeDefs: gql`
     type Query {
       article: Article
+      imported: BaseType
     }
     type Article implements BaseArticle {
       id: ID!
@@ -17,12 +18,15 @@ module.exports = {
         id: 'one',
         title: 'Extended Base Article',
       }),
+      imported: () => ({
+        id: 'imported1',
+      }),
     },
   },
   dependencies: [
     'base',
   ],
-  importInterfaces: [
-    'base',
-  ],
+  importTypes: {
+    base: [ 'BaseArticle', 'BaseType' ],
+  },
 };
