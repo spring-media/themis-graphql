@@ -294,7 +294,41 @@ describe('Schema', () => {
       expect(res.body).toMatchObject(expect.objectContaining(expected));
     });
 
-    it('does not cause type conflict for imported interfaces', async () => {
+    it('can import types with resolvers from other modules', async () => {
+      const { server } = await initServer({
+        modulePaths: [
+          path.resolve(__dirname, '../test/data/base'),
+          path.resolve(__dirname, '../test/data/use-base'),
+        ],
+      });
+
+      const res = await request(server)
+        .post('/api/graphql')
+        .send({
+          query: `query {
+            imported {
+              id
+              title
+            }
+          }`,
+        })
+        .expect(200);
+
+      server.close();
+
+      const expected = {
+        data: {
+          imported: expect.objectContaining({
+            id: 'imported1',
+            title: 'Imported Resolver',
+          }),
+        },
+      };
+
+      expect(res.body).toMatchObject(expect.objectContaining(expected));
+    });
+
+    it('does not cause type conflict for imported types', async () => {
       await initServer({
         modulePaths: [
           path.resolve(__dirname, '../test/data/base'),
@@ -305,7 +339,7 @@ describe('Schema', () => {
       expect(logger.warn).not.toHaveBeenCalled();
     });
 
-    it('does not cause type conflict for imported interfaces (changed order)', async () => {
+    it('does not cause type conflict for imported types (changed order)', async () => {
       await initServer({
         modulePaths: [
           path.resolve(__dirname, '../test/data/use-base'),
@@ -316,7 +350,7 @@ describe('Schema', () => {
       expect(logger.warn).not.toHaveBeenCalled();
     });
 
-    it('only merges interfaces from imported modules', async () => {
+    it('only merges selected types from imported modules', async () => {
       const { server } = await initServer({
         modulePaths: [
           path.resolve(__dirname, '../test/data/base'),
