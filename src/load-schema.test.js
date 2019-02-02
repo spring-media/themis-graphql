@@ -356,6 +356,46 @@ describe('Schema', () => {
       expect(res.body).toMatchObject(expect.objectContaining(expected));
     });
 
+    it('can create unions from imported types', async () => {
+      const { server } = await initServer({
+        modulePaths: [
+          path.resolve(__dirname, '../test/data/base'),
+          path.resolve(__dirname, '../test/data/base2'),
+          path.resolve(__dirname, '../test/data/union-from-base'),
+        ],
+      });
+
+      const res = await request(server)
+        .post('/api/graphql')
+        .send({
+          query: `query {
+            unified {
+              ...on BaseType {
+                id
+                title
+              }
+              ...on AnotherBaseType {
+                id
+                name
+              }
+            }
+          }`,
+        });
+
+      server.close();
+
+      const expected = {
+        data: {
+          unified: {
+            id: 'one',
+            title: 'Imported Resolver',
+          },
+        },
+      };
+
+      expect(res.body).toMatchObject(expect.objectContaining(expected));
+    });
+
     it('does not cause type conflict for imported types', async () => {
       await initServer({
         modulePaths: [
