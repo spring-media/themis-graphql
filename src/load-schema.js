@@ -5,7 +5,7 @@ const {
   transformSchema,
 } = require('graphql-tools');
 const { GraphQLSchema } = require('graphql');
-const { insertIfValue } = require('./utils');
+const { insertIfValue, insertFlatIfValue } = require('./utils');
 const { findTypeConflict } = require('./find-type-conflict');
 const { loadModule } = require('./load-module');
 const logger = require('./logger');
@@ -77,7 +77,7 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     accessViaContext: { ...p.accessViaContext, ...c.accessViaContext },
     startupFns: [ ...p.startupFns, ...insertIfValue(c.onStartup) ],
     shutdownFns: [ ...p.shutdownFns, ...insertIfValue(c.onShutdown) ],
-    importedInterfaces: [ ...p.importedInterfaces, ...c.importedInterfaces ],
+    importedInterfaces: [ ...p.importedInterfaces, ...insertFlatIfValue(c.importedInterfaces) ],
   }), {
     schemas: [],
     resolvers: [],
@@ -92,8 +92,12 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     ignoreTypeCheck: [ 'Query', 'ID', 'Int', 'String', 'Boolean', 'JSON' ],
     onTypeConflict: (left, right, info) => {
       // Ignore interface types that were imported
-      if (importedInterfaces.find(imported => imported.moduleName === info.left.schema.moduleName &&
-        imported.definition.name.value === left.name)) {
+      if (importedInterfaces.find(imported => (
+        imported.moduleName === info.left.schema.moduleName &&
+        imported.definition.name.value === left.name) || (
+          imported.moduleName === info.right.schema.moduleName &&
+        imported.definition.name.value === right.name
+        ))) {
         return;
       }
       logger.warn(`Type Collision for "${left.name}" from "${info.left.schema.moduleName}" ` +
