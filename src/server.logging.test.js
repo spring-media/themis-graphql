@@ -1,6 +1,6 @@
 jest.mock('./logger');
 const logger = require('./logger');
-const { initServer } = require('./server');
+const { initServer, clearModuleCache } = require('./');
 const request = require('supertest');
 const path = require('path');
 const { spawn } = require('../test/spawn');
@@ -10,6 +10,7 @@ describe('Server', () => {
   describe('Error', () => {
     beforeEach(() => {
       logger.error.mockReset();
+      clearModuleCache();
     });
 
     afterEach(async () => {

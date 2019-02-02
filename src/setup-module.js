@@ -4,9 +4,7 @@ const {
   transformSchema,
   addMockFunctionsToSchema,
 } = require('graphql-tools');
-const {
-  Kind,
-} = require('graphql');
+
 const { loadRemoteSchema } = require('./load-remote-schema');
 const { spreadIf } = require('./utils');
 const logger = require('./logger');
@@ -31,40 +29,42 @@ const setupLocal = config => {
     extendTypes,
     resolvers,
     extendResolvers,
-    importInterfaces, // ['base']
+    importTypes,
     resolvedDependencies,
   } = config;
-  const source = {
-    importedInterfaces: [],
-  };
-
+  const source = {};
   const types = [].concat(typeDefs);
+  const allResolvers = [resolvers];
 
-  if (Array.isArray(importInterfaces)) {
-    importInterfaces.forEach(moduleName => {
-      const importedTypeDefs = resolvedDependencies[moduleName].typeDefs;
-      const interfaceTypes = {
-        ...importedTypeDefs,
-        definitions: importedTypeDefs.definitions.filter(definition => {
-          if (definition.kind === Kind.INTERFACE_TYPE_DEFINITION) {
-            source.importedInterfaces.push({
-              moduleName,
-              definition,
-            });
-            return true;
-          }
-          return false;
+  if (importTypes) {
+    Object.keys(importTypes).forEach(moduleName => {
+      const typeNamesToImport = importTypes[moduleName];
+      const importTypeDefs = resolvedDependencies[moduleName].typeDefs;
+      const importResolvers = resolvedDependencies[moduleName].resolvers;
+
+      if (!Array.isArray(typeNamesToImport)) {
+        throw new Error('Types to import must be an array with type names');
+      }
+
+      const importedTypes = {
+        ...importTypeDefs,
+        definitions: importTypeDefs.definitions.filter(typeDef => {
+          return typeNamesToImport.includes(typeDef.name.value);
         }),
       };
 
-      types.push(interfaceTypes);
+      const importedResolvers = typeNamesToImport.reduce((p, c) =>
+        Object.assign(p, spreadIf(importResolvers[c], { [c]: importResolvers[c] })), {});
+
+      types.unshift(importedTypes);
+      allResolvers.unshift(importedResolvers);
     });
   }
 
   if (types.length) {
     source.schema = makeExecutableSchema({
       typeDefs: types,
-      resolvers,
+      resolvers: allResolvers,
       resolverValidationOptions: {
         requireResolversForResolveType: false,
       },
@@ -87,8 +87,16 @@ const setupLocalOrRemoteSource = (config, opts) => {
   return setupLocal(config, opts);
 };
 
+const state = {
+  sourceCache: {},
+};
+
 // eslint-disable-next-line complexity
 const setupModule = async (config, { mockMode, useFileSchema }) => {
+  if (state.sourceCache[config.sourcePath]) {
+    return state.sourceCache[config.sourcePath];
+  }
+
   const source = await setupLocalOrRemoteSource(config, {
     mockMode,
     sourcePath: config.sourcePath,
@@ -109,17 +117,24 @@ const setupModule = async (config, { mockMode, useFileSchema }) => {
     }
   }
 
-  return {
+  const fullSource = {
     ...config,
     ...spreadIf(config.mount !== false, {
       schema: source.schema,
-      resolvers: source.resolvers,
     }),
     accessViaContext: {
       [config.name]: source.schema,
     },
     importedInterfaces: source.importedInterfaces,
   };
+
+  state.sourceCache[config.sourcePath] = fullSource;
+
+  return fullSource;
 };
 
-module.exports = { setupModule };
+function clearModuleCache () {
+  state.sourceCache = {};
+}
+
+module.exports = { setupModule, clearModuleCache };

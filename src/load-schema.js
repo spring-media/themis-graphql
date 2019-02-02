@@ -5,7 +5,7 @@ const {
   transformSchema,
 } = require('graphql-tools');
 const { GraphQLSchema } = require('graphql');
-const { insertIfValue, insertFlatIfValue } = require('./utils');
+const { insertIfValue } = require('./utils');
 const { findTypeConflict } = require('./find-type-conflict');
 const { loadModule } = require('./load-module');
 const logger = require('./logger');
@@ -38,28 +38,27 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
       `found duplicates of "${duplicates.join(', ')}"`);
   }
 
-  const moduleMap = configs.reduce((prev, curr) => Object.assign(prev, {
+  const moduleConfigMap = configs.reduce((prev, curr) => Object.assign(prev, {
     [curr.name]: curr,
   }), {});
 
-  configs
-    .filter(config => config.dependencies)
-    .forEach(config => {
-      config.resolvedDependencies = config.dependencies
-        .reduce((prev, dependencyName) => {
-          if (!moduleMap[dependencyName]) {
+  const sources = await Promise.all(configs
+    .map(async config => {
+      if (config.dependencies) {
+        config.resolvedDependencies = {};
+        for (const dependencyName of config.dependencies) {
+          if (!moduleConfigMap[dependencyName]) {
             throw new Error(`Cannot load module "${config.name}", ` +
               `because missing dependency "${dependencyName}"`);
           }
-          return Object.assign(prev, {
-            [dependencyName]: moduleMap[dependencyName],
-          });
-        }, {});
+          config.resolvedDependencies[dependencyName] =
+            await setupModule(moduleConfigMap[dependencyName], {
+              mockMode, useFileSchema, filterSubscriptions,
+            });
+        }
       }
-    );
-
-  const sources = await Promise.all(configs
-    .map(config => setupModule(config, { mockMode, useFileSchema, filterSubscriptions })));
+      return setupModule(config, { mockMode, useFileSchema, filterSubscriptions });
+    }));
 
   const {
     schemas,
@@ -68,16 +67,17 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     context,
     startupFns,
     shutdownFns,
-    importedInterfaces,
+    importTypes,
   } = sources
   .reduce((p, c) => ({
     schemas: [ ...p.schemas, ...insertIfValue(c.schema), ...insertIfValue(c.extendTypes) ],
-    resolvers: [ ...p.resolvers, ...insertIfValue(c.resolvers), ...insertIfValue(c.extendResolvers) ],
+    resolvers: [ ...p.resolvers, ...insertIfValue(c.extendResolvers) ],
     context: [ ...p.context, ...insertIfValue(c.context) ],
     accessViaContext: { ...p.accessViaContext, ...c.accessViaContext },
     startupFns: [ ...p.startupFns, ...insertIfValue(c.onStartup) ],
     shutdownFns: [ ...p.shutdownFns, ...insertIfValue(c.onShutdown) ],
-    importedInterfaces: [ ...p.importedInterfaces, ...insertFlatIfValue(c.importedInterfaces) ],
+    importTypes: [ ...p.importTypes, ...(c.importTypes ? Object.keys(c.importTypes)
+      .reduce((prev, key) => [ ...prev, ...c.importTypes[key] ], []) : []) ],
   }), {
     schemas: [],
     resolvers: [],
@@ -85,21 +85,13 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     accessViaContext: {},
     startupFns: [],
     shutdownFns: [],
-    importedInterfaces: [],
+    importTypes: [],
   });
 
   findTypeConflict(schemas.filter(maybeSchema => (maybeSchema instanceof GraphQLSchema)), {
-    ignoreTypeCheck: [ 'Query', 'ID', 'Int', 'String', 'Boolean', 'JSON' ],
+    ignoreTypeCheck: [ 'Query', 'ID', 'Int', 'String', 'Boolean', 'JSON' ].concat(importTypes),
+    ignoreFieldCheck: importTypes,
     onTypeConflict: (left, right, info) => {
-      // Ignore interface types that were imported
-      if (importedInterfaces.find(imported => (
-        imported.moduleName === info.left.schema.moduleName &&
-        imported.definition.name.value === left.name) || (
-          imported.moduleName === info.right.schema.moduleName &&
-        imported.definition.name.value === right.name
-        ))) {
-        return;
-      }
       logger.warn(`Type Collision for "${left.name}" from "${info.left.schema.moduleName}" ` +
         `to "${info.right.schema.moduleName}".`);
     },
