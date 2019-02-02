@@ -10,11 +10,11 @@ const schema = Joi.alternatives().try([
   Joi.object().keys({
     name: Joi.string().packageName().required(),
     namespace: Joi.string(),
-    typeDefs: Joi.object(), // TODO: Allow array of typeDefs
+    typeDefs: Joi.object(), // TODO: Allow array of typeDefs (test covered)
     importInterfaces: Joi.array().items(Joi.string()),
-    extendTypes: Joi.object(),
-    resolvers: Joi.object(),
-    extendResolvers: Joi.object(),
+    extendTypes: Joi.object(), // TODO: Allow array (test covered)
+    resolvers: Joi.object(), // TODO: Allow array (test covered)
+    extendResolvers: Joi.object(), // TODO: Allow array (test covered)
     mocks: Joi.object(),
     context: Joi.func(),
     mount: Joi.bool(),

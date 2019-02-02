@@ -305,6 +305,17 @@ describe('Schema', () => {
       expect(logger.warn).not.toHaveBeenCalled();
     });
 
+    it('does not cause type conflict for imported interfaces (changed order)', async () => {
+      await initServer({
+        modulePaths: [
+          path.resolve(__dirname, '../test/data/use-base'),
+          path.resolve(__dirname, '../test/data/base'),
+        ],
+      });
+
+      expect(logger.warn).not.toHaveBeenCalled();
+    });
+
     it('only merges interfaces from imported modules', async () => {
       const { server } = await initServer({
         modulePaths: [
