@@ -328,6 +328,34 @@ describe('Schema', () => {
       expect(res.body).toMatchObject(expect.objectContaining(expected));
     });
 
+    it('can import scalars with resolvers from other modules', async () => {
+      const { server } = await initServer({
+        modulePaths: [
+          path.resolve(__dirname, '../test/data/base'),
+          path.resolve(__dirname, '../test/data/use-base'),
+        ],
+      });
+
+      const res = await request(server)
+        .post('/api/graphql')
+        .send({
+          query: `query {
+            custom
+          }`,
+        })
+        .expect(200);
+
+      server.close();
+
+      const expected = {
+        data: {
+          custom: 'custom type value addendum',
+        },
+      };
+
+      expect(res.body).toMatchObject(expect.objectContaining(expected));
+    });
+
     it('does not cause type conflict for imported types', async () => {
       await initServer({
         modulePaths: [

@@ -6,6 +6,7 @@ module.exports = {
     type Query {
       article: Article
       imported: BaseType
+      custom: CustomType
     }
     type Article implements BaseArticle {
       id: ID!
@@ -21,12 +22,13 @@ module.exports = {
       imported: () => ({
         id: 'imported1',
       }),
+      custom: () => 'addendum',
     },
   },
   dependencies: [
     'base',
   ],
   importTypes: {
-    base: [ 'BaseArticle', 'BaseType' ],
+    base: [ 'BaseArticle', 'BaseType', 'CustomType' ],
   },
 };
