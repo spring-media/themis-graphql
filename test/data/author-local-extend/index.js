@@ -1,6 +1,6 @@
 const gql = require('graphql-tag');
-const authors = [{ id: 1, name: 'One Author', books: [1] }];
-const books = [{ id: 1, title: 'One Book' }];
+const authors = [{ id: 1, name: 'One Author' }];
+const books = [{ id: 1, title: 'One Book', author: 1 }];
 
 module.exports = {
   name: 'author',
@@ -12,18 +12,18 @@ module.exports = {
     type Author {
       id: Int!
       name: String
-      books: [Book]
     }
   `,
   resolvers: {
     Query: {
       author: () => authors.find(author => (author.id === 1)),
     },
-    Author: {
-      books: author => books.filter(book => author.books.includes(book.id)),
-    },
   },
   extendTypes: gql`
+    extend type Author {
+      books: [Book]
+    }
+
     extend type Book {
       author: Author
     }
@@ -32,9 +32,11 @@ module.exports = {
     Book: {
       author: book => authors.find(author => author.books.includes(book.id)),
     },
+    Author: {
+      books: author => {
+        return books.filter(book => book.author === author.id);
+      },
+    },
   },
   dependencies: ['book'],
-  importTypes: {
-    'book': ['Book'],
-  },
 };
