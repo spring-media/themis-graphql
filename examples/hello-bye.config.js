@@ -1,6 +1,6 @@
 module.exports = {
   modules: [
     './hello',
-    './bye'
-  ]
-}
+    './bye',
+  ],
+};

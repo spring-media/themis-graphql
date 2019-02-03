@@ -1,5 +1,5 @@
 module.exports = {
   context: ({ req }) => ({
-    name: req.headers['x-name']
-  })
-}
+    name: req.headers['x-name'],
+  }),
+};
