@@ -61,11 +61,55 @@ describe('Schema', () => {
       expect(res.body).toMatchObject(expect.objectContaining(expected));
     });
 
-    it.skip('extends resolvers correctly when extending local type (author.books)', async () => {
+    it('extends resolvers correctly', async () => {
       const { server } = await initServer({
         modulePaths: [
           path.resolve(__dirname, '../test/data/book'),
           path.resolve(__dirname, '../test/data/author'),
+        ],
+      });
+
+      const res = await request(server)
+        .post('/api/graphql')
+        .send({
+          query: `{
+            author {
+              id
+              name
+              books {
+                id
+                title
+              }
+            }
+          }`,
+        })
+        .expect(200);
+
+      server.close();
+
+      const expected = {
+        data: {
+          author: {
+            id: 1,
+            name: 'One Author',
+            books: [
+              {
+                id: 1,
+                title: 'One Book',
+              },
+            ],
+          },
+        },
+      };
+
+      expect(res.body).toMatchObject(expect.objectContaining(expected));
+    });
+
+    it('extends resolvers correctly when extending local type (author.books)', async () => {
+      const { server } = await initServer({
+        modulePaths: [
+          path.resolve(__dirname, '../test/data/book'),
+          path.resolve(__dirname, '../test/data/author-local-extend'),
         ],
       });
 

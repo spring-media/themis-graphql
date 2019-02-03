@@ -61,6 +61,11 @@ const setupLocal = config => {
     });
   }
 
+  if (extendTypes) {
+    source.extendTypes = extendTypes;
+    source.extendResolvers = extendResolvers;
+  }
+
   if (types.length) {
     source.schema = makeExecutableSchema({
       typeDefs: types,
@@ -70,11 +75,6 @@ const setupLocal = config => {
       },
       logger,
     });
-  }
-
-  if (extendTypes) {
-    source.extendTypes = extendTypes;
-    source.extendResolvers = extendResolvers;
   }
 
   return source;
