@@ -9,13 +9,13 @@ module.exports = {
     }
 
     type Book {
-      id: Int!,
+      id: Int!
       title: String
     }
   `,
   resolvers: {
     Query: {
-      book: () => books.find(book => (book.id === 1))
-    }
+      book: () => books.find(book => (book.id === 1)),
+    },
   },
 };
