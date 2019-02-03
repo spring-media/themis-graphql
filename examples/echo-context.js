@@ -10,7 +10,7 @@ module.exports = {
   `,
   resolvers: {
     Query: {
-      context: (_, a, ctx) => ctx
-    }
-  }
-}
+      context: (_, a, ctx) => ctx,
+    },
+  },
+};

@@ -9,7 +9,7 @@ module.exports = {
   `,
   resolvers: {
     Query: {
-      hello: () => 'world'
-    }
-  }
-}
+      hello: () => 'world',
+    },
+  },
+};
