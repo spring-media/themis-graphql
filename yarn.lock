@@ -811,7 +811,7 @@ apollo-utilities@1.0.26, apollo-utilities@^1.0.0, apollo-utilities@^1.0.1, apoll
   dependencies:
     fast-json-stable-stringify "^2.0.0"
 
-apollo-utilities@1.1.2, apollo-utilities@^1.1.2:
+apollo-utilities@^1.1.2:
   version "1.1.2"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-utilities/-/apollo-utilities-1.1.2.tgz#aa5eca9d1f1eb721c381a22e0dde03559d856db3"
   integrity sha1-ql7KnR8etyHDgaIuDd4DVZ2FbbM=
@@ -2194,10 +2194,10 @@ dot-prop@^4.1.0:
   dependencies:
     is-obj "^1.0.0"
 
-dotenv@6.2.0:
-  version "6.2.0"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/dotenv/-/dotenv-6.2.0.tgz#941c0410535d942c8becf28d3f357dbd9d476064"
-  integrity sha1-lBwEEFNdlCyL7PKNPzV9vZ1HYGQ=
+dotenv@6.1.0:
+  version "6.1.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/dotenv/-/dotenv-6.1.0.tgz#9853b6ca98292acb7dec67a95018fa40bccff42c"
+  integrity sha1-mFO2ypgpKst97GepUBj6QLzP9Cw=
 
 duplexer3@^0.1.4:
   version "0.1.4"
@@ -4224,10 +4224,10 @@ jest-mock@^23.2.0:
   resolved "https://registry.yarnpkg.com/jest-mock/-/jest-mock-23.2.0.tgz#ad1c60f29e8719d47c26e1138098b6d18b261134"
   integrity sha1-rRxg8p6HGdR8JuETgJi20YsmETQ=
 
-jest-nock@0.1.7:
-  version "0.1.7"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/jest-nock/-/jest-nock-0.1.7.tgz#3667c990c42eaabaa2c75058a58d3ab7fc246817"
-  integrity sha1-NmfJkMQuqrqix1BYpY06t/wkaBc=
+jest-nock@0.1.6:
+  version "0.1.6"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/jest-nock/-/jest-nock-0.1.6.tgz#c759e0ae49a8e435f5b2f82d04be9d7f1e1daa70"
+  integrity sha1-x1ngrkmo5DX1svgtBL6dfx4dqnA=
   dependencies:
     mkdirp "^0.5.1"
 
@@ -7241,10 +7241,10 @@ superagent@^3.8.3:
     qs "^6.5.1"
     readable-stream "^2.3.5"
 
-supertest@3.4.2:
-  version "3.4.2"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/supertest/-/supertest-3.4.2.tgz#bad7de2e43d60d27c8caeb8ab34a67c8a5f71aad"
-  integrity sha1-utfeLkPWDSfIyuuKs0pnyKX3Gq0=
+supertest@3.3.0:
+  version "3.3.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/supertest/-/supertest-3.3.0.tgz#79b27bd7d34392974ab33a31fa51a3e23385987e"
+  integrity sha1-ebJ719NDkpdKszox+lGj4jOFmH4=
   dependencies:
     methods "^1.1.2"
     superagent "^3.8.3"
