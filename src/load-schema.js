@@ -76,8 +76,10 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     accessViaContext: { ...p.accessViaContext, ...c.accessViaContext },
     startupFns: [ ...p.startupFns, ...insertIfValue(c.onStartup) ],
     shutdownFns: [ ...p.shutdownFns, ...insertIfValue(c.onShutdown) ],
-    importTypes: [ ...p.importTypes, ...(c.importTypes ? Object.keys(c.importTypes)
-      .reduce((prev, key) => [ ...prev, ...c.importTypes[key] ], []) : []) ],
+    importTypes: [ ...p.importTypes, ...(c.importTypes ?
+      Object.keys(c.importTypes).reduce((prev, key) => [ ...prev, ...c.importTypes[key] ], []) :
+      []
+    ) ],
   }), {
     schemas: [],
     resolvers: [],
@@ -88,8 +90,20 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     importTypes: [],
   });
 
+  // graphql-tools removed the onTypeConflict resultion in mergeSchemas
+  // https://github.com/apollographql/graphql-tools/issues/863
+  // and there is no substituion. We check for type conflicts here manually,
+  // to trigger warnings for conflicts. We ignore common types though,
+  // as they can be merged just fine usually. There should be a
+  // solution with schema transforms to do type selection (left/right),
+  // which we should make available via the config file for module stitching.
+  const ignoreTypeCheck = [
+    'Query', 'ID', 'Int', 'String', 'Subscription',
+    'Boolean', 'JSON', 'Mutation',
+  ].concat(importTypes);
+
   findTypeConflict(schemas.filter(maybeSchema => (maybeSchema instanceof GraphQLSchema)), {
-    ignoreTypeCheck: [ 'Query', 'ID', 'Int', 'String', 'Boolean', 'JSON' ].concat(importTypes),
+    ignoreTypeCheck,
     ignoreFieldCheck: importTypes,
     onTypeConflict: (left, right, info) => {
       logger.warn(`Type Collision for "${left.name}" from "${info.left.schema.moduleName}" ` +

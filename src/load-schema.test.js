@@ -149,6 +149,42 @@ describe('Schema', () => {
       expect(res.body).toMatchObject(expect.objectContaining(expected));
     });
 
+    it('can use local resolvers for type used in extension (article.teaser)', async () => {
+      const { server } = await initServer({
+        modulePaths: [
+          path.resolve(__dirname, '../test/data/cms_article'),
+          path.resolve(__dirname, '../test/data/teaser'),
+        ],
+      });
+
+      const res = await request(server)
+        .post('/api/graphql')
+        .send({
+          query: `{
+            article(input: { id: "one" }) {
+              teaser(identifier: "landscape") {
+                kicker
+              }
+            }
+          }`,
+        })
+        .expect(200);
+
+      server.close();
+
+      const expected = {
+        data: {
+          article: {
+            teaser: {
+              kicker: 'Base Kicker',
+            },
+          },
+        },
+      };
+
+      expect(res.body).toMatchObject(expect.objectContaining(expected));
+    });
+
     it('does not matter which order module paths are specified when depending on another', async () => {
       const { server } = await initServer({
         modulePaths: [
