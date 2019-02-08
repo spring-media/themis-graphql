@@ -811,7 +811,7 @@ apollo-utilities@1.0.26, apollo-utilities@^1.0.0, apollo-utilities@^1.0.1, apoll
   dependencies:
     fast-json-stable-stringify "^2.0.0"
 
-apollo-utilities@^1.1.2:
+apollo-utilities@1.1.2, apollo-utilities@^1.1.2:
   version "1.1.2"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-utilities/-/apollo-utilities-1.1.2.tgz#aa5eca9d1f1eb721c381a22e0dde03559d856db3"
   integrity sha1-ql7KnR8etyHDgaIuDd4DVZ2FbbM=
