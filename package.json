@@ -42,7 +42,7 @@
   "devDependencies": {
     "apollo-cache-inmemory": "1.4.2",
     "apollo-client": "2.4.7",
-    "apollo-utilities": "1.0.26",
+    "apollo-utilities": "1.1.2",
     "babel-eslint": "8.2.3",
     "eslint": "4.19.1",
     "node-fetch": "2.3.0",
