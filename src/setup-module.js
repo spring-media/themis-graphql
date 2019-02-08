@@ -63,7 +63,7 @@ const setupLocal = config => {
 
   if (extendTypes) {
     source.extendTypes = extendTypes;
-    source.extendResolvers = extendResolvers;
+    source.extendResolvers = [].concat(extendResolvers);
   }
 
   if (types.length) {
