@@ -39,15 +39,20 @@ const setupLocal = config => {
 
   if (importTypes) {
     Object.keys(importTypes).forEach(moduleName => {
+      const importDependency = resolvedDependencies[moduleName];
       const typeNamesToImport = importTypes[moduleName];
 
-      const importTypeDefs = resolvedDependencies[moduleName].typeDefs;
+      if (!importDependency) {
+        throw new Error(`The dependency "${moduleName}" could not be loaded from ${name}`);
+      }
+
+      const importTypeDefs = importDependency.typeDefs;
 
       if (!importTypeDefs) {
         throw new Error(`The module "${moduleName}" does not expose any typeDefs ` +
           `to be imported by ${name}`);
       }
-      const importResolvers = resolvedDependencies[moduleName].resolvers;
+      const importResolvers = importDependency.resolvers;
 
       if (!Array.isArray(typeNamesToImport)) {
         throw new Error('Types to import must be an array with type names');
