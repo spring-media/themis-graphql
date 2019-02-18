@@ -25,6 +25,7 @@ const setupRemote = async (config, { mockMode, sourcePath, useFileSchema }) => {
 
 const setupLocal = config => {
   const {
+    name,
     typeDefs = [],
     extendTypes,
     resolvers,
@@ -39,7 +40,13 @@ const setupLocal = config => {
   if (importTypes) {
     Object.keys(importTypes).forEach(moduleName => {
       const typeNamesToImport = importTypes[moduleName];
+
       const importTypeDefs = resolvedDependencies[moduleName].typeDefs;
+
+      if (!importTypeDefs) {
+        throw new Error(`The module "${moduleName}" does not expose any typeDefs ` +
+          `to be imported by ${name}`);
+      }
       const importResolvers = resolvedDependencies[moduleName].resolvers;
 
       if (!Array.isArray(typeNamesToImport)) {
