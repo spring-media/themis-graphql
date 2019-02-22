@@ -147,7 +147,6 @@ const setupModule = async (config, { mockMode, useFileSchema }) => {
       }
     }
 
-    console.log('LOADED', config.name);
     return {
       ...config,
       ...spreadIf(config.mount !== false, {
