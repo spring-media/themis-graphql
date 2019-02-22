@@ -45,19 +45,13 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
   const sources = await Promise.all(configs
     .map(async config => {
       if (config.dependencies) {
-        config.resolvedDependencies = {};
-        for (const dependencyName of config.dependencies) {
-          if (!moduleConfigMap[dependencyName]) {
-            throw new Error(`Cannot load module "${config.name}", ` +
-              `because missing dependency "${dependencyName}"`);
-          }
-          config.resolvedDependencies[dependencyName] =
-            await setupModule(moduleConfigMap[dependencyName], {
-              mockMode, useFileSchema, filterSubscriptions,
-            });
-        }
+        config.dependencyConfigs = config.dependencies.reduce((p, c) => ({
+          ...p,
+          [c]: moduleConfigMap[c],
+        }), {});
       }
-      return setupModule(config, { mockMode, useFileSchema, filterSubscriptions });
+
+      return setupModule(config, { mockMode, useFileSchema });
     }));
 
   const {
