@@ -43,7 +43,7 @@ const setupLocal = config => {
       const typeNamesToImport = importTypes[moduleName];
 
       if (!importDependency) {
-        throw new Error(`The dependency "${moduleName}" could not be loaded from ${name}`);
+        throw new Error(`The dependency "${moduleName}" could not be loaded from module "${name}"`);
       }
 
       const importTypeDefs = importDependency.typeDefs;
@@ -109,40 +109,60 @@ const setupModule = async (config, { mockMode, useFileSchema }) => {
     return state.sourceCache[config.sourcePath];
   }
 
-  const source = await setupLocalOrRemoteSource(config, {
-    mockMode,
-    sourcePath: config.sourcePath,
-    useFileSchema,
-  });
+  // eslint-disable-next-line complexity
+  const cachePromise = Promise.resolve().then(async () => {
+    config.resolvedDependencies = {};
 
-  if (source.schema) {
-    Object.assign(source.schema, {
-      moduleName: config.name,
+    if (config.dependencies) {
+      for (const dependencyName of config.dependencies) {
+        if (!config.dependencyConfigs[dependencyName]) {
+          throw new Error(`Cannot load module "${config.name}", ` +
+            `because missing dependency "${dependencyName}"`);
+        }
+
+        config.resolvedDependencies[dependencyName] =
+          await setupModule(config.dependencyConfigs[dependencyName], {
+            mockMode, useFileSchema,
+          });
+      }
+    }
+
+    const source = await setupLocalOrRemoteSource(config, {
+      mockMode,
+      sourcePath: config.sourcePath,
+      useFileSchema,
     });
 
-    if (mockMode && config.mocks) {
-      addMockFunctionsToSchema({ schema: source.schema, mocks: config.mocks });
+    if (source.schema) {
+      Object.assign(source.schema, {
+        moduleName: config.name,
+      });
+
+      if (mockMode && config.mocks) {
+        addMockFunctionsToSchema({ schema: source.schema, mocks: config.mocks });
+      }
+
+      if (Array.isArray(config.transforms)) {
+        source.schema = transformSchema(source.schema, config.transforms);
+      }
     }
 
-    if (Array.isArray(config.transforms)) {
-      source.schema = transformSchema(source.schema, config.transforms);
-    }
-  }
+    console.log('LOADED', config.name);
+    return {
+      ...config,
+      ...spreadIf(config.mount !== false, {
+        schema: source.schema,
+      }),
+      accessViaContext: {
+        [config.name]: source.schema,
+      },
+      importedInterfaces: source.importedInterfaces,
+    };
+  });
 
-  const fullSource = {
-    ...config,
-    ...spreadIf(config.mount !== false, {
-      schema: source.schema,
-    }),
-    accessViaContext: {
-      [config.name]: source.schema,
-    },
-    importedInterfaces: source.importedInterfaces,
-  };
+  state.sourceCache[config.sourcePath] = cachePromise;
 
-  state.sourceCache[config.sourcePath] = fullSource;
-
-  return fullSource;
+  return cachePromise;
 };
 
 function clearModuleCache () {

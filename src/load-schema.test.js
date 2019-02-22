@@ -333,9 +333,44 @@ describe('Schema', () => {
         done();
       });
     });
+
+    it('handles references in dep. tree to same modules in loading order', async () => {
+      const { server } = await initServer({
+        modulePaths: [
+          path.resolve(__dirname, '../test/data/common'),
+          path.resolve(__dirname, '../test/data/base3'),
+          path.resolve(__dirname, '../test/data/use-base2'),
+        ],
+      });
+
+      const res = await request(server)
+        .post('/api/graphql')
+        .send({
+          query: `query {
+            article {
+              id
+              title
+            }
+          }`,
+        })
+        .expect(200);
+
+      server.close();
+
+      const expected = {
+        data: {
+          article: expect.objectContaining({
+            id: 'one',
+            title: 'Extended Base Article',
+          }),
+        },
+      };
+
+      expect(res.body).toMatchObject(expect.objectContaining(expected));
+    });
   });
 
-  describe('Import Interfaces', () => {
+  describe('Import Types', () => {
     beforeEach(() => {
       logger.warn.mockReset();
     });
