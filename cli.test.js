@@ -204,6 +204,38 @@ describe('Subscriptions', () => {
     });
   });
 
+  it('sets context from global onConnect callback', async done => {
+    await spawnCLI([
+      '-c',
+      path.resolve(__dirname, 'test/data/config_file/on-connect.config.js'),
+    ], {
+      PORT: 54304,
+    });
+
+    const client = createClient({ port: 54304 });
+
+    const subscription = client.subscribe({
+      query: gql`subscription {
+        allInfo {
+          f1
+        }
+      }`,
+    }).subscribe({
+      next: res => {
+        subscription.unsubscribe();
+        expect(res).toMatchObject(expect.objectContaining({
+          data: {
+            allInfo: {
+              f1: 'global',
+              __typename: 'AllInfo',
+            },
+          },
+        }));
+        done();
+      },
+    });
+  });
+
   it('disables subscriptions with the --no-subscriptions flag', async done => {
     await spawnCLI([
       path.resolve(__dirname, 'test/data/subscription'),
