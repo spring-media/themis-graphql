@@ -17,6 +17,7 @@ const schema = Joi.alternatives().try([
     extendResolvers: Joi.object(), // TODO: Allow array (test covered)
     mocks: Joi.object(),
     context: Joi.func(),
+    onConnect: Joi.func(),
     mount: Joi.bool(),
     transforms: Joi.array(),
     dependencies: Joi.array().items(Joi.string()),

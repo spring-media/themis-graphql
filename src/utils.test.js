@@ -19,6 +19,18 @@ describe('Utils', () => {
       });
     });
 
+    it('executes callback if condition is met and spreads result', async () => {
+      const obj = {
+        ...spreadIf(true, () => ({
+          my: 'value',
+        })),
+      };
+
+      expect(obj).toEqual({
+        my: 'value',
+      });
+    });
+
     it('does not spread given object if condition is not met', async () => {
       const obj = {
         ...spreadIf(false, {
