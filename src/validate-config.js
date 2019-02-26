@@ -22,6 +22,7 @@ const schema = Joi.object().keys({
     Joi.func(),
     Joi.array().items(Joi.func()),
   ]).default([]),
+  onConnect: Joi.func(),
   onStartup: Joi.func().default(() => {}),
   onShutdown: Joi.func().default(() => {}),
 });

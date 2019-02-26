@@ -52,6 +52,7 @@ const modulePaths = program.useSubfolders ?
 const {
   middleware,
   context,
+  onConnect,
   onStartup,
   onShutdown,
   modules,
@@ -90,6 +91,7 @@ if (program.build) {
     debug: program.debug || isDev,
     tracing: process.env.GQL_TRACING === 'true',
     engineApiKey: process.env.APOLLO_ENGINE_API_KEY,
+    onConnect,
     onStartup,
     onShutdown,
     cacheControl: {
