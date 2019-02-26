@@ -61,6 +61,7 @@ async function initServer ({
   subscriptions = {},
   middleware = {},
   context: configContext = [],
+  onConnect: configOnConnect = [],
   debug = false,
   tracing = false,
   engineApiKey,
@@ -101,6 +102,7 @@ async function initServer ({
   const {
     schema,
     context = [],
+    onConnect = [],
     accessViaContext,
     startupFns,
     shutdownFns,
@@ -111,13 +113,23 @@ async function initServer ({
     filterSubscriptions: subscriptions === false,
   });
   const combinedContext = context.concat(configContext);
+  const combinedOnConnect = onConnect.concat(configOnConnect);
+
+  subscriptions.onConnect = (...args) => ({
+    ...combinedOnConnect.reduce((ctx, fn) => ({
+      ...ctx,
+      ...fn(...args),
+    }), {}),
+  });
+
   const hasSubscriptions = Boolean(schema.getSubscriptionType());
   const serverOptions = {
     schema,
-    context: (...args) => ({
+    context: ({ req, res, connection }) => ({
       ...combinedContext.reduce((ctx, fn) => ({
         ...ctx,
-        ...fn(...args),
+        ...fn({ req, res, connection }),
+        ...spreadIf(connection && connection.context, () => connection.context),
       }), {}),
       schemas: accessViaContext,
     }),

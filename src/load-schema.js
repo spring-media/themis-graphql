@@ -59,6 +59,7 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     resolvers,
     accessViaContext,
     context,
+    onConnect,
     startupFns,
     shutdownFns,
     importTypes,
@@ -67,6 +68,7 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     schemas: [ ...p.schemas, ...insertIfValue(c.schema), ...insertIfValue(c.extendTypes) ],
     resolvers: [ ...p.resolvers, ...insertIfValue(c.extendResolvers) ],
     context: [ ...p.context, ...insertIfValue(c.context) ],
+    onConnect: [ ...p.onConnect, ...insertIfValue(c.onConnect) ],
     accessViaContext: { ...p.accessViaContext, ...c.accessViaContext },
     startupFns: [ ...p.startupFns, ...insertIfValue(c.onStartup) ],
     shutdownFns: [ ...p.shutdownFns, ...insertIfValue(c.onShutdown) ],
@@ -78,6 +80,7 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     schemas: [],
     resolvers: [],
     context: [],
+    onConnect: [],
     accessViaContext: {},
     startupFns: [],
     shutdownFns: [],
@@ -120,7 +123,7 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     ]);
   }
 
-  return { schema, accessViaContext, context, startupFns, shutdownFns };
+  return { schema, accessViaContext, context, onConnect, startupFns, shutdownFns };
 };
 
 module.exports = {

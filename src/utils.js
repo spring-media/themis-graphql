@@ -1,4 +1,12 @@
-const spreadIf = (condition, fields, alternative) => condition ? fields : (alternative || {});
+const spreadIf = (condition, fields, alternative) => {
+  if (condition) {
+    if (typeof fields === 'function') {
+      return fields();
+    }
+    return fields;
+  }
+  return alternative || {};
+};
 const insertIf = (condition, ...elements) => condition ? elements : [];
 const insertIfValue = (...elements) => typeof elements[0] !== 'undefined' ? elements : [];
 const insertFlatIfValue = elements => typeof elements !== 'undefined' &&

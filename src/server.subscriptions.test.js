@@ -74,5 +74,36 @@ describe('Server', () => {
         done();
       });
     });
+
+    it('can use multiple onConnect callbacks', async done => {
+      await spawnCLI([
+        path.resolve(__dirname, '../test/data/subscription2'),
+        path.resolve(__dirname, '../test/data/subscription3'),
+      ], {
+        PORT: 54301,
+      });
+
+      const client = createClient({ port: 54301 });
+
+      client.subscribe({
+        query: gql`subscription {
+          allInfo {
+            f1
+            f2
+          }
+        }`,
+      }).subscribe(res => {
+        expect(res).toMatchObject(expect.objectContaining({
+          data: {
+            allInfo: {
+              'f1': 'first',
+              'f2': 'second',
+              '__typename': 'AllInfo',
+            },
+          },
+        }));
+        done();
+      });
+    });
   });
 });
