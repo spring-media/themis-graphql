@@ -38,13 +38,14 @@ const setupLocal = config => {
   } = config;
   const source = {};
 
+  const types = [].concat(typeDefs);
+  const allResolvers = [resolvers];
+
   // TODO: HACK add non-strict config var
   if (process.env.NON_STRICT) {
     source.typeDefs = typeDefs;
+    source.resolvers = allResolvers;
   }
-
-  const types = [].concat(typeDefs);
-  const allResolvers = [resolvers];
 
   if (importTypes) {
     Object.keys(importTypes).forEach(moduleName => {
@@ -97,7 +98,7 @@ const setupLocal = config => {
     source.extendResolvers = [].concat(extendResolvers);
   }
 
-  if (types.length) {
+  if (!process.env.NON_STRICT && types.length) {
     source.schema = makeExecutableSchema({
       typeDefs: types,
       resolvers: allResolvers,
@@ -178,6 +179,7 @@ const setupModule = async (config, { mockMode, useFileSchema }) => {
       ...spreadIf(config.mount !== false, {
         schema: source.schema,
       }),
+      resolvers: source.resolvers,
       accessViaContext: {
         [config.name]: source.schema,
       },
