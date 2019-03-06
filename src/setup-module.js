@@ -10,7 +10,10 @@ const { spreadIf } = require('./utils');
 const logger = require('./logger');
 
 const setupRemote = async (config, { mockMode, sourcePath, useFileSchema }) => {
-  const remoteResult = await loadRemoteSchema(config, sourcePath, { mockMode, useFileSchema });
+  const remoteResult = await loadRemoteSchema(config, sourcePath, {
+    mockMode,
+    useFileSchema,
+  });
   const { schema, link } = remoteResult;
   const executableSchema = makeRemoteExecutableSchema({
     schema,
@@ -34,6 +37,12 @@ const setupLocal = config => {
     resolvedDependencies,
   } = config;
   const source = {};
+
+  // TODO: HACK add non-strict config var
+  if (process.env.NON_STRICT) {
+    source.typeDefs = typeDefs;
+  }
+
   const types = [].concat(typeDefs);
   const allResolvers = [resolvers];
 
@@ -43,14 +52,18 @@ const setupLocal = config => {
       const typeNamesToImport = importTypes[moduleName];
 
       if (!importDependency) {
-        throw new Error(`The dependency "${moduleName}" could not be loaded from module "${name}"`);
+        throw new Error(
+          `The dependency "${moduleName}" could not be loaded from module "${name}"`
+        );
       }
 
       const importTypeDefs = importDependency.typeDefs;
 
       if (!importTypeDefs) {
-        throw new Error(`The module "${moduleName}" does not expose any typeDefs ` +
-          `to be imported by ${name}`);
+        throw new Error(
+          `The module "${moduleName}" does not expose any typeDefs ` +
+            `to be imported by ${name}`
+        );
       }
       const importResolvers = importDependency.resolvers;
 
@@ -65,8 +78,14 @@ const setupLocal = config => {
         }),
       };
 
-      const importedResolvers = typeNamesToImport.reduce((p, c) =>
-        Object.assign(p, spreadIf(importResolvers[c], { [c]: importResolvers[c] })), {});
+      const importedResolvers = typeNamesToImport.reduce(
+        (p, c) =>
+          Object.assign(
+            p,
+            spreadIf(importResolvers[c], { [c]: importResolvers[c] })
+          ),
+        {}
+      );
 
       types.unshift(importedTypes);
       allResolvers.unshift(importedResolvers);
@@ -88,7 +107,6 @@ const setupLocal = config => {
       logger,
     });
   }
-
   return source;
 };
 
@@ -116,14 +134,19 @@ const setupModule = async (config, { mockMode, useFileSchema }) => {
     if (config.dependencies) {
       for (const dependencyName of config.dependencies) {
         if (!config.dependencyConfigs[dependencyName]) {
-          throw new Error(`Cannot load module "${config.name}", ` +
-            `because missing dependency "${dependencyName}"`);
+          throw new Error(
+            `Cannot load module "${config.name}", ` +
+              `because missing dependency "${dependencyName}"`
+          );
         }
 
-        config.resolvedDependencies[dependencyName] =
-          await setupModule(config.dependencyConfigs[dependencyName], {
-            mockMode, useFileSchema,
-          });
+        config.resolvedDependencies[dependencyName] = await setupModule(
+          config.dependencyConfigs[dependencyName],
+          {
+            mockMode,
+            useFileSchema,
+          }
+        );
       }
     }
 
@@ -139,7 +162,10 @@ const setupModule = async (config, { mockMode, useFileSchema }) => {
       });
 
       if (mockMode && config.mocks) {
-        addMockFunctionsToSchema({ schema: source.schema, mocks: config.mocks });
+        addMockFunctionsToSchema({
+          schema: source.schema,
+          mocks: config.mocks,
+        });
       }
 
       if (Array.isArray(config.transforms)) {
