@@ -97,7 +97,7 @@ const loadSchema = async ({
         ...insertIfValue(c.schema),
         ...insertIfValue(c.extendTypes),
       ],
-      resolvers: [ ...p.resolvers, ...insertIfValue(c.extendResolvers) ],
+      resolvers: [ ...p.resolvers, ...insertIfValue(c.extendResolvers), ...c.resolvers  ],
       context: [ ...p.context, ...insertIfValue(c.context) ],
       onConnect: [ ...p.onConnect, ...insertIfValue(c.onConnect) ],
       accessViaContext: { ...p.accessViaContext, ...c.accessViaContext },
