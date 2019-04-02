@@ -33,8 +33,7 @@ const setupLocal = config => {
     importTypes,
     resolvedDependencies,
   } = config;
-  const source = {};
-  const types = [].concat(typeDefs);
+  const source = { types: [].concat(typeDefs) };
   const allResolvers = [resolvers];
 
   if (importTypes) {
@@ -68,7 +67,7 @@ const setupLocal = config => {
       const importedResolvers = typeNamesToImport.reduce((p, c) =>
         Object.assign(p, spreadIf(importResolvers[c], { [c]: importResolvers[c] })), {});
 
-      types.unshift(importedTypes);
+      source.types.unshift(importedTypes);
       allResolvers.unshift(importedResolvers);
     });
   }
@@ -77,18 +76,7 @@ const setupLocal = config => {
     source.extendTypes = extendTypes;
     source.extendResolvers = [].concat(extendResolvers);
   }
-
-  if (types.length) {
-    source.schema = makeExecutableSchema({
-      typeDefs: types,
-      resolvers: allResolvers,
-      resolverValidationOptions: {
-        requireResolversForResolveType: false,
-      },
-      logger,
-    });
-  }
-
+  console.log('config ', config.name, source);
   return source;
 };
 
@@ -149,6 +137,7 @@ const setupModule = async (config, { mockMode, useFileSchema }) => {
 
     return {
       ...config,
+      types: source.types,
       ...spreadIf(config.mount !== false, {
         schema: source.schema,
       }),

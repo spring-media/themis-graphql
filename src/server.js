@@ -148,6 +148,7 @@ async function initServer ({
       },
     }),
   };
+
   const apolloServer = new ApolloServer(serverOptions);
 
   if (hasSubscriptions) {

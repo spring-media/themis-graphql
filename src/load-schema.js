@@ -3,6 +3,7 @@ const {
   mergeSchemas,
   FilterRootFields,
   transformSchema,
+  makeExecutableSchema
 } = require('graphql-tools');
 const { GraphQLSchema } = require('graphql');
 const { insertIfValue } = require('./utils');
@@ -55,7 +56,7 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     }));
 
   const {
-    schemas,
+    remoteSchemas,
     resolvers,
     accessViaContext,
     context,
@@ -63,9 +64,16 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     startupFns,
     shutdownFns,
     importTypes,
+    extendTypes
   } = sources
   .reduce((p, c) => ({
-    schemas: [ ...p.schemas, ...insertIfValue(c.schema), ...insertIfValue(c.extendTypes) ],
+    extendTypes: [
+      ...p.extendTypes,
+      ...insertIfValue(c.extendTypes),
+    ],
+    remoteSchemas: [ ...p.remoteSchemas, c.remote ? c.schema : null ].filter(
+      Boolean
+    ),
     resolvers: [ ...p.resolvers, ...insertIfValue(c.extendResolvers) ],
     context: [ ...p.context, ...insertIfValue(c.context) ],
     onConnect: [ ...p.onConnect, ...insertIfValue(c.onConnect) ],
@@ -77,7 +85,7 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
       []
     ) ],
   }), {
-    schemas: [],
+    remoteSchemas: [],
     resolvers: [],
     context: [],
     onConnect: [],
@@ -85,7 +93,25 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     startupFns: [],
     shutdownFns: [],
     importTypes: [],
+    extendTypes: []
   });
+
+  // Apply merge strategy
+  console.log('sources ', sources.map(memem => memem.types))
+  const schemas = sources
+    .filter(({types}) => Array.isArray(types) && types.length > 0)
+    .map(({types, resolvers: localResolvers}) => {
+      return makeExecutableSchema({
+        typeDefs: types,
+        resolvers: localResolvers,
+        resolverValidationOptions: {
+          requireResolversForResolveType: false,
+        },
+        logger,
+      });
+    })
+    .concat(remoteSchemas)
+    .concat(extendTypes)
 
   // graphql-tools removed the onTypeConflict resultion in mergeSchemas
   // https://github.com/apollographql/graphql-tools/issues/863
@@ -112,6 +138,8 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     },
   });
 
+  
+  
   let schema = mergeSchemas({
     schemas,
     resolvers,
