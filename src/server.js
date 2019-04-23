@@ -115,12 +115,11 @@ async function initServer ({
   const combinedContext = context.concat(configContext);
   const combinedOnConnect = onConnect.concat(configOnConnect);
 
-  subscriptions.onConnect = (...args) => ({
-    ...combinedOnConnect.reduce((ctx, fn) => ({
-      ...ctx,
-      ...fn(...args),
-    }), {}),
-  });
+  subscriptions.onConnect = (...args) =>
+    combinedOnConnect.reduce(async (ctx, fn) => ({
+      ...(await ctx),
+      ...(await fn(...args)),
+    }), Promise.resolve({}));
 
   const hasSubscriptions = Boolean(schema.getSubscriptionType());
   const serverOptions = {
