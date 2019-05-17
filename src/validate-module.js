@@ -18,6 +18,7 @@ const schema = Joi.alternatives().try([
     mocks: Joi.object(),
     context: Joi.func(),
     onConnect: Joi.func(),
+    onDisconnect: Joi.func(),
     mount: Joi.bool(),
     transforms: Joi.array(),
     dependencies: Joi.array().items(Joi.string()),

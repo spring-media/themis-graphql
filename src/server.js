@@ -62,6 +62,7 @@ async function initServer ({
   middleware = {},
   context: configContext = [],
   onConnect: configOnConnect = [],
+  onDisconnect: configOnDisconnect = [],
   debug = false,
   tracing = false,
   engineApiKey,
@@ -103,6 +104,7 @@ async function initServer ({
     schema,
     context = [],
     onConnect = [],
+    onDisconnect = [],
     accessViaContext,
     startupFns,
     shutdownFns,
@@ -113,11 +115,17 @@ async function initServer ({
     filterSubscriptions: subscriptions === false,
   });
   const combinedContext = context.concat(configContext);
-  const combinedOnConnect = onConnect.concat(configOnConnect);
 
+  const combinedOnConnect = onConnect.concat(configOnConnect);
   subscriptions.onConnect = async (...args) => {
     const onConnectResolved = await Promise.all(combinedOnConnect.map(fn => fn(...args)))
     return onConnectResolved.reduce((ctx, onConnectData) => ({...ctx, ...onConnectData}), {});
+  }
+
+  const combinedOnDisconnect = onDisconnect.concat(configOnDisconnect);
+  subscriptions.onDisconnect = async (...args) => {
+    const onDisconnectResolved = await Promise.all(combinedOnDisconnect.map(fn => fn(...args)))
+    return onDisconnectResolved.reduce((ctx, onDisconnectData) => ({...ctx, ...onDisconnectData}), {});
   }
 
   const hasSubscriptions = Boolean(schema.getSubscriptionType());
