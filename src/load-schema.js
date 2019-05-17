@@ -60,6 +60,7 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     accessViaContext,
     context,
     onConnect,
+    onDisconnect,
     startupFns,
     shutdownFns,
     importTypes,
@@ -69,6 +70,7 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     resolvers: [ ...p.resolvers, ...insertIfValue(c.extendResolvers) ],
     context: [ ...p.context, ...insertIfValue(c.context) ],
     onConnect: [ ...p.onConnect, ...insertIfValue(c.onConnect) ],
+    onDisconnect: [ ...p.onDisconnect, ...insertIfValue(c.onDisconnect) ],
     accessViaContext: { ...p.accessViaContext, ...c.accessViaContext },
     startupFns: [ ...p.startupFns, ...insertIfValue(c.onStartup) ],
     shutdownFns: [ ...p.shutdownFns, ...insertIfValue(c.onShutdown) ],
@@ -81,6 +83,7 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     resolvers: [],
     context: [],
     onConnect: [],
+    onDisconnect: [],
     accessViaContext: {},
     startupFns: [],
     shutdownFns: [],
@@ -99,18 +102,28 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     'Boolean', 'JSON', 'Mutation',
   ].concat(importTypes);
 
-  findTypeConflict(schemas.filter(maybeSchema => (maybeSchema instanceof GraphQLSchema)), {
-    ignoreTypeCheck,
-    ignoreFieldCheck: importTypes,
-    onTypeConflict: (left, right, info) => {
-      logger.warn(`Type Collision for "${left.name}" from "${info.left.schema.moduleName}" ` +
-        `to "${info.right.schema.moduleName}".`);
-    },
-    onFieldConflict: (fieldName, left, right, info) => {
-      logger.warn(`Field Collision in "${info.left.type.name}.${fieldName}" ` +
-        `from "${info.left.schema.moduleName}" to "${info.right.schema.moduleName}".`);
-    },
-  });
+  findTypeConflict(
+    schemas.filter(maybeSchema => maybeSchema instanceof GraphQLSchema),
+    {
+      ignoreTypeCheck,
+      ignoreFieldCheck: importTypes,
+      onTypeConflict: (left, right, info) => {
+        logger.warn(
+          `Type Collision for "${left.name}" from "${
+            info.left.schema.moduleName
+          }" ` + `to "${info.right.schema.moduleName}".`
+        );
+      },
+      onFieldConflict: (fieldName, left, right, info) => {
+        logger.warn(
+          `Field Collision in "${info.left.type.name}.${fieldName}" ` +
+            `from "${info.left.schema.moduleName}" to "${
+              info.right.schema.moduleName
+            }".`
+        );
+      },
+    }
+  );
 
   let schema = mergeSchemas({
     schemas,
@@ -123,7 +136,15 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
     ]);
   }
 
-  return { schema, accessViaContext, context, onConnect, startupFns, shutdownFns };
+  return {
+    schema,
+    accessViaContext,
+    context,
+    onConnect,
+    onDisconnect,
+    startupFns,
+    shutdownFns,
+  };
 };
 
 module.exports = {

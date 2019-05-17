@@ -53,6 +53,7 @@ const {
   middleware,
   context,
   onConnect,
+  onDisconnect,
   onStartup,
   onShutdown,
   modules,
@@ -92,6 +93,7 @@ if (program.build) {
     tracing: process.env.GQL_TRACING === 'true',
     engineApiKey: process.env.APOLLO_ENGINE_API_KEY,
     onConnect,
+    onDisconnect,
     onStartup,
     onShutdown,
     cacheControl: {
