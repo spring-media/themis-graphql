@@ -13,7 +13,7 @@ const format = winston.format((...args) =>
 );
 
 const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'silly',
+  level: process.env.LOG_LEVEL || 'info',
   exitOnError: false,
   transports: [new winston.transports.Console()],
   format: format(),
