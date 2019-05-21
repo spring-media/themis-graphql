@@ -2,21 +2,12 @@
 # yarn lockfile v1
 
 
-"@apollographql/apollo-tools@^0.2.6":
-  version "0.2.8"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/@apollographql/apollo-tools/-/apollo-tools-0.2.8.tgz#f755baa3576eabdd93afa2782be61f5ae8a856dc"
-  integrity sha1-91W6o1duq92Tr6J4K+YfWuioVtw=
+"@apollographql/apollo-tools@^0.3.0":
+  version "0.3.7"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/@apollographql/apollo-tools/-/apollo-tools-0.3.7.tgz#3bc9c35b9fff65febd4ddc0c1fc04677693a3d40"
+  integrity sha1-O8nDW5//Zf69TdwMH8BGd2k6PUA=
   dependencies:
-    apollo-env "0.2.5"
-
-"@apollographql/apollo-upload-server@^5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@apollographql/apollo-upload-server/-/apollo-upload-server-5.0.3.tgz#8558c378ff6457de82147e5072c96a6b242773b7"
-  integrity sha512-tGAp3ULNyoA8b5o9LsU2Lq6SwgVPUOKAqKywu2liEtTvrFSGPrObwanhYwArq3GPeOqp2bi+JknSJCIU3oQN1Q==
-  dependencies:
-    "@babel/runtime-corejs2" "^7.0.0-rc.1"
-    busboy "^0.2.14"
-    object-path "^0.11.4"
+    apollo-env "0.5.1"
 
 "@apollographql/graphql-playground-html@^1.6.6":
   version "1.6.6"
@@ -88,14 +79,6 @@
     chalk "^2.0.0"
     esutils "^2.0.2"
     js-tokens "^4.0.0"
-
-"@babel/runtime-corejs2@^7.0.0-rc.1":
-  version "7.1.5"
-  resolved "https://registry.yarnpkg.com/@babel/runtime-corejs2/-/runtime-corejs2-7.1.5.tgz#ec8341c9aec71d1139c985327314739d66b204a0"
-  integrity sha512-WsYRwQsFhVmxkAqwypPTZyV9GpkqMEaAr2zOItOmqSX2GBFaI+eq98CN81e13o0zaUKJOQGYyjhNVqj56nnkYg==
-  dependencies:
-    core-js "^2.5.7"
-    regenerator-runtime "^0.12.0"
 
 "@babel/runtime@7.0.0":
   version "7.0.0"
@@ -291,11 +274,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/async@2.0.50":
-  version "2.0.50"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/@types/async/-/async-2.0.50.tgz#117540e026d64e1846093abbd5adc7e27fda7bcb"
-  integrity sha1-EXVA4CbWThhGCTq71a3H4n/ae8s=
-
 "@types/body-parser@*", "@types/body-parser@1.17.0":
   version "1.17.0"
   resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.17.0.tgz#9f5c9d9bd04bb54be32d5eb9fc0d8c974e6cf58c"
@@ -332,10 +310,19 @@
     "@types/node" "*"
     "@types/range-parser" "*"
 
-"@types/express@*", "@types/express@4.16.0":
+"@types/express@*":
   version "4.16.0"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.16.0.tgz#6d8bc42ccaa6f35cf29a2b7c3333cb47b5a32a19"
   integrity sha512-TtPEYumsmSTtTetAPXlJVf3kEqb6wZK0bZojpJQrnD/djV4q1oB6QQ8aKvKqwNPACoe02GNiy5zDzcYivR5Z2w==
+  dependencies:
+    "@types/body-parser" "*"
+    "@types/express-serve-static-core" "*"
+    "@types/serve-static" "*"
+
+"@types/express@4.16.1":
+  version "4.16.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/@types/express/-/express-4.16.1.tgz#d756bd1a85c34d87eaf44c888bad27ba8a4b7cf0"
+  integrity sha1-11a9GoXDTYfq9EyIi60nuopLfPA=
   dependencies:
     "@types/body-parser" "*"
     "@types/express-serve-static-core" "*"
@@ -585,13 +572,13 @@ anymatch@^2.0.0:
     micromatch "^3.1.4"
     normalize-path "^2.1.1"
 
-apollo-cache-control@0.3.3:
-  version "0.3.3"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-cache-control/-/apollo-cache-control-0.3.3.tgz#ad71d8f786e06f0275b2432004c15c2d37c48484"
-  integrity sha1-rXHY94bgbwJ1skMgBMFcLTfEhIQ=
+apollo-cache-control@0.5.0:
+  version "0.5.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-cache-control/-/apollo-cache-control-0.5.0.tgz#78cfefec57c5c0a9648137e3250b91172998061e"
+  integrity sha1-eM/v7FfFwKlkgTfjJQuRFymYBh4=
   dependencies:
     apollo-server-env "2.2.0"
-    graphql-extensions "0.3.3"
+    graphql-extensions "0.5.0"
 
 apollo-cache-inmemory@1.4.2:
   version "1.4.2"
@@ -603,14 +590,7 @@ apollo-cache-inmemory@1.4.2:
     optimism "^0.6.9"
     tslib "^1.9.3"
 
-apollo-cache@1.1.21:
-  version "1.1.21"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-cache/-/apollo-cache-1.1.21.tgz#950025e2272741ba8e5064419906e3ac4072925d"
-  integrity sha1-lQAl4icnQbqOUGRBmQbjrEBykl0=
-  dependencies:
-    apollo-utilities "^1.0.26"
-
-apollo-cache@^1.1.25:
+apollo-cache@1.1.25, apollo-cache@^1.1.25:
   version "1.1.25"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-cache/-/apollo-cache-1.1.25.tgz#87a15a2a19993bb07234ccee6839b59d6fb49ac5"
   integrity sha1-h6FaKhmZO7ByNMzuaDm1nW+0msU=
@@ -618,54 +598,55 @@ apollo-cache@^1.1.25:
     apollo-utilities "^1.1.2"
     tslib "^1.9.3"
 
-apollo-client@2.4.7:
-  version "2.4.7"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-client/-/apollo-client-2.4.7.tgz#b6712fd4c9ba346e3c44cfec7e6868e532b6a957"
-  integrity sha1-tnEv1Mm6NG48RM/sfmho5TK2qVc=
+apollo-client@2.4.12:
+  version "2.4.12"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-client/-/apollo-client-2.4.12.tgz#9fa15f502d04f8cc788a9fbb825163b437681504"
+  integrity sha1-n6FfUC0E+Mx4ip+7glFjtDdoFQQ=
   dependencies:
     "@types/zen-observable" "^0.8.0"
-    apollo-cache "1.1.21"
+    apollo-cache "1.1.25"
     apollo-link "^1.0.0"
     apollo-link-dedup "^1.0.0"
-    apollo-utilities "1.0.26"
+    apollo-utilities "1.1.2"
     symbol-observable "^1.0.2"
+    tslib "^1.9.3"
     zen-observable "^0.8.0"
-  optionalDependencies:
-    "@types/async" "2.0.50"
 
-apollo-datasource@0.2.1:
-  version "0.2.1"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-datasource/-/apollo-datasource-0.2.1.tgz#3ecef4efe64f7a04a43862f32027d38ac09e142c"
-  integrity sha1-Ps707+ZPegSkOGLzICfTisCeFCw=
+apollo-datasource@0.3.0:
+  version "0.3.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-datasource/-/apollo-datasource-0.3.0.tgz#88c680edd63a2f7ea05fc25da290a430632d39f4"
+  integrity sha1-iMaA7dY6L36gX8JdopCkMGMtOfQ=
   dependencies:
-    apollo-server-caching "0.2.1"
+    apollo-server-caching "0.3.0"
     apollo-server-env "2.2.0"
 
-apollo-engine-reporting-protobuf@0.1.0:
-  version "0.1.0"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-engine-reporting-protobuf/-/apollo-engine-reporting-protobuf-0.1.0.tgz#fbc220cac2a3b7800ffc155d7e54c21c56b7848e"
-  integrity sha1-+8IgysKjt4AP/BVdflTCHFa3hI4=
+apollo-engine-reporting-protobuf@0.2.0:
+  version "0.2.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-engine-reporting-protobuf/-/apollo-engine-reporting-protobuf-0.2.0.tgz#2aaf4d2eddefe7924d469cf1135267bc0deadf73"
+  integrity sha1-Kq9NLt3v55JNRpzxE1JnvA3q33M=
   dependencies:
     protobufjs "^6.8.6"
 
-apollo-engine-reporting@0.1.3:
-  version "0.1.3"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-engine-reporting/-/apollo-engine-reporting-0.1.3.tgz#85ad6ffd71db8f877202ce8b3d7dbfa7cabfbcf9"
-  integrity sha1-ha1v/XHbj4dyAs6LPX2/p8q/vPk=
+apollo-engine-reporting@1.0.0:
+  version "1.0.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-engine-reporting/-/apollo-engine-reporting-1.0.0.tgz#af93b755482ad5a6c52f9f728f3e24e801aa2385"
+  integrity sha1-r5O3VUgq1abFL59yjz4k6AGqI4U=
   dependencies:
-    apollo-engine-reporting-protobuf "0.1.0"
+    apollo-engine-reporting-protobuf "0.2.0"
+    apollo-graphql "0.1.0"
+    apollo-server-core "2.4.0"
     apollo-server-env "2.2.0"
     async-retry "^1.2.1"
-    graphql-extensions "0.3.3"
-    lodash "^4.17.10"
+    graphql-extensions "0.5.0"
 
-apollo-env@0.2.5:
-  version "0.2.5"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-env/-/apollo-env-0.2.5.tgz#162c785bccd2aea69350a7600fab4b7147fc9da5"
-  integrity sha1-Fix4W8zSrqaTUKdgD6tLcUf8naU=
+apollo-env@0.5.1:
+  version "0.5.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-env/-/apollo-env-0.5.1.tgz#b9b0195c16feadf0fe9fd5563edb0b9b7d9e97d3"
+  integrity sha1-ubAZXBb+rfD+n9VWPtsLm32el9M=
   dependencies:
-    core-js "^3.0.0-beta.3"
+    core-js "^3.0.1"
     node-fetch "^2.2.0"
+    sha.js "^2.4.11"
 
 apollo-errors@1.9.0:
   version "1.9.0"
@@ -675,12 +656,19 @@ apollo-errors@1.9.0:
     assert "^1.4.1"
     extendable-error "^0.1.5"
 
-apollo-link-context@1.0.10:
-  version "1.0.10"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-link-context/-/apollo-link-context-1.0.10.tgz#c20b0b32c6e4e08c0d3967174f9c2a897c8431fe"
-  integrity sha1-wgsLMsbk4IwNOWcXT5wqiXyEMf4=
+apollo-graphql@0.1.0:
+  version "0.1.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-graphql/-/apollo-graphql-0.1.0.tgz#e453b133daa8b686644da05ec8e556cf31c57037"
+  integrity sha1-5FOxM9qotoZkTaBeyOVWzzHFcDc=
   dependencies:
-    apollo-link "^1.2.4"
+    lodash.sortby "^4.7.0"
+
+apollo-link-context@1.0.14:
+  version "1.0.14"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-link-context/-/apollo-link-context-1.0.14.tgz#6265eef49bedadddbbcff4026d04cd351094cd6c"
+  integrity sha1-YmXu9Jvtrd27z/QCbQTNNRCUzWw=
+  dependencies:
+    apollo-link "^1.2.8"
 
 apollo-link-dedup@^1.0.0:
   version "1.0.11"
@@ -689,36 +677,46 @@ apollo-link-dedup@^1.0.0:
   dependencies:
     apollo-link "^1.2.4"
 
-apollo-link-error@1.1.2:
-  version "1.1.2"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-link-error/-/apollo-link-error-1.1.2.tgz#d068fdf99892e6fc65cfe0390db8528d182f9481"
-  integrity sha1-0Gj9+ZiS5vxlz+A5DbhSjRgvlIE=
+apollo-link-error@1.1.7:
+  version "1.1.7"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-link-error/-/apollo-link-error-1.1.7.tgz#6233a339d732def831af2dd417065b2ffd9feb5c"
+  integrity sha1-YjOjOdcy3vgxry3UFwZbL/2f61w=
   dependencies:
-    apollo-link "^1.2.4"
+    apollo-link "^1.2.8"
+    apollo-link-http-common "^0.2.10"
 
-apollo-link-http-common@^0.2.6:
-  version "0.2.6"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-link-http-common/-/apollo-link-http-common-0.2.6.tgz#47b9012500599fe343e2e87378026384b4fc8c1f"
-  integrity sha1-R7kBJQBZn+ND4uhzeAJjhLT8jB8=
+apollo-link-http-common@^0.2.10:
+  version "0.2.13"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-link-http-common/-/apollo-link-http-common-0.2.13.tgz#c688f6baaffdc7b269b2db7ae89dae7c58b5b350"
+  integrity sha1-xoj2uq/9x7Jpstt66J2ufFi1s1A=
   dependencies:
-    apollo-link "^1.2.4"
+    apollo-link "^1.2.11"
+    ts-invariant "^0.3.2"
+    tslib "^1.9.3"
 
-apollo-link-http@1.5.7:
-  version "1.5.7"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-link-http/-/apollo-link-http-1.5.7.tgz#098615c427a910ec8c5817476bbabe68c586b339"
-  integrity sha1-CYYVxCepEOyMWBdHa7q+aMWGszk=
+apollo-link-http@1.5.11:
+  version "1.5.11"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-link-http/-/apollo-link-http-1.5.11.tgz#1f72a377d03e874a08bc9eadb1ce7ecb166f1e56"
+  integrity sha1-H3Kjd9A+h0oIvJ6tsc5+yxZvHlY=
   dependencies:
-    apollo-link "^1.2.4"
-    apollo-link-http-common "^0.2.6"
+    apollo-link "^1.2.8"
+    apollo-link-http-common "^0.2.10"
 
-apollo-link-ws@1.0.10:
-  version "1.0.10"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-link-ws/-/apollo-link-ws-1.0.10.tgz#9fb5489a36f5fcb0d139b6ada0eea979ecad3967"
-  integrity sha1-n7VImjb1/LDRObatoO6peeytOWc=
+apollo-link-ws@1.0.14:
+  version "1.0.14"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-link-ws/-/apollo-link-ws-1.0.14.tgz#588f898b7f953930a27e283941614d89907adf13"
+  integrity sha1-WI+Ji3+VOTCifig5QWFNiZB63xM=
   dependencies:
-    apollo-link "^1.2.4"
+    apollo-link "^1.2.8"
 
-apollo-link@1.2.4, apollo-link@^1.0.0, apollo-link@^1.2.3, apollo-link@^1.2.4:
+apollo-link@1.2.8:
+  version "1.2.8"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-link/-/apollo-link-1.2.8.tgz#0f252adefd5047ac1a9f35ba9439d216587dcd84"
+  integrity sha1-DyUq3v1QR6wanzW6lDnSFlh9zYQ=
+  dependencies:
+    zen-observable-ts "^0.8.15"
+
+apollo-link@^1.0.0, apollo-link@^1.2.3, apollo-link@^1.2.4:
   version "1.2.4"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-link/-/apollo-link-1.2.4.tgz#ab4d21d2e428db848e88b5e8f4adc717b19c954b"
   integrity sha1-q00h0uQo24SOiLXo9K3HF7GclUs=
@@ -726,35 +724,45 @@ apollo-link@1.2.4, apollo-link@^1.0.0, apollo-link@^1.2.3, apollo-link@^1.2.4:
     apollo-utilities "^1.0.0"
     zen-observable-ts "^0.8.11"
 
-apollo-server-caching@0.2.1:
-  version "0.2.1"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-server-caching/-/apollo-server-caching-0.2.1.tgz#7e67f8c8cac829e622b394f0fb82579cabbeadfd"
-  integrity sha1-fmf4yMrIKeYis5Tw+4JXnKu+rf0=
+apollo-link@^1.2.11, apollo-link@^1.2.8:
+  version "1.2.11"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-link/-/apollo-link-1.2.11.tgz#493293b747ad3237114ccd22e9f559e5e24a194d"
+  integrity sha1-STKTt0etMjcRTM0i6fVZ5eJKGU0=
+  dependencies:
+    apollo-utilities "^1.2.1"
+    ts-invariant "^0.3.2"
+    tslib "^1.9.3"
+    zen-observable-ts "^0.8.18"
+
+apollo-server-caching@0.3.0:
+  version "0.3.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-server-caching/-/apollo-server-caching-0.3.0.tgz#96669b5e3bf693e6a54683edfab4b9495deb17d8"
+  integrity sha1-lmabXjv2k+alRoPt+rS5SV3rF9g=
   dependencies:
     lru-cache "^5.0.0"
 
-apollo-server-core@2.2.6:
-  version "2.2.6"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-server-core/-/apollo-server-core-2.2.6.tgz#33031a3e1156d4cd0ad3c5c49de263173f521b32"
-  integrity sha1-MwMaPhFW1M0K08XEneJjFz9SGzI=
+apollo-server-core@2.4.0:
+  version "2.4.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-server-core/-/apollo-server-core-2.4.0.tgz#928c563f68d9f69a4288e7a4bf14ca79f8599f2b"
+  integrity sha1-koxWP2jZ9ppCiOekvxTKefhZnys=
   dependencies:
-    "@apollographql/apollo-tools" "^0.2.6"
-    "@apollographql/apollo-upload-server" "^5.0.3"
+    "@apollographql/apollo-tools" "^0.3.0"
     "@apollographql/graphql-playground-html" "^1.6.6"
     "@types/ws" "^6.0.0"
-    apollo-cache-control "0.3.3"
-    apollo-datasource "0.2.1"
-    apollo-engine-reporting "0.1.3"
-    apollo-server-caching "0.2.1"
+    apollo-cache-control "0.5.0"
+    apollo-datasource "0.3.0"
+    apollo-engine-reporting "1.0.0"
+    apollo-server-caching "0.3.0"
     apollo-server-env "2.2.0"
     apollo-server-errors "2.2.0"
-    apollo-server-plugin-base "0.1.6"
-    apollo-tracing "0.3.3"
-    graphql-extensions "0.3.6"
+    apollo-server-plugin-base "0.3.0"
+    apollo-tracing "0.5.0"
+    fast-json-stable-stringify "^2.0.0"
+    graphql-extensions "0.5.0"
     graphql-subscriptions "^1.0.0"
     graphql-tag "^2.9.2"
     graphql-tools "^4.0.0"
-    json-stable-stringify "^1.0.1"
+    graphql-upload "^8.0.2"
     lodash "^4.17.10"
     subscriptions-transport-ws "^0.9.11"
     ws "^6.0.0"
@@ -772,51 +780,59 @@ apollo-server-errors@2.2.0:
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-server-errors/-/apollo-server-errors-2.2.0.tgz#5b452a1d6ff76440eb0f127511dc58031a8f3cb5"
   integrity sha1-W0UqHW/3ZEDrDxJ1EdxYAxqPPLU=
 
-apollo-server-express@2.2.6:
-  version "2.2.6"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-server-express/-/apollo-server-express-2.2.6.tgz#2c0c5bdab6eccf63ab138ad4b6d6836aeb723540"
-  integrity sha1-LAxb2rbsz2OrE4rUttaDautyNUA=
+apollo-server-express@2.4.0:
+  version "2.4.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-server-express/-/apollo-server-express-2.4.0.tgz#fe8e748f07f01a837d1449e4c28ab27ae7b7d054"
+  integrity sha1-/o50jwfwGoN9FEnkwoqyeue30FQ=
   dependencies:
-    "@apollographql/apollo-upload-server" "^5.0.3"
     "@apollographql/graphql-playground-html" "^1.6.6"
     "@types/accepts" "^1.3.5"
     "@types/body-parser" "1.17.0"
     "@types/cors" "^2.8.4"
-    "@types/express" "4.16.0"
+    "@types/express" "4.16.1"
     accepts "^1.3.5"
-    apollo-server-core "2.2.6"
+    apollo-server-core "2.4.0"
     body-parser "^1.18.3"
     cors "^2.8.4"
     graphql-subscriptions "^1.0.0"
     graphql-tools "^4.0.0"
     type-is "^1.6.16"
 
-apollo-server-plugin-base@0.1.6:
-  version "0.1.6"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-server-plugin-base/-/apollo-server-plugin-base-0.1.6.tgz#56932c0e3a0366e03952a6e2805efe5fa2e046bf"
-  integrity sha1-VpMsDjoDZuA5UqbigF7+X6LgRr8=
+apollo-server-plugin-base@0.3.0:
+  version "0.3.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-server-plugin-base/-/apollo-server-plugin-base-0.3.0.tgz#26c7f9c020b2d444de5bebd2e3c406bebd9c302e"
+  integrity sha1-Jsf5wCCy1ETeW+vS48QGvr2cMC4=
 
-apollo-tracing@0.3.3:
-  version "0.3.3"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-tracing/-/apollo-tracing-0.3.3.tgz#b819942180480c1c4d89e613cf2eff8f6d8b595a"
-  integrity sha1-uBmUIYBIDBxNieYTzy7/j22LWVo=
+apollo-tracing@0.5.0:
+  version "0.5.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-tracing/-/apollo-tracing-0.5.0.tgz#6eebaf1e840ece99299103def689d39fe49780a3"
+  integrity sha1-buuvHoQOzpkpkQPe9onTn+SXgKM=
   dependencies:
     apollo-server-env "2.2.0"
-    graphql-extensions "0.3.3"
+    graphql-extensions "0.5.0"
 
-apollo-utilities@1.0.26, apollo-utilities@^1.0.0, apollo-utilities@^1.0.1, apollo-utilities@^1.0.26:
+apollo-utilities@1.1.2, apollo-utilities@^1.1.2:
+  version "1.1.2"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-utilities/-/apollo-utilities-1.1.2.tgz#aa5eca9d1f1eb721c381a22e0dde03559d856db3"
+  integrity sha1-ql7KnR8etyHDgaIuDd4DVZ2FbbM=
+  dependencies:
+    fast-json-stable-stringify "^2.0.0"
+    tslib "^1.9.3"
+
+apollo-utilities@^1.0.0, apollo-utilities@^1.0.1:
   version "1.0.26"
   resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.0.26.tgz#589c66bf4d16223531351cf667a230c787def1da"
   integrity sha512-URw7o3phymliqYCYatcird2YRPUU2eWCNvip64U9gQrX56mEfK4m99yBIDCMTpmcvOFsKLii1sIEZsHIs/bvnw==
   dependencies:
     fast-json-stable-stringify "^2.0.0"
 
-apollo-utilities@^1.1.2:
-  version "1.1.2"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-utilities/-/apollo-utilities-1.1.2.tgz#aa5eca9d1f1eb721c381a22e0dde03559d856db3"
-  integrity sha1-ql7KnR8etyHDgaIuDd4DVZ2FbbM=
+apollo-utilities@^1.2.1:
+  version "1.2.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/apollo-utilities/-/apollo-utilities-1.2.1.tgz#1c3a1ebf5607d7c8efe7636daaf58e7463b41b3c"
+  integrity sha1-HDoev1YH18jv52NtqvWOdGO0Gzw=
   dependencies:
     fast-json-stable-stringify "^2.0.0"
+    ts-invariant "^0.2.1"
     tslib "^1.9.3"
 
 append-transform@^0.4.0:
@@ -952,6 +968,13 @@ async-each@^1.0.0:
   resolved "https://registry.yarnpkg.com/async-each/-/async-each-1.0.1.tgz#19d386a1d9edc6e7c1c85d388aedbcc56d33602d"
   integrity sha1-GdOGodntxufByF04iu28xW0zYC0=
 
+async-hook-jl@^1.7.6:
+  version "1.7.6"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/async-hook-jl/-/async-hook-jl-1.7.6.tgz#4fd25c2f864dbaf279c610d73bf97b1b28595e68"
+  integrity sha1-T9JcL4ZNuvJ5xhDXO/l7GyhZXmg=
+  dependencies:
+    stack-chain "^1.3.7"
+
 async-limiter@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.0.tgz#78faed8c3d074ab81f22b4e985d79e8738f720f8"
@@ -978,10 +1001,12 @@ async@^2.0.1, async@^2.1.4, async@^2.5.0:
   dependencies:
     lodash "^4.17.10"
 
-async@~1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/async/-/async-1.0.0.tgz#f8fc04ca3a13784ade9e1641af98578cfbd647a9"
-  integrity sha1-+PwEyjoTeErenhZBr5hXjPvWR6k=
+async@^2.6.1:
+  version "2.6.2"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/async/-/async-2.6.2.tgz#18330ea7e6e313887f5d2f2a904bac6fe4dd5381"
+  integrity sha1-GDMOp+bjE4h/XS8qkEusb+TdU4E=
+  dependencies:
+    lodash "^4.17.11"
 
 asynckit@^0.4.0:
   version "0.4.0"
@@ -1269,6 +1294,11 @@ body-parser@1.18.3, body-parser@^1.18.3:
     raw-body "2.3.3"
     type-is "~1.6.16"
 
+boolbase@~1.0.0:
+  version "1.0.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
+  integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
+
 boom@2.x.x:
   version "2.10.1"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/boom/-/boom-2.10.1.tgz#39c8918ceff5799f83f9492a848f625add0c766f"
@@ -1389,13 +1419,12 @@ builtins@^1.0.3:
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/builtins/-/builtins-1.0.3.tgz#cb94faeb61c8696451db36534e1422f94f0aee88"
   integrity sha1-y5T662HIaWRR2zZTThQi+U8K7og=
 
-busboy@^0.2.14:
-  version "0.2.14"
-  resolved "https://registry.yarnpkg.com/busboy/-/busboy-0.2.14.tgz#6c2a622efcf47c57bbbe1e2a9c37ad36c7925453"
-  integrity sha1-bCpiLvz0fFe7vh4qnDetNseSVFM=
+busboy@^0.3.1:
+  version "0.3.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/busboy/-/busboy-0.3.1.tgz#170899274c5bf38aae27d5c62b71268cd585fd1b"
+  integrity sha1-FwiZJ0xb84quJ9XGK3EmjNWF/Rs=
   dependencies:
-    dicer "0.2.5"
-    readable-stream "1.1.x"
+    dicer "0.3.0"
 
 bytes@3.0.0:
   version "3.0.0"
@@ -1692,6 +1721,15 @@ clone@^1.0.2:
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
   integrity sha1-2jCcwmPfFZlMaIypAheco8fNfH4=
 
+cls-hooked@^4.2.2:
+  version "4.2.2"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/cls-hooked/-/cls-hooked-4.2.2.tgz#ad2e9a4092680cdaffeb2d3551da0e225eae1908"
+  integrity sha1-rS6aQJJoDNr/6y01UdoOIl6uGQg=
+  dependencies:
+    async-hook-jl "^1.7.6"
+    emitter-listener "^1.0.1"
+    semver "^5.4.1"
+
 cmd-shim@~2.0.2:
   version "2.0.2"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/cmd-shim/-/cmd-shim-2.0.2.tgz#6fcbda99483a8fd15d7d30a196ca69d688a2efdb"
@@ -1718,7 +1756,7 @@ collection-visit@^1.0.0:
     map-visit "^1.0.0"
     object-visit "^1.0.0"
 
-color-convert@^1.9.0:
+color-convert@^1.9.0, color-convert@^1.9.1:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
   integrity sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==
@@ -1730,10 +1768,44 @@ color-name@1.1.3:
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.3.tgz#a7d0558bd89c42f795dd42328f740831ca53bc25"
   integrity sha1-p9BVi9icQveV3UIyj3QIMcpTvCU=
 
-colors@1.0.x:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/colors/-/colors-1.0.3.tgz#0433f44d809680fdeb60ed260f1b0c262e82a40b"
-  integrity sha1-BDP0TYCWgP3rYO0mDxsMJi6CpAs=
+color-name@^1.0.0:
+  version "1.1.4"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
+  integrity sha1-wqCah6y95pVD3m9j+jmVyCbFNqI=
+
+color-string@^1.5.2:
+  version "1.5.3"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/color-string/-/color-string-1.5.3.tgz#c9bbc5f01b58b5492f3d6857459cb6590ce204cc"
+  integrity sha1-ybvF8BtYtUkvPWhXRZy2WQziBMw=
+  dependencies:
+    color-name "^1.0.0"
+    simple-swizzle "^0.2.2"
+
+color@3.0.x:
+  version "3.0.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/color/-/color-3.0.0.tgz#d920b4328d534a3ac8295d68f7bd4ba6c427be9a"
+  integrity sha1-2SC0Mo1TSjrIKV1o971LpsQnvpo=
+  dependencies:
+    color-convert "^1.9.1"
+    color-string "^1.5.2"
+
+colornames@^1.1.1:
+  version "1.1.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/colornames/-/colornames-1.1.1.tgz#f8889030685c7c4ff9e2a559f5077eb76a816f96"
+  integrity sha1-+IiQMGhcfE/54qVZ9Qd+t2qBb5Y=
+
+colors@^1.2.1:
+  version "1.3.3"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/colors/-/colors-1.3.3.tgz#39e005d546afe01e01f9c4ca8fa50f686a01205d"
+  integrity sha1-OeAF1Uav4B4B+cTKj6UPaGoBIF0=
+
+colorspace@1.1.x:
+  version "1.1.2"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/colorspace/-/colorspace-1.1.2.tgz#e0128950d082b86a2168580796a0aa5d6c68d8c5"
+  integrity sha1-4BKJUNCCuGohaFgHlqCqXWxo2MU=
+  dependencies:
+    color "3.0.x"
+    text-hex "1.0.x"
 
 columnify@~1.5.4:
   version "1.5.4"
@@ -1874,15 +1946,15 @@ core-js@^1.0.0:
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
   integrity sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY=
 
-core-js@^2.4.0, core-js@^2.5.0, core-js@^2.5.7:
+core-js@^2.4.0, core-js@^2.5.0:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.7.tgz#f972608ff0cead68b841a16a932d0b183791814e"
   integrity sha512-RszJCAxg/PP6uzXVXL6BsxSXx/B05oJAQ2vkJRjyjrEcNVycaqOmNb5OTxZPE3xa5gwZduqza6L9JOCenh/Ecw==
 
-core-js@^3.0.0-beta.3:
-  version "3.0.0-beta.3"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/core-js/-/core-js-3.0.0-beta.3.tgz#b0f22009972b8c6c04550ebf38513ca4b3cc9559"
-  integrity sha1-sPIgCZcrjGwEVQ6/OFE8pLPMlVk=
+core-js@^3.0.1:
+  version "3.1.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/core-js/-/core-js-3.1.0.tgz#7118f0dad99054204b6821c1f82e67b42cc21628"
+  integrity sha1-cRjw2tmQVCBLaCHB+C5ntCzCFig=
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -1925,12 +1997,27 @@ crypto-random-string@^1.0.0:
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-1.0.0.tgz#a230f64f568310e1498009940790ec99545bca7e"
   integrity sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4=
 
+css-select@^1.1.0:
+  version "1.2.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/css-select/-/css-select-1.2.0.tgz#2b3a110539c5355f1cd8d314623e870b121ec858"
+  integrity sha1-KzoRBTnFNV8c2NMUYj6HCxIeyFg=
+  dependencies:
+    boolbase "~1.0.0"
+    css-what "2.1"
+    domutils "1.5.1"
+    nth-check "~1.0.1"
+
 css-vendor@^0.3.8:
   version "0.3.8"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/css-vendor/-/css-vendor-0.3.8.tgz#6421cfd3034ce664fe7673972fd0119fc28941fa"
   integrity sha1-ZCHP0wNM5mT+dnOXL9ARn8KJQfo=
   dependencies:
     is-in-browser "^1.0.2"
+
+css-what@2.1:
+  version "2.1.3"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/css-what/-/css-what-2.1.3.tgz#a6d7604573365fe74686c3f311c56513d88285f2"
+  integrity sha1-ptdgRXM2X+dGhsPzEcVlE9iChfI=
 
 cssom@0.3.x, "cssom@>= 0.3.2 < 0.4.0":
   version "0.3.4"
@@ -1948,11 +2035,6 @@ csstype@^2.0.0, csstype@^2.2.0, csstype@^2.5.2:
   version "2.5.8"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/csstype/-/csstype-2.5.8.tgz#4ce5aa16ea0d562ef9105fa3ae2676f199586a35"
   integrity sha1-TOWqFuoNVi75EF+jriZ28ZlYajU=
-
-cycle@1.0.x:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/cycle/-/cycle-1.0.3.tgz#21e80b2be8580f98b468f379430662b046c34ad2"
-  integrity sha1-IegLK+hYD5i0aPN5QwZisEbDStI=
 
 cyclist@~0.2.2:
   version "0.2.2"
@@ -2153,12 +2235,20 @@ dezalgo@^1.0.0, dezalgo@^1.0.1, dezalgo@^1.0.2, dezalgo@~1.0.3:
     asap "^2.0.0"
     wrappy "1"
 
-dicer@0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/dicer/-/dicer-0.2.5.tgz#5996c086bb33218c812c090bddc09cd12facb70f"
-  integrity sha1-WZbAhrszIYyBLAkL3cCc0S+stw8=
+diagnostics@^1.1.1:
+  version "1.1.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/diagnostics/-/diagnostics-1.1.1.tgz#cab6ac33df70c9d9a727490ae43ac995a769b22a"
+  integrity sha1-yrasM99wydmnJ0kK5DrJladpsio=
   dependencies:
-    readable-stream "1.1.x"
+    colorspace "1.1.x"
+    enabled "1.0.x"
+    kuler "1.0.x"
+
+dicer@0.3.0:
+  version "0.3.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/dicer/-/dicer-0.3.0.tgz#eacd98b3bfbf92e8ab5c2fdb71aaac44bb06b872"
+  integrity sha1-6s2Ys7+/kuirXC/bcaqsRLsGuHI=
+  dependencies:
     streamsearch "0.1.2"
 
 diff@^3.2.0:
@@ -2173,12 +2263,32 @@ doctrine@^2.1.0:
   dependencies:
     esutils "^2.0.2"
 
+dom-converter@^0.2:
+  version "0.2.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/dom-converter/-/dom-converter-0.2.0.tgz#6721a9daee2e293682955b6afe416771627bb768"
+  integrity sha1-ZyGp2u4uKTaClVtq/kFncWJ7t2g=
+  dependencies:
+    utila "~0.4"
+
 dom-helpers@^3.2.1, dom-helpers@^3.3.1:
   version "3.4.0"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/dom-helpers/-/dom-helpers-3.4.0.tgz#e9b369700f959f62ecde5a6babde4bccd9169af8"
   integrity sha1-6bNpcA+Vn2Ls3lprq95LzNkWmvg=
   dependencies:
     "@babel/runtime" "^7.1.2"
+
+dom-serializer@0:
+  version "0.1.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/dom-serializer/-/dom-serializer-0.1.1.tgz#1ec4059e284babed36eec2941d4a970a189ce7c0"
+  integrity sha1-HsQFnihLq+027sKUHUqXChic58A=
+  dependencies:
+    domelementtype "^1.3.0"
+    entities "^1.1.1"
+
+domelementtype@1, domelementtype@^1.3.0, domelementtype@^1.3.1:
+  version "1.3.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/domelementtype/-/domelementtype-1.3.1.tgz#d048c44b37b0d10a7f2a3d5fee3f4333d790481f"
+  integrity sha1-0EjESzew0Qp/Kj1f7j9DM9eQSB8=
 
 domexception@^1.0.1:
   version "1.0.1"
@@ -2187,6 +2297,29 @@ domexception@^1.0.1:
   dependencies:
     webidl-conversions "^4.0.2"
 
+domhandler@^2.3.0:
+  version "2.4.2"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/domhandler/-/domhandler-2.4.2.tgz#8805097e933d65e85546f726d60f5eb88b44f803"
+  integrity sha1-iAUJfpM9ZehVRvcm1g9euItE+AM=
+  dependencies:
+    domelementtype "1"
+
+domutils@1.5.1:
+  version "1.5.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/domutils/-/domutils-1.5.1.tgz#dcd8488a26f563d61079e48c9f7b7e32373682cf"
+  integrity sha1-3NhIiib1Y9YQeeSMn3t+Mjc2gs8=
+  dependencies:
+    dom-serializer "0"
+    domelementtype "1"
+
+domutils@^1.5.1:
+  version "1.7.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/domutils/-/domutils-1.7.0.tgz#56ea341e834e06e6748af7a1cb25da67ea9f8c2a"
+  integrity sha1-Vuo0HoNOBuZ0ivehyyXaZ+qfjCo=
+  dependencies:
+    dom-serializer "0"
+    domelementtype "1"
+
 dot-prop@^4.1.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-4.2.0.tgz#1f19e0c2e1aa0e32797c49799f2837ac6af69c57"
@@ -2194,10 +2327,10 @@ dot-prop@^4.1.0:
   dependencies:
     is-obj "^1.0.0"
 
-dotenv@6.1.0:
-  version "6.1.0"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/dotenv/-/dotenv-6.1.0.tgz#9853b6ca98292acb7dec67a95018fa40bccff42c"
-  integrity sha1-mFO2ypgpKst97GepUBj6QLzP9Cw=
+dotenv@6.2.0:
+  version "6.2.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/dotenv/-/dotenv-6.2.0.tgz#941c0410535d942c8becf28d3f357dbd9d476064"
+  integrity sha1-lBwEEFNdlCyL7PKNPzV9vZ1HYGQ=
 
 duplexer3@^0.1.4:
   version "0.1.4"
@@ -2232,6 +2365,20 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
+emitter-listener@^1.0.1:
+  version "1.1.2"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/emitter-listener/-/emitter-listener-1.1.2.tgz#56b140e8f6992375b3d7cb2cab1cc7432d9632e8"
+  integrity sha1-VrFA6PaZI3Wz18ssqxzHQy2WMug=
+  dependencies:
+    shimmer "^1.2.0"
+
+enabled@1.0.x:
+  version "1.0.2"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/enabled/-/enabled-1.0.2.tgz#965f6513d2c2d1c5f4652b64a2e3396467fc2f93"
+  integrity sha1-ll9lE9LC0cX0ZStkouM5ZGf8L5M=
+  dependencies:
+    env-variable "0.0.x"
+
 encodeurl@~1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/encodeurl/-/encodeurl-1.0.2.tgz#ad3ff4c86ec2d029322f5a02c3a9a606c95b3f59"
@@ -2251,10 +2398,15 @@ end-of-stream@^1.0.0, end-of-stream@^1.1.0:
   dependencies:
     once "^1.4.0"
 
-"entities@~ 1.1.1":
+entities@^1.1.1, "entities@~ 1.1.1":
   version "1.1.2"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/entities/-/entities-1.1.2.tgz#bdfa735299664dfafd34529ed4f8522a275fea56"
   integrity sha1-vfpzUplmTfr9NFKe1PhSKidf6lY=
+
+env-variable@0.0.x:
+  version "0.0.5"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/env-variable/-/env-variable-0.0.5.tgz#913dd830bef11e96a039c038d4130604eba37f88"
+  integrity sha1-kT3YML7xHpagOcA41BMGBOujf4g=
 
 err-code@^1.0.0:
   version "1.1.2"
@@ -2618,11 +2770,6 @@ extsprintf@^1.2.0:
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
   integrity sha1-4mifjzVvrWLMplo6kcXfX5VRaS8=
 
-eyes@0.1.x:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/eyes/-/eyes-0.1.8.tgz#62cf120234c683785d902348a800ef3e0cc20bc0"
-  integrity sha1-Ys8SAjTGg3hdkCNIqADvPgzCC8A=
-
 fast-deep-equal@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-1.1.0.tgz#c053477817c86b51daa853c81e059b733d023614"
@@ -2643,6 +2790,11 @@ fast-levenshtein@~2.0.4:
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
 
+fast-safe-stringify@^2.0.4:
+  version "2.0.6"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/fast-safe-stringify/-/fast-safe-stringify-2.0.6.tgz#04b26106cc56681f51a044cfc0d76cf0008ac2c2"
+  integrity sha1-BLJhBsxWaB9RoETPwNds8ACKwsI=
+
 fb-watchman@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/fb-watchman/-/fb-watchman-2.0.0.tgz#54e9abf7dfa2f26cd9b1636c588c1afc05de5d58"
@@ -2662,6 +2814,11 @@ fbjs@^0.8.1:
     promise "^7.1.1"
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.18"
+
+fecha@^2.3.3:
+  version "2.3.3"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/fecha/-/fecha-2.3.3.tgz#948e74157df1a32fd1b12c3a3c3cdcb6ec9d96cd"
+  integrity sha1-lI50FX3xoy/RsSw6PDzctuydls0=
 
 figures@^2.0.0:
   version "2.0.0"
@@ -2839,6 +2996,11 @@ from2@^2.1.0:
   dependencies:
     inherits "^2.0.1"
     readable-stream "^2.0.0"
+
+fs-capacitor@^2.0.1:
+  version "2.0.4"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/fs-capacitor/-/fs-capacitor-2.0.4.tgz#5a22e72d40ae5078b4fe64fe4d08c0d3fc88ad3c"
+  integrity sha1-WiLnLUCuUHi0/mT+TQjA0/yIrTw=
 
 fs-constants@^1.0.0:
   version "1.0.0"
@@ -3086,6 +3248,18 @@ glob@^7.0.3, glob@^7.0.5, glob@^7.1.1, glob@^7.1.2, glob@~7.1.2:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
+glob@^7.1.3:
+  version "7.1.4"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/glob/-/glob-7.1.4.tgz#aa608a2f6c577ad357e1ae5a5c26d9a8d1969255"
+  integrity sha1-qmCKL2xXetNX4a5aXCbZqNGWklU=
+  dependencies:
+    fs.realpath "^1.0.0"
+    inflight "^1.0.4"
+    inherits "2"
+    minimatch "^3.0.4"
+    once "^1.3.0"
+    path-is-absolute "^1.0.0"
+
 glob@~7.0.6:
   version "7.0.6"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/glob/-/glob-7.0.6.tgz#211bafaf49e525b8cd93260d14ab136152b3f57a"
@@ -3144,19 +3318,12 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@~4.1.11
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.15.tgz#ffb703e1066e8a0eeaa4c8b80ba9253eeefbfb00"
   integrity sha512-6uHUhOPEBgQ24HM+r6b/QwWfZq+yiFcipKFrOFiBEnWdy5sdzYoi+pJeQaPI5qOLRFqWmAXUPQNsielzdLoecA==
 
-graphql-extensions@0.3.3:
-  version "0.3.3"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/graphql-extensions/-/graphql-extensions-0.3.3.tgz#277efe11976bbdfd59915551606a2d550247bb45"
-  integrity sha1-J37+EZdrvf1ZkVVRYGotVQJHu0U=
+graphql-extensions@0.5.0:
+  version "0.5.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/graphql-extensions/-/graphql-extensions-0.5.0.tgz#117b9872e5cafbebef5254ad795b41fa97037c14"
+  integrity sha1-EXuYcuXK++vvUlSteVtB+pcDfBQ=
   dependencies:
-    "@apollographql/apollo-tools" "^0.2.6"
-
-graphql-extensions@0.3.6:
-  version "0.3.6"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/graphql-extensions/-/graphql-extensions-0.3.6.tgz#9ddb294b4b3303df4bbfd8258f10ad402e290dba"
-  integrity sha1-ndspS0szA99Lv9gljxCtQC4pDbo=
-  dependencies:
-    "@apollographql/apollo-tools" "^0.2.6"
+    "@apollographql/apollo-tools" "^0.3.0"
 
 graphql-subscriptions@^1.0.0:
   version "1.0.0"
@@ -3165,12 +3332,28 @@ graphql-subscriptions@^1.0.0:
   dependencies:
     iterall "^1.2.1"
 
-graphql-tag@2.10.0, graphql-tag@^2.9.2:
+graphql-tag@2.10.1:
+  version "2.10.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/graphql-tag/-/graphql-tag-2.10.1.tgz#10aa41f1cd8fae5373eaf11f1f67260a3cad5e02"
+  integrity sha1-EKpB8c2PrlNz6vEfH2cmCjytXgI=
+
+graphql-tag@^2.9.2:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.10.0.tgz#87da024be863e357551b2b8700e496ee2d4353ae"
   integrity sha512-9FD6cw976TLLf9WYIUPCaaTpniawIjHWZSwIRZSjrfufJamcXbVVYfN2TWvJYbw0Xf2JjYbl1/f2+wDnBVw3/w==
 
-graphql-tools@4.0.3, graphql-tools@^4.0.0:
+graphql-tools@4.0.4:
+  version "4.0.4"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/graphql-tools/-/graphql-tools-4.0.4.tgz#ca08a63454221fdde825fe45fbd315eb2a6d566b"
+  integrity sha1-ygimNFQiH93oJf5F+9MV6yptVms=
+  dependencies:
+    apollo-link "^1.2.3"
+    apollo-utilities "^1.0.1"
+    deprecated-decorator "^0.1.6"
+    iterall "^1.1.3"
+    uuid "^3.1.0"
+
+graphql-tools@^4.0.0:
   version "4.0.3"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/graphql-tools/-/graphql-tools-4.0.3.tgz#23b5cb52c519212b1b2e4630a361464396ad264b"
   integrity sha1-I7XLUsUZISsbLkYwo2FGQ5atJks=
@@ -3180,6 +3363,16 @@ graphql-tools@4.0.3, graphql-tools@^4.0.0:
     deprecated-decorator "^0.1.6"
     iterall "^1.1.3"
     uuid "^3.1.0"
+
+graphql-upload@^8.0.2:
+  version "8.0.6"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/graphql-upload/-/graphql-upload-8.0.6.tgz#90fb6246962d953b64d9ddabd6472d8e8b116ee0"
+  integrity sha1-kPtiRpYtlTtk2d2r1kctjosRbuA=
+  dependencies:
+    busboy "^0.3.1"
+    fs-capacitor "^2.0.1"
+    http-errors "^1.7.2"
+    object-path "^0.11.4"
 
 graphql-voyager@1.0.0-rc.26:
   version "1.0.0-rc.26"
@@ -3395,6 +3588,18 @@ html-encoding-sniffer@^1.0.2:
   dependencies:
     whatwg-encoding "^1.0.1"
 
+htmlparser2@^3.3.0:
+  version "3.10.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/htmlparser2/-/htmlparser2-3.10.1.tgz#bd679dc3f59897b6a34bb10749c855bb53a9392f"
+  integrity sha1-vWedw/WYl7ajS7EHSchVu1OpOS8=
+  dependencies:
+    domelementtype "^1.3.1"
+    domhandler "^2.3.0"
+    domutils "^1.5.1"
+    entities "^1.1.1"
+    inherits "^2.0.1"
+    readable-stream "^3.1.1"
+
 http-cache-semantics@^3.8.0:
   version "3.8.1"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/http-cache-semantics/-/http-cache-semantics-3.8.1.tgz#39b0e16add9b605bf0a9ef3d9daaf4843b4cacd2"
@@ -3409,6 +3614,17 @@ http-errors@1.6.3, http-errors@~1.6.2, http-errors@~1.6.3:
     inherits "2.0.3"
     setprototypeof "1.1.0"
     statuses ">= 1.4.0 < 2"
+
+http-errors@^1.7.2:
+  version "1.7.2"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/http-errors/-/http-errors-1.7.2.tgz#4f5029cf13239f31036e5b2e55292bcfbcc85c8f"
+  integrity sha1-T1ApzxMjnzEDblsuVSkrz7zIXI8=
+  dependencies:
+    depd "~1.1.2"
+    inherits "2.0.3"
+    setprototypeof "1.1.1"
+    statuses ">= 1.5.0 < 2"
+    toidentifier "1.0.0"
 
 http-proxy-agent@^2.0.0:
   version "2.1.0"
@@ -3633,6 +3849,11 @@ is-arrayish@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/is-arrayish/-/is-arrayish-0.2.1.tgz#77c99840527aa8ecb1a8ba697b80645a7a926a9d"
   integrity sha1-d8mYQFJ6qOyxqLppe4BkWnqSap0=
+
+is-arrayish@^0.3.1:
+  version "0.3.2"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/is-arrayish/-/is-arrayish-0.3.2.tgz#4574a2ae56f7ab206896fb431eaeed066fdf8f03"
+  integrity sha1-RXSirlb3qyBolvtDHq7tBm/fjwM=
 
 is-binary-path@^1.0.0:
   version "1.0.1"
@@ -3964,7 +4185,7 @@ isomorphic-fetch@^2.1.1:
     node-fetch "^1.0.1"
     whatwg-fetch ">=0.10.0"
 
-isstream@0.1.x, isstream@~0.1.2:
+isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
@@ -4224,10 +4445,10 @@ jest-mock@^23.2.0:
   resolved "https://registry.yarnpkg.com/jest-mock/-/jest-mock-23.2.0.tgz#ad1c60f29e8719d47c26e1138098b6d18b261134"
   integrity sha1-rRxg8p6HGdR8JuETgJi20YsmETQ=
 
-jest-nock@0.1.6:
-  version "0.1.6"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/jest-nock/-/jest-nock-0.1.6.tgz#c759e0ae49a8e435f5b2f82d04be9d7f1e1daa70"
-  integrity sha1-x1ngrkmo5DX1svgtBL6dfx4dqnA=
+jest-nock@0.1.7:
+  version "0.1.7"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/jest-nock/-/jest-nock-0.1.7.tgz#3667c990c42eaabaa2c75058a58d3ab7fc246817"
+  integrity sha1-NmfJkMQuqrqix1BYpY06t/wkaBc=
   dependencies:
     mkdirp "^0.5.1"
 
@@ -4595,6 +4816,13 @@ kleur@^2.0.1:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-2.0.2.tgz#b704f4944d95e255d038f0cb05fb8a602c55a300"
   integrity sha512-77XF9iTllATmG9lSlIv0qdQ2BQ/h9t0bJllHlbvsQ0zUWfU7Yi0S8L5JXzPZgkefIiajLmBJJ4BsMJmqcf7oxQ==
 
+kuler@1.0.x:
+  version "1.0.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/kuler/-/kuler-1.0.1.tgz#ef7c784f36c9fb6e16dd3150d152677b2b0228a6"
+  integrity sha1-73x4TzbJ+24W3TFQ0VJneysCKKY=
+  dependencies:
+    colornames "^1.1.1"
+
 latest-version@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/latest-version/-/latest-version-3.1.0.tgz#a205383fea322b33b5ae3b18abee0dc2f356ee15"
@@ -4726,10 +4954,21 @@ lodash@4.17.4:
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
   integrity sha1-eCA6TRwyiuHYbcpkYONptX9AVa4=
 
-lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.3.0, lodash@~4.17.5:
+lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.3.0, lodash@~4.17.5:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
+
+logform@^2.1.1:
+  version "2.1.2"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/logform/-/logform-2.1.2.tgz#957155ebeb67a13164069825ce67ddb5bb2dd360"
+  integrity sha1-lXFV6+tnoTFkBpglzmfdtbst02A=
+  dependencies:
+    colors "^1.2.1"
+    fast-safe-stringify "^2.0.4"
+    fecha "^2.3.3"
+    ms "^2.1.1"
+    triple-beam "^1.3.0"
 
 long@^4.0.0:
   version "4.0.0"
@@ -5093,10 +5332,10 @@ negotiator@0.6.1:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
   integrity sha1-KzJxhOiZIQEXeyhWP7XnECrNDKk=
 
-nock@10.0.4:
-  version "10.0.4"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/nock/-/nock-10.0.4.tgz#44f5dcfe0a6b09f95d541f6b3f057cfabbbd2a3a"
-  integrity sha1-RPXc/gprCfldVB9rPwV8+ru9Kjo=
+nock@10.0.6:
+  version "10.0.6"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/nock/-/nock-10.0.6.tgz#e6d90ee7a68b8cfc2ab7f6127e7d99aa7d13d111"
+  integrity sha1-5tkO56aLjPwqt/YSfn2Zqn0T0RE=
   dependencies:
     chai "^4.1.2"
     debug "^4.1.0"
@@ -5185,21 +5424,21 @@ node-uuid@~1.4.7:
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/node-uuid/-/node-uuid-1.4.8.tgz#b040eb0923968afabf8d32fb1f17f1167fdab907"
   integrity sha1-sEDrCSOWivq/jTL7HxfxFn/auQc=
 
-nodemon@1.18.6:
-  version "1.18.6"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/nodemon/-/nodemon-1.18.6.tgz#89b1136634d6c0afc7de24cc932a760e999e2c76"
-  integrity sha1-ibETZjTWwK/H3iTMkyp2DpmeLHY=
+nodemon@1.18.9:
+  version "1.18.9"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/nodemon/-/nodemon-1.18.9.tgz#90b467efd3b3c81b9453380aeb2a2cba535d0ead"
+  integrity sha1-kLRn79OzyBuUUzgK6yosulNdDq0=
   dependencies:
     chokidar "^2.0.4"
     debug "^3.1.0"
     ignore-by-default "^1.0.1"
     minimatch "^3.0.4"
-    pstree.remy "^1.1.0"
+    pstree.remy "^1.1.6"
     semver "^5.5.0"
     supports-color "^5.2.0"
     touch "^3.1.0"
     undefsafe "^2.0.2"
-    update-notifier "^2.3.0"
+    update-notifier "^2.5.0"
 
 "nopt@2 || 3", nopt@~3.0.6:
   version "3.0.6"
@@ -5593,6 +5832,13 @@ npmi@1.0.1:
     gauge "~2.6.0"
     set-blocking "~2.0.0"
 
+nth-check@~1.0.1:
+  version "1.0.2"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/nth-check/-/nth-check-1.0.2.tgz#b2bd295c37e3dd58a3bf0700376663ba4d9cf05c"
+  integrity sha1-sr0pXDfj3VijvwcAN2Zjuk2c8Fw=
+  dependencies:
+    boolbase "~1.0.0"
+
 number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
@@ -5680,6 +5926,11 @@ once@^1.3.0, once@^1.3.1, once@^1.3.3, once@^1.4.0, once@~1.4.0:
   integrity sha1-WDsap3WWHUsROsF9nFC6753Xa9E=
   dependencies:
     wrappy "1"
+
+one-time@0.0.4:
+  version "0.0.4"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/one-time/-/one-time-0.0.4.tgz#f8cdf77884826fe4dff93e3a9cc37b1e4480742e"
+  integrity sha1-+M33eISCb+Tf+T46nMN7HkSAdC4=
 
 onetime@^2.0.0:
   version "2.0.1"
@@ -5979,6 +6230,14 @@ preserve@^0.2.0:
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
   integrity sha1-gV7R9uvGWSb4ZbMQwHE7yzMVzks=
 
+pretty-error@^2.1.1:
+  version "2.1.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/pretty-error/-/pretty-error-2.1.1.tgz#5f4f87c8f91e5ae3f3ba87ab4cf5e03b1a17f1a3"
+  integrity sha1-X0+HyPkeWuPzuoerTPXgOxoX8aM=
+  dependencies:
+    renderkid "^2.0.1"
+    utila "~0.4"
+
 pretty-format@^23.6.0:
   version "23.6.0"
   resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-23.6.0.tgz#5eaac8eeb6b33b987b7fe6097ea6a8a146ab5760"
@@ -6109,10 +6368,10 @@ psl@^1.1.24:
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.1.29.tgz#60f580d360170bb722a797cc704411e6da850c67"
   integrity sha512-AeUmQ0oLN02flVHXWh9sSJF7mcdFq0ppid/JkErufc3hGIV/AMa8Fo9VgDo/cT2jFdOWoFvHp90qqBH54W+gjQ==
 
-pstree.remy@^1.1.0:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/pstree.remy/-/pstree.remy-1.1.2.tgz#4448bbeb4b2af1fed242afc8dc7416a6f504951a"
-  integrity sha512-vL6NLxNHzkNTjGJUpMm5PLC+94/0tTlC1vkP9bdU0pOHih+EujMjgMTwfZopZvHWRFbqJ5Y73OMoau50PewDDA==
+pstree.remy@^1.1.6:
+  version "1.1.6"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/pstree.remy/-/pstree.remy-1.1.6.tgz#73a55aad9e2d95814927131fbf4dc1b62d259f47"
+  integrity sha1-c6VarZ4tlYFJJxMfv03Bti0ln0c=
 
 pump@^1.0.0:
   version "1.0.3"
@@ -6313,7 +6572,7 @@ read@1, read@~1.0.1, read@~1.0.7:
   dependencies:
     mute-stream "~0.0.4"
 
-"readable-stream@1 || 2", readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.4, readable-stream@^2.0.6, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.3.0, readable-stream@^2.3.5, readable-stream@~2.3.2, readable-stream@~2.3.6:
+"readable-stream@1 || 2", readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.4, readable-stream@^2.0.6, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.3.0, readable-stream@^2.3.5, readable-stream@^2.3.6, readable-stream@~2.3.2, readable-stream@~2.3.6:
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
   integrity sha512-tQtKA9WIAhBF3+VLAseyMqZeBjW0AHJoxOtYqSUZNJxauErmLbVm2FW1y+J/YA9dUrAC39ITejlZWhVIwawkKw==
@@ -6326,7 +6585,16 @@ read@1, read@~1.0.1, read@~1.0.7:
     string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
 
-readable-stream@1.1.x, readable-stream@~1.1.10:
+readable-stream@^3.1.1:
+  version "3.3.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/readable-stream/-/readable-stream-3.3.0.tgz#cb8011aad002eb717bf040291feba8569c986fb9"
+  integrity sha1-y4ARqtAC63F78EApH+uoVpyYb7k=
+  dependencies:
+    inherits "^2.0.3"
+    string_decoder "^1.1.1"
+    util-deprecate "^1.0.1"
+
+readable-stream@~1.1.10:
   version "1.1.14"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.1.14.tgz#7cf4c54ef648e3813084c636dd2079e166c081d9"
   integrity sha1-fPTFTvZI44EwhMY23SB54WbAgdk=
@@ -6464,6 +6732,17 @@ remove-trailing-separator@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
   integrity sha1-wkvOKig62tW8P1jg1IJJuSN52O8=
+
+renderkid@^2.0.1:
+  version "2.0.3"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/renderkid/-/renderkid-2.0.3.tgz#380179c2ff5ae1365c522bf2fcfcff01c5b74149"
+  integrity sha1-OAF5wv9a4TZcUivy/Pz/AcW3QUk=
+  dependencies:
+    css-select "^1.1.0"
+    dom-converter "^0.2"
+    htmlparser2 "^3.3.0"
+    strip-ansi "^3.0.0"
+    utila "^0.4.0"
 
 repeat-element@^1.1.2:
   version "1.1.3"
@@ -6652,12 +6931,19 @@ retry@^0.10.0, retry@~0.10.0, retry@~0.10.1:
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/retry/-/retry-0.10.1.tgz#e76388d217992c252750241d3d3956fed98d8ff4"
   integrity sha1-52OI0heZLCUnUCQdPTlW/tmNj/Q=
 
-rimraf@2, rimraf@2.6.2, rimraf@^2.5.2, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2, rimraf@~2.6.1, rimraf@~2.6.2:
+rimraf@2, rimraf@^2.5.2, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2, rimraf@~2.6.1, rimraf@~2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
   integrity sha512-lreewLK/BlghmxtfH36YYVg1i8IAce4TI7oao75I1g245+6BctqTVQiBP3YUJ9C6DQOXJmkYR9X9fCLtCOJc5w==
   dependencies:
     glob "^7.0.5"
+
+rimraf@2.6.3:
+  version "2.6.3"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/rimraf/-/rimraf-2.6.3.tgz#b2d104fe0d8fb27cf9e0a1cda8262dd3833c6cab"
+  integrity sha1-stEE/g2Psnz54KHNqCYt04M8bKs=
+  dependencies:
+    glob "^7.1.3"
 
 rimraf@~2.5.4:
   version "2.5.4"
@@ -6762,6 +7048,11 @@ semver@^4.1.0:
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/semver/-/semver-4.3.6.tgz#300bc6e0e86374f7ba61068b5b1ecd57fc6532da"
   integrity sha1-MAvG4OhjdPe6YQaLWx7NV/xlMto=
 
+semver@^5.4.1:
+  version "5.7.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/semver/-/semver-5.7.0.tgz#790a7cf6fea5459bac96110b29b60412dc8ff96b"
+  integrity sha1-eQp89v6lRZuslhELKbYEEtyP+Ws=
+
 semver@~5.1.0:
   version "5.1.1"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/semver/-/semver-5.1.1.tgz#a3292a373e6f3e0798da0b20641b9a9c5bc47e19"
@@ -6831,6 +7122,19 @@ setprototypeof@1.1.0:
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.0.tgz#d0bd85536887b6fe7c0d818cb962d9d91c54e656"
   integrity sha512-BvE/TwpZX4FXExxOxZyRGQQv651MSwmWKZGqvmPcRIjDqWub67kTKuIMx43cZZrS/cBBzwBcNDWoFxt2XEFIpQ==
 
+setprototypeof@1.1.1:
+  version "1.1.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/setprototypeof/-/setprototypeof-1.1.1.tgz#7e95acb24aa92f5885e0abef5ba131330d4ae683"
+  integrity sha1-fpWsskqpL1iF4KvvW6ExMw1K5oM=
+
+sha.js@^2.4.11:
+  version "2.4.11"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/sha.js/-/sha.js-2.4.11.tgz#37a5cf0b81ecbc6943de109ba2960d1b26584ae7"
+  integrity sha1-N6XPC4HsvGlD3hCbopYNGyZYSuc=
+  dependencies:
+    inherits "^2.0.1"
+    safe-buffer "^5.0.1"
+
 sha@~2.0.1:
   version "2.0.1"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/sha/-/sha-2.0.1.tgz#6030822fbd2c9823949f8f72ed6411ee5cf25aae"
@@ -6856,10 +7160,22 @@ shellwords@^0.1.1:
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
   integrity sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww==
 
+shimmer@^1.2.0:
+  version "1.2.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/shimmer/-/shimmer-1.2.1.tgz#610859f7de327b587efebf501fb43117f9aff337"
+  integrity sha1-YQhZ994ye1h+/r9QH7QxF/mv8zc=
+
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   integrity sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
+
+simple-swizzle@^0.2.2:
+  version "0.2.2"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/simple-swizzle/-/simple-swizzle-0.2.2.tgz#a4da6b635ffcccca33f70d17cb92592de95e557a"
+  integrity sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=
+  dependencies:
+    is-arrayish "^0.3.1"
 
 sisteransi@^0.1.1:
   version "0.1.1"
@@ -7067,6 +7383,11 @@ ssri@^5.0.0, ssri@^5.2.4:
   dependencies:
     safe-buffer "^5.1.1"
 
+stack-chain@^1.3.7:
+  version "1.3.7"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/stack-chain/-/stack-chain-1.3.7.tgz#d192c9ff4ea6a22c94c4dd459171e3f00cea1285"
+  integrity sha1-0ZLJ/06moiyUxN1FkXHj8AzqEoU=
+
 stack-trace@0.0.x:
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/stack-trace/-/stack-trace-0.0.10.tgz#547c70b347e8d32b4e108ea1a2a159e5fdde19c0"
@@ -7085,7 +7406,7 @@ static-extend@^0.1.1:
     define-property "^0.2.5"
     object-copy "^0.1.0"
 
-"statuses@>= 1.4.0 < 2":
+"statuses@>= 1.4.0 < 2", "statuses@>= 1.5.0 < 2":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
   integrity sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
@@ -7155,6 +7476,13 @@ string.prototype.repeat@^0.2.0:
   version "0.2.0"
   resolved "https://spring.jfrog.io/spring/api/npm/npm-red/string.prototype.repeat/-/string.prototype.repeat-0.2.0.tgz#aba36de08dcee6a5a337d49b2ea1da1b28fc0ecf"
   integrity sha1-q6Nt4I3O5qWjN9SbLqHaGyj8Ds8=
+
+string_decoder@^1.1.1:
+  version "1.2.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/string_decoder/-/string_decoder-1.2.0.tgz#fe86e738b19544afe70469243b2a1ee9240eae8d"
+  integrity sha1-/obnOLGVRK/nBGkkOyoe6SQOro0=
+  dependencies:
+    safe-buffer "~5.1.0"
 
 string_decoder@~0.10.x:
   version "0.10.31"
@@ -7241,10 +7569,10 @@ superagent@^3.8.3:
     qs "^6.5.1"
     readable-stream "^2.3.5"
 
-supertest@3.3.0:
-  version "3.3.0"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/supertest/-/supertest-3.3.0.tgz#79b27bd7d34392974ab33a31fa51a3e23385987e"
-  integrity sha1-ebJ719NDkpdKszox+lGj4jOFmH4=
+supertest@3.4.2:
+  version "3.4.2"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/supertest/-/supertest-3.4.2.tgz#bad7de2e43d60d27c8caeb8ab34a67c8a5f71aad"
+  integrity sha1-utfeLkPWDSfIyuuKs0pnyKX3Gq0=
   dependencies:
     methods "^1.1.2"
     superagent "^3.8.3"
@@ -7358,6 +7686,11 @@ test-exclude@^4.2.1:
     read-pkg-up "^1.0.1"
     require-main-filename "^1.0.1"
 
+text-hex@1.0.x:
+  version "1.0.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/text-hex/-/text-hex-1.0.0.tgz#69dc9c1b17446ee79a92bf5b884bb4b9127506f5"
+  integrity sha1-adycGxdEbueakr9biEu0uRJ1BvU=
+
 text-table@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
@@ -7450,6 +7783,11 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
+toidentifier@1.0.0:
+  version "1.0.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
+  integrity sha1-fhvjRw8ed5SLxD2Uo8j013UrpVM=
+
 topo@3.x.x:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/topo/-/topo-3.0.3.tgz#d5a67fb2e69307ebeeb08402ec2a2a6f5f7ad95c"
@@ -7490,6 +7828,25 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
   integrity sha1-yy4SAwZ+DI3h9hQJS5/kVwTqYAM=
+
+triple-beam@^1.2.0, triple-beam@^1.3.0:
+  version "1.3.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/triple-beam/-/triple-beam-1.3.0.tgz#a595214c7298db8339eeeee083e4d10bd8cb8dd9"
+  integrity sha1-pZUhTHKY24M57u7gg+TRC9jLjdk=
+
+ts-invariant@^0.2.1:
+  version "0.2.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/ts-invariant/-/ts-invariant-0.2.1.tgz#3d587f9d6e3bded97bf9ec17951dd9814d5a9d3f"
+  integrity sha1-PVh/nW473tl7+ewXlR3ZgU1anT8=
+  dependencies:
+    tslib "^1.9.3"
+
+ts-invariant@^0.3.2:
+  version "0.3.3"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/ts-invariant/-/ts-invariant-0.3.3.tgz#b5742b1885ecf9e29c31a750307480f045ec0b16"
+  integrity sha1-tXQrGIXs+eKcMadQMHSA8EXsCxY=
+  dependencies:
+    tslib "^1.9.3"
 
 tslib@^1.9.3:
   version "1.9.3"
@@ -7627,10 +7984,10 @@ upath@^1.0.5:
   resolved "https://registry.yarnpkg.com/upath/-/upath-1.1.0.tgz#35256597e46a581db4793d0ce47fa9aebfc9fabd"
   integrity sha512-bzpH/oBhoS/QI/YtbkqCg6VEiPYjSZtrHQM6/QnJS6OL9pKUFLqb3aFh4Scvwm45+7iAgiMkLhSbaZxUqmrprw==
 
-update-notifier@^2.3.0:
+update-notifier@^2.5.0:
   version "2.5.0"
-  resolved "https://registry.yarnpkg.com/update-notifier/-/update-notifier-2.5.0.tgz#d0744593e13f161e406acb1d9408b72cad08aff6"
-  integrity sha512-gwMdhgJHGuj/+wHJJs9e6PcCszpxR1b236igrOkUofGhqJuG+amlIKwApH1IW1WWl7ovZxsX49lMBWLxSdm5Dw==
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/update-notifier/-/update-notifier-2.5.0.tgz#d0744593e13f161e406acb1d9408b72cad08aff6"
+  integrity sha1-0HRFk+E/Fh5AassdlAi3LK0Ir/Y=
   dependencies:
     boxen "^1.2.1"
     chalk "^2.0.1"
@@ -7688,7 +8045,7 @@ user-home@2.0.0:
   dependencies:
     os-homedir "^1.0.0"
 
-util-deprecate@~1.0.1:
+util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
@@ -7712,6 +8069,11 @@ util@0.10.3:
   integrity sha1-evsa/lCAUkZInj23/g7TeTNqwPk=
   dependencies:
     inherits "2.0.1"
+
+utila@^0.4.0, utila@~0.4:
+  version "0.4.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/utila/-/utila-0.4.0.tgz#8a16a05d445657a3aea5eecc5b12a4fa5379772c"
+  integrity sha1-ihagXURWV6Oupe7MWxKk+lN5dyw=
 
 utils-merge@1.0.1:
   version "1.0.1"
@@ -7885,17 +8247,28 @@ widest-line@^2.0.0:
   dependencies:
     string-width "^2.1.1"
 
-winston@2.4.3:
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/winston/-/winston-2.4.3.tgz#7a9fdab371b6d3d9b63a592947846d856948c517"
-  integrity sha512-GYKuysPz2pxYAVJD2NPsDLP5Z79SDEzPm9/j4tCjkF/n89iBNGBMJcR+dMUqxgPNgoSs6fVygPi+Vl2oxIpBuw==
+winston-transport@^4.3.0:
+  version "4.3.0"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/winston-transport/-/winston-transport-4.3.0.tgz#df68c0c202482c448d9b47313c07304c2d7c2c66"
+  integrity sha1-32jAwgJILESNm0cxPAcwTC18LGY=
   dependencies:
-    async "~1.0.0"
-    colors "1.0.x"
-    cycle "1.0.x"
-    eyes "0.1.x"
-    isstream "0.1.x"
+    readable-stream "^2.3.6"
+    triple-beam "^1.2.0"
+
+winston@^3.2.1:
+  version "3.2.1"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/winston/-/winston-3.2.1.tgz#63061377976c73584028be2490a1846055f77f07"
+  integrity sha1-YwYTd5dsc1hAKL4kkKGEYFX3fwc=
+  dependencies:
+    async "^2.6.1"
+    diagnostics "^1.1.1"
+    is-stream "^1.1.0"
+    logform "^2.1.1"
+    one-time "0.0.4"
+    readable-stream "^3.1.1"
     stack-trace "0.0.x"
+    triple-beam "^1.3.0"
+    winston-transport "^4.3.0"
 
 wordwrap@~0.0.2:
   version "0.0.3"
@@ -7962,10 +8335,10 @@ write@^0.2.1:
   dependencies:
     mkdirp "^0.5.1"
 
-ws@6.1.2, ws@^6.0.0:
-  version "6.1.2"
-  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/ws/-/ws-6.1.2.tgz#3cc7462e98792f0ac679424148903ded3b9c3ad8"
-  integrity sha1-PMdGLph5LwrGeUJBSJA97TucOtg=
+ws@6.1.3:
+  version "6.1.3"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/ws/-/ws-6.1.3.tgz#d2d2e5f0e3c700ef2de89080ebc0ac6e1bf3a72d"
+  integrity sha1-0tLl8OPHAO8t6JCA68Csbhvzpy0=
   dependencies:
     async-limiter "~1.0.0"
 
@@ -7973,6 +8346,13 @@ ws@^5.2.0:
   version "5.2.2"
   resolved "https://registry.yarnpkg.com/ws/-/ws-5.2.2.tgz#dffef14866b8e8dc9133582514d1befaf96e980f"
   integrity sha512-jaHFD6PFv6UgoIVda6qZllptQsMlDEJkTQcybzzXDYM1XO9Y8em691FGMPmM46WGyLU4z9KMgQN+qrux/nhlHA==
+  dependencies:
+    async-limiter "~1.0.0"
+
+ws@^6.0.0:
+  version "6.1.2"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/ws/-/ws-6.1.2.tgz#3cc7462e98792f0ac679424148903ded3b9c3ad8"
+  integrity sha1-PMdGLph5LwrGeUJBSJA97TucOtg=
   dependencies:
     async-limiter "~1.0.0"
 
@@ -8041,6 +8421,14 @@ zen-observable-ts@^0.8.11:
   resolved "https://registry.yarnpkg.com/zen-observable-ts/-/zen-observable-ts-0.8.11.tgz#d54a27cd17dc4b4bb6bd008e5c096af7fcb068a9"
   integrity sha512-8bs7rgGV4kz5iTb9isudkuQjtWwPnQ8lXq6/T76vrepYZVMsDEv6BXaEA+DHdJSK3KVLduagi9jSpSAJ5NgKHw==
   dependencies:
+    zen-observable "^0.8.0"
+
+zen-observable-ts@^0.8.15, zen-observable-ts@^0.8.18:
+  version "0.8.18"
+  resolved "https://spring.jfrog.io/spring/api/npm/npm-red/zen-observable-ts/-/zen-observable-ts-0.8.18.tgz#ade44b1060cc4a800627856ec10b9c67f5f639c8"
+  integrity sha1-reRLEGDMSoAGJ4VuwQucZ/X2Ocg=
+  dependencies:
+    tslib "^1.9.3"
     zen-observable "^0.8.0"
 
 zen-observable@^0.8.0:
