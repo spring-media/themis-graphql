@@ -1,4 +1,4 @@
-let reqId = null;
+let requestId = null;
 
 /**
  * Express.js middleware
@@ -7,7 +7,7 @@ let reqId = null;
  **/
 const middleware = () => {
 	return (req, res, next) => {
-		reqId = req.header('X-Request-ID') || null;
+		requestId = req.header('X-Request-ID') || null;
 		next();
 	};
 };
@@ -19,8 +19,8 @@ const middleware = () => {
  * @return {String} the current request id
  **/
 function get () {
-  if (reqId) {
-    return reqId;
+  if (requestId) {
+    return requestId;
   }
 }
 
