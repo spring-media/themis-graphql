@@ -1,7 +1,4 @@
-const uuidv4 = require('uuid/v4');
-const nsid = uuidv4();
-
-let reqId = undefined;
+let reqId = null;
 
 /**
  * Express.js middleware
@@ -10,19 +7,21 @@ let reqId = undefined;
  **/
 const middleware = () => {
 	return (req, res, next) => {
-		reqId = req.header('X-Request-ID') || undefined;
+		reqId = req.header('X-Request-ID') || null;
 		next();
 	};
 };
 
 /**
  * Gets the request id
- * Will return undefined  if the context has not yet been initialized
+ * Will return nothing if the context has not yet been initialized
  * for this request or if there is no value present.
  * @return {String} the current request id
  **/
 function get () {
-	return reqId;
+  if (reqId) {
+    return reqId;
+  }
 }
 
 module.exports = { middleware, get };

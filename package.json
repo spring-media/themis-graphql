@@ -36,7 +36,6 @@
     "pretty-error": "^2.1.1",
     "subscriptions-transport-ws": "0.9.15",
     "supertest": "3.4.2",
-    "uuid": "^3.3.2",
     "validate-npm-package-name": "3.0.0",
     "winston": "^3.2.1",
     "ws": "6.1.3"
