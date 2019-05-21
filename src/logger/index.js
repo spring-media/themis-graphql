@@ -38,7 +38,7 @@ function getProdFormat () {
   const defaults = winston.format(info => ({
     ...info,
     source: 'gql-server',
-    pid: requestId.get(),
+    requestId: requestId.get(),
   }));
 
   return combine(error(), defaults(), winston.format.json());
