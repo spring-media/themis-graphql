@@ -31,8 +31,9 @@ prettyError.appendStyle({
 
 function getProdFormat () {
   const extractError = ({ message, stack }) => ({ message, stack });
-  const error = winston.format(info =>
-    info instanceof Error ? { ...info, ...extractError(info) } : info
+  const error = winston.format(info => {
+    return info instanceof Error ? { ...info, ...extractError(info) } : info;
+  }
   );
   const defaults = winston.format(info => ({
     ...info,
@@ -43,12 +44,20 @@ function getProdFormat () {
   return combine(error(), defaults(), winston.format.json());
 }
 
+function formatObject (param) {
+  if (typeof param === 'object') {
+    return JSON.stringify(param);
+  }
+  return param;
+}
+
 function getDevFormat () {
   const error = info => prettyError.render(info);
-  const noPrefix = info => info.message;
-  const message = info => `${info.level} ${info.message}`;
-  const extract = info =>
-    info instanceof Error ? error(info) : info.prefix === false ? noPrefix(info) : message(info);
+  const noPrefix = info => formatObject(info);
+  const message = info => `${info.level} ${formatObject(info.message)}`;
+  const extract = info => {
+    return info instanceof Error ? error(info) : info.prefix === false ? noPrefix(info) : message(info);
+  };
 
   return combine(colorize(), printf(extract));
 }
