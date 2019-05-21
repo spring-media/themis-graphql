@@ -37,7 +37,7 @@ function getProdFormat () {
   );
   const defaults = winston.format(info => ({
     ...info,
-    source: 'ssr-server',
+    source: 'gql-server',
     pid: requestId.get(),
   }));
 
