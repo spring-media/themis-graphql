@@ -49,7 +49,7 @@ const createConnectionLink = ({ uri, wsUri }) => {
     uri,
     fetch: async (...args) => {
       // TODO: Make logging link and only add it in dev/debug mode
-      logger.debug('Remote fetch args:', args);
+      logger.debug(`Remote fetch args: ${JSON.stringify(args)}`);
 
       const result = await fetch(...args);
 
