@@ -1,5 +1,5 @@
 const winston = require('winston');
-const requestId = require('../requestId');
+const requestId = require('../request-id');
 
 const PrettyError = require('pretty-error');
 
