@@ -8,15 +8,43 @@ const { GraphQLSchema } = require('graphql');
 const { insertIfValue } = require('./utils');
 const { findTypeConflict } = require('./find-type-conflict');
 const { loadModule } = require('./load-module');
+const validateStrategy = require('./validate-strategy');
 const logger = require('./logger');
+const path = require('path');
 
-const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscriptions }) => {
+function resolveMergeStrategyPath (strategy) {
+  if (path.isAbsolute(strategy)) {
+    return strategy;
+  }
+  if (/^.\//.test(strategy)) {
+    return path.resolve(process.cwd(), strategy);
+  }
+  return require.resolve(strategy, {
+    paths: [
+      ...require.resolve.paths(strategy),
+      path.resolve(__dirname, 'strategies'),
+    ],
+  });
+}
+
+const loadSchema = async ({
+  mergeStrategy,
+  modulePaths,
+  mockMode,
+  useFileSchema,
+  filterSubscriptions,
+}) => {
   if (modulePaths.length === 0) {
     throw new Error('Need at least one target path with modules.');
   }
 
+  const mergeStrategyPath = resolveMergeStrategyPath(mergeStrategy);
+  const strategy = require(mergeStrategyPath);
+
+  validateStrategy(strategy, mergeStrategyPath);
+
   const configs = await Promise.all(modulePaths
-    .map(path => loadModule(path)));
+    .map(configPath => loadModule(configPath)));
 
   // TODO: Implement namespaces
 

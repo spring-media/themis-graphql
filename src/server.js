@@ -50,6 +50,7 @@ const setupVoyager = (app, voyager, graphQLPath) => {
 };
 
 async function initServer ({
+  mergeStrategy = 'complex',
   mockMode = false,
   nockMode = false,
   nockRecord = false,
@@ -109,6 +110,7 @@ async function initServer ({
     startupFns,
     shutdownFns,
   } = await loadSchema({
+    mergeStrategy,
     modulePaths,
     mockMode,
     useFileSchema: nockMode || useFileSchema,
@@ -117,16 +119,20 @@ async function initServer ({
   const combinedContext = context.concat(configContext);
 
   const combinedOnConnect = onConnect.concat(configOnConnect);
+
   subscriptions.onConnect = async (...args) => {
-    const onConnectResolved = await Promise.all(combinedOnConnect.map(fn => fn(...args)))
-    return onConnectResolved.reduce((ctx, onConnectData) => ({...ctx, ...onConnectData}), {});
-  }
+    const onConnectResolved = await Promise.all(combinedOnConnect.map(fn => fn(...args)));
+
+    return onConnectResolved.reduce((ctx, onConnectData) => ({ ...ctx, ...onConnectData }), {});
+  };
 
   const combinedOnDisconnect = onDisconnect.concat(configOnDisconnect);
+
   subscriptions.onDisconnect = async (...args) => {
-    const onDisconnectResolved = await Promise.all(combinedOnDisconnect.map(fn => fn(...args)))
-    return onDisconnectResolved.reduce((ctx, onDisconnectData) => ({...ctx, ...onDisconnectData}), {});
-  }
+    const onDisconnectResolved = await Promise.all(combinedOnDisconnect.map(fn => fn(...args)));
+
+    return onDisconnectResolved.reduce((ctx, onDisconnectData) => ({ ...ctx, ...onDisconnectData }), {});
+  };
 
   const hasSubscriptions = Boolean(schema.getSubscriptionType());
   const serverOptions = {

@@ -1,7 +1,3 @@
-
-/**
- * Checks if the imported module exports the needed data to stitch and mount it.
- */
 const Joi = require('joi');
 
 const middleware = Joi.alternatives([

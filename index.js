@@ -19,6 +19,7 @@ program
   .option('-t, --test', 'Test modules with jest and nock')
   .option('--pretty', 'store remote schema as pretty JSON for scm tracking and comparison')
   .option('-c, --config [configPath]', 'Load configuration from a file (resolved relative to cwd, or absolute)')
+  .option('--strategy [mergeStrategy]', 'Path to a node module exposing a merge strategy')
   .option('-m, --mock', 'Start server in mock mode')
   .option('-n, --nock', 'Start server in nock mode (Load recorded nocks)')
   .option('-r, --record', 'Record external requests with nock (use with --nock)')
@@ -71,6 +72,7 @@ if (program.build) {
   runTests();
 } else {
   initServer({
+    mergeStrategy: program.mergeStrategy,
     mockMode: program.mock || false,
     nockMode: program.nock,
     nockPath: program.nockPath,
