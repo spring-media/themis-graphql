@@ -1,5 +1,5 @@
 const winston = require('winston');
-const requestId = require('../request-id');
+const { get: getRequestId } = require('../request-id');
 
 const PrettyError = require('pretty-error');
 
@@ -33,13 +33,15 @@ function getProdFormat () {
   const extractError = ({ message, stack }) => ({ message, stack });
   const error = winston.format(info => {
     return info instanceof Error ? { ...info, ...extractError(info) } : info;
-  }
-  );
-  const defaults = winston.format(info => ({
-    ...info,
-    source: 'gql-server',
-    requestId: requestId.get(),
-  }));
+  });
+  const defaults = winston.format(info => {
+    const requestId = getRequestId();
+    return {
+      ...info,
+      ...(requestId ? { requestId } : null),
+      source: 'gql-server',
+    };
+  });
 
   return combine(error(), defaults(), winston.format.json());
 }
