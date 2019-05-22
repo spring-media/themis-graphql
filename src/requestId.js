@@ -5,11 +5,11 @@ let requestId = null;
  * responsible for retrieving and saving the request id
  * @return {function} express middleware
  **/
-const middleware = () => {
-	return (req, res, next) => {
-		requestId = req.header('X-Request-ID') || null;
-		next();
-	};
+function middleware() {
+  return (req, res, next) => {
+    requestId = req.header('X-Request-ID') || null;
+    next();
+  };
 };
 
 /**
@@ -18,7 +18,7 @@ const middleware = () => {
  * for this request or if there is no value present.
  * @return {String} the current request id
  **/
-function get () {
+function get() {
   if (requestId) {
     return requestId;
   }
