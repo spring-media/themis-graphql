@@ -2,12 +2,12 @@ const winston = require('winston');
 const requestId = require('../requestId');
 
 const PrettyError = require('pretty-error');
-const { isProd } = require('../utils/env');
 
 const { combine, colorize, printf } = winston.format;
 const prettyError = new PrettyError();
 const prodFormat = getProdFormat();
 const devFormat = getDevFormat();
+const isProd = process.env.NODE_ENV === 'production';
 const format = winston.format((...args) =>
   isProd ? prodFormat.transform(...args) : devFormat.transform(...args)
 );
