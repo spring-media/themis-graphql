@@ -300,7 +300,7 @@ describe('Schema', () => {
       })
       .catch(e => {
         expect(e).toBeInstanceOf(Error);
-        expect(e.message).toMatch(/Cannot extend type "Article" because it does not exist in the existing schema/);
+        expect(e.message).toMatch(/Cannot extend type "Article" because it is not defined/);
         done();
       });
     });

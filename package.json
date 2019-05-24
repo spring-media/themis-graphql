@@ -23,7 +23,7 @@
     "express": "4.16.4",
     "express-nock": "0.1.1",
     "express-winston": "2.5.1",
-    "graphql": "14.0.3-internal",
+    "graphql": "14.3.1",
     "graphql-tag": "2.10.1",
     "graphql-tools": "4.0.4",
     "graphql-voyager": "1.0.0-rc.26",
