@@ -106,7 +106,6 @@ async function initServer ({
     context = [],
     onConnect = [],
     onDisconnect = [],
-    accessViaContext,
     startupFns,
     shutdownFns,
   } = await loadSchema({
@@ -143,7 +142,6 @@ async function initServer ({
         ...fn({ req, res, connection }),
         ...spreadIf(connection && connection.context, () => connection.context),
       }), {}),
-      schemas: accessViaContext,
     }),
     formatError,
     debug,

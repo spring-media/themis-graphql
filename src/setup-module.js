@@ -1,8 +1,5 @@
 const {
-  makeExecutableSchema,
   makeRemoteExecutableSchema,
-  transformSchema,
-  addMockFunctionsToSchema,
 } = require('graphql-tools');
 
 const { loadRemoteSchema } = require('./load-remote-schema');
@@ -27,9 +24,7 @@ const setupLocal = config => {
   const {
     name,
     typeDefs = [],
-    extendTypes,
     resolvers,
-    extendResolvers,
     importTypes,
     resolvedDependencies,
   } = config;
@@ -73,21 +68,24 @@ const setupLocal = config => {
     });
   }
 
-  if (extendTypes) {
-    source.extendTypes = extendTypes;
-    source.extendResolvers = [].concat(extendResolvers);
-  }
+  // if (extendTypes) {
+  //   source.extendTypes = extendTypes;
+  //   source.extendResolvers = [].concat(extendResolvers);
+  // }
 
-  if (types.length) {
-    source.schema = makeExecutableSchema({
-      typeDefs: types,
-      resolvers: allResolvers,
-      resolverValidationOptions: {
-        requireResolversForResolveType: false,
-      },
-      logger,
-    });
-  }
+  // if (types.length) {
+  //   source.schema = makeExecutableSchema({
+  //     typeDefs: types,
+  //     resolvers: allResolvers,
+  //     resolverValidationOptions: {
+  //       requireResolversForResolveType: false,
+  //     },
+  //     logger,
+  //   });
+  // }
+
+  source.allTypes = types;
+  source.allResolvers = allResolvers;
 
   return source;
 };
@@ -133,29 +131,9 @@ const setupModule = async (config, { mockMode, useFileSchema }) => {
       useFileSchema,
     });
 
-    if (source.schema) {
-      Object.assign(source.schema, {
-        moduleName: config.name,
-      });
-
-      if (mockMode && config.mocks) {
-        addMockFunctionsToSchema({ schema: source.schema, mocks: config.mocks });
-      }
-
-      if (Array.isArray(config.transforms)) {
-        source.schema = transformSchema(source.schema, config.transforms);
-      }
-    }
-
     return {
       ...config,
-      ...spreadIf(config.mount !== false, {
-        schema: source.schema,
-      }),
-      accessViaContext: {
-        [config.name]: source.schema,
-      },
-      importedInterfaces: source.importedInterfaces,
+      ...source,
     };
   });
 

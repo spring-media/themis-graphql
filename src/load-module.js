@@ -11,7 +11,7 @@ const loadModule = async sourcePath => {
   }
 
   logger.info(`Loading ${sourcePath}`);
-  const config = require(sourcePath);
+  let config = require(sourcePath);
   const packageJsonPath = path.resolve(sourcePath, 'package.json');
 
   if (fs.existsSync(packageJsonPath)) {
@@ -25,7 +25,7 @@ const loadModule = async sourcePath => {
     config.dependencies = packageJson.gqlDependencies;
   }
 
-  validateModule(config, sourcePath);
+  config = validateModule(config, sourcePath);
   config.sourcePath = sourcePath;
 
   moduleCache.set(sourcePath, config);
