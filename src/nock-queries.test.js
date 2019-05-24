@@ -71,7 +71,8 @@ describe('Server --nock', () => {
 
     nock.enableNetConnect();
 
-    expect(res2.text).toBe(res1.text);
+    expect(res1.text).toMatch(/{"data":{"someObject":{"id":"one","state":"occupied","creationDate":".*"}}}/);
+    expect(res2.text).toMatch(/{"data":{"someObject":{"id":"one","state":"occupied","creationDate":".*"}}}/);
   });
 
   it('can replay recorded requests as persisted nock scopes', async () => {
@@ -126,7 +127,8 @@ describe('Server --nock', () => {
 
     nock.enableNetConnect();
 
-    expect(res2.text).toBe(res1.text);
+    expect(res1.text).toMatch(/{"data":{"someObject":{"id":"two","state":"occupied","creationDate":".*"}}}/);
+    expect(res2.text).toMatch(/{"data":{"someObject":{"id":"two","state":"occupied","creationDate":".*"}}}/);
   });
 
   it('can replay recorded gql requests as persisted nock scopes', async () => {
@@ -183,8 +185,8 @@ describe('Server --nock', () => {
 
     nock.enableNetConnect();
 
-    console.log('RESPONSE TEST', res1.text);
-    expect(res2.text).toBe(res1.text);
+    expect(res1.text).toMatch(/{"data":{"article":{"headlinePlain":"remote headline","state":"checkedin","creationDate":".*"}}}/);
+    expect(res2.text).toMatch(/{"data":{"article":{"headlinePlain":"remote headline","state":"checkedin","creationDate":".*"}}}/);
   });
 
   it('can record to a custom path (relative to process.cwd)', async () => {
