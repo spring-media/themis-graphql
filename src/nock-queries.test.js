@@ -183,6 +183,7 @@ describe('Server --nock', () => {
 
     nock.enableNetConnect();
 
+    console.log('RESPONSE TEST', res1.text);
     expect(res2.text).toBe(res1.text);
   });
 
