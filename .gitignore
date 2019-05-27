@@ -53,3 +53,4 @@ tmp
 .npmrc
 _book
 demo_modules
+*.log

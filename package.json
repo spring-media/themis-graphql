@@ -71,6 +71,6 @@
   },
   "homepage": "https://github.com/spring-media/themis-graphql#readme",
   "publishConfig": {
-    "registry": "https://spring.jfrog.io/spring/api/npm/npm-local-red/"
+    "registry": "https://spring.jfrog.io/spring/api/npm/npm-red/"
   }
 }
