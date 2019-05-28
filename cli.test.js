@@ -175,10 +175,10 @@ describe('Subscriptions', () => {
       '--subscriptionsPath',
       '/custom/ws/path',
     ], {
-      PORT: 54302,
+      PORT: 54305,
     });
 
-    const client = createClient({ port: 54302, subPath: '/custom/ws/path' });
+    const client = createClient({ port: 54305, subPath: '/custom/ws/path' });
 
     const subscription = client.subscribe({
       query: gql`subscription {
@@ -209,10 +209,10 @@ describe('Subscriptions', () => {
       '-c',
       path.resolve(__dirname, 'test/data/config_file/on-connect.config.js'),
     ], {
-      PORT: 54304,
+      PORT: 54306,
     });
 
-    const client = createClient({ port: 54304 });
+    const client = createClient({ port: 54306 });
 
     const subscription = client.subscribe({
       query: gql`subscription {
