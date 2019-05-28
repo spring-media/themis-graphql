@@ -1,12 +1,12 @@
 const { visit, Kind } = require('graphql');
 
 class SelectionFilter {
-	constructor(path, wrapper) {
+	constructor (path, wrapper) {
 		this.path = path;
 		this.wrapper = wrapper;
 	}
 
-	transformRequest(originalRequest) {
+	transformRequest (originalRequest) {
 		const document = originalRequest.document;
 		const fieldPath = [];
 		const ourPath = JSON.stringify(this.path);
