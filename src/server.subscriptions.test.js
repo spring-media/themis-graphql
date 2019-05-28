@@ -13,10 +13,10 @@ describe('Server', () => {
       await spawnCLI([
         path.resolve(__dirname, '../test/data/subscription'),
       ], {
-        PORT: 54301,
+        PORT: 54303,
       });
 
-      const client = createClient({ port: 54301 });
+      const client = createClient({ port: 54303 });
 
       client.subscribe({
         query: gql`subscription {
@@ -80,10 +80,10 @@ describe('Server', () => {
         path.resolve(__dirname, '../test/data/subscription2'),
         path.resolve(__dirname, '../test/data/subscription3'),
       ], {
-        PORT: 54301,
+        PORT: 54304,
       });
 
-      const client = createClient({ port: 54301 });
+      const client = createClient({ port: 54304 });
 
       client.subscribe({
         query: gql`subscription {
