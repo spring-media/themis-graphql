@@ -575,4 +575,23 @@ describe('Schema', () => {
       expect(res.body).toMatchObject(expect.objectContaining(expected));
     });
   });
+
+  describe('Strategies', () => {
+    it('can use a custom merge strategy', async () => {
+      const result = await initServer({
+        mergeStrategy: 'all-local',
+        modulePaths: [
+          path.resolve(__dirname, '../test/data/strategy-simple-base'),
+          path.resolve(__dirname, '../test/data/strategy-simple-article'),
+        ],
+      });
+
+      expect(logger.error).not.toHaveBeenCalled();
+      expect(result).toBeInstanceOf(Object);
+      expect(result).toHaveProperty('server');
+      expect(result).toHaveProperty('graphQLPath');
+      expect(result).toHaveProperty('startup');
+      expect(result).toHaveProperty('shutdown');
+    });
+  });
 });
