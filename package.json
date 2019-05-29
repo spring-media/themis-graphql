@@ -69,8 +69,5 @@
   "bugs": {
     "url": "https://github.com/spring-media/themis-graphql/issues"
   },
-  "homepage": "https://github.com/spring-media/themis-graphql#readme",
-  "publishConfig": {
-    "registry": "https://spring.jfrog.io/spring/api/npm/npm-red/"
-  }
+  "homepage": "https://github.com/spring-media/themis-graphql#readme"
 }
