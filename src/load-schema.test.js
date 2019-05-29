@@ -578,6 +578,7 @@ describe('Schema', () => {
 
   describe('Strategies', () => {
     it('can use a custom merge strategy', async () => {
+      logger.error.mockReset();
       const result = await initServer({
         mergeStrategy: 'all-local',
         modulePaths: [
