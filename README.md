@@ -1,6 +1,8 @@
 # Themis
 GraphQL Data Aggregation CLI
 
+[![Build Status](https://travis-ci.org/spring-media/themis-graphql.svg?branch=master)](https://travis-ci.org/spring-media/themis-graphql)
+
 [Read the Docs](docs/getting-started.md) or checkout the repository, goto `./website` and run `yarn && yarn start`.
 
 
