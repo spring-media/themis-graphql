@@ -25,6 +25,9 @@ class HomeSplash extends React.Component {
     const ProjectTitle = () => (
       <h2 className="projectTitle">
         {siteConfig.title}
+        <div>
+          <a href="https://badge.fury.io/js/themis-graphql"><img src="https://badge.fury.io/js/themis-graphql.svg" alt="npm version" height="18" /></a>
+        </div>
         <small>{siteConfig.tagline} Built with <a href="https://www.apollographql.com/docs/apollo-server/">Apollo Server.</a></small>
       </h2>
     );
@@ -67,7 +70,7 @@ class Index extends React.Component {
       <div>
         <HomeSplash siteConfig={siteConfig} language={language} />
         <div className="mainContainer">
-          
+
         </div>
       </div>
     );

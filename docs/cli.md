@@ -12,6 +12,9 @@ Themis takes a space separated set of paths to modules and options.
 ### `-c, --config [configPath]`
 Load a [config file](./config-file).
 
+### `--strategy [mergeStrategy]`
+Path to a node module exposing a merge strategy. Read more about merge strategies [here](./merge-strategy).
+
 ### `-b, --build`
 Fetch the introspection schemas for remote modules and store the locally with the module. Locally stored schemas will then be used at startup to derive the remote executable schema from.
 

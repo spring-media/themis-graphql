@@ -2,6 +2,7 @@
 GraphQL Data Aggregation CLI
 
 [![Build Status](https://travis-ci.org/spring-media/themis-graphql.svg?branch=master)](https://travis-ci.org/spring-media/themis-graphql)
+[![npm version](https://badge.fury.io/js/themis-graphql.svg)](https://badge.fury.io/js/themis-graphql)
 
 [Documentation / API Reference](https://spring-media.github.io/themis-graphql/).
 

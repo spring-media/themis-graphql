@@ -37,6 +37,10 @@
         "title": "Installation",
         "sidebar_label": "Installation"
       },
+      "merge-strategy": {
+        "title": "Merge Strategy",
+        "sidebar_label": "Merge Strategy"
+      },
       "module": {
         "title": "Module",
         "sidebar_label": "Module"
