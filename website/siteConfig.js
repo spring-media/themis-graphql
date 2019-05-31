@@ -1,8 +1,8 @@
 const siteConfig = {
   title: 'Themis',
   tagline: 'A CLI to support a modular GraphQL server.',
-  url: '#give-me-url',
-  baseUrl: '/',
+  url: 'https://spring-media.github.io',
+  baseUrl: '/themis-graphql/',
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
   //   baseUrl: '/test-site/',

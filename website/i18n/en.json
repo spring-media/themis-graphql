@@ -21,6 +21,10 @@
         "title": "Create a Module",
         "sidebar_label": "Create a Module"
       },
+      "guides/design": {
+        "title": "Design Guide",
+        "sidebar_label": "Design"
+      },
       "guides/nocks": {
         "title": "Nocks Guide",
         "sidebar_label": "Nocks"
