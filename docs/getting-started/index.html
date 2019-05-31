@@ -1,0 +1,120 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Create a Module · Themis</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;Themis is a CLI Layer on top of &lt;a href=&quot;https://github.com/apollographql/apollo-server&quot;&gt;Apollo Server&lt;/a&gt; and &lt;a href=&quot;https://github.com/apollographql/graphql-tools&quot;&gt;GraphQL Tools&lt;/a&gt;, to encapsulate subsets of a Graph into modules. Modules can also be NPM packages.&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Create a Module · Themis"/><meta property="og:type" content="website"/><meta property="og:url" content="https://spring-media.github.io/themis-graphql/"/><meta property="og:description" content="&lt;p&gt;Themis is a CLI Layer on top of &lt;a href=&quot;https://github.com/apollographql/apollo-server&quot;&gt;Apollo Server&lt;/a&gt; and &lt;a href=&quot;https://github.com/apollographql/graphql-tools&quot;&gt;GraphQL Tools&lt;/a&gt;, to encapsulate subsets of a Graph into modules. Modules can also be NPM packages.&lt;/p&gt;
+"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/themis-graphql/img/GraphQL_Logo.svg"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="/css/code-block-buttons.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/js/code-block-buttons.js"></script><script src="/themis-graphql/js/scrollSpy.js"></script><link rel="stylesheet" href="/themis-graphql/css/main.css"/><script src="/themis-graphql/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/themis-graphql/"><img class="logo" src="/themis-graphql/img/GraphQL_Logo.svg" alt="Themis"/><h2 class="headerTitleWithLogo">Themis</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/themis-graphql/docs/what" target="_self">Docs</a></li><li class=""><a href="/themis-graphql/roadmap" target="_self">Roadmap</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Getting Started</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Getting Started</h3><ul class=""><li class="navListItem"><a class="navItem" href="/themis-graphql/docs/what">What is this about?</a></li><li class="navListItem"><a class="navItem" href="/themis-graphql/docs/installation">Installation</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/themis-graphql/docs/getting-started">Create a Module</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Guides</h3><ul class=""><li class="navListItem"><a class="navItem" href="/themis-graphql/docs/guides/remote-module-guide">Remote Module</a></li><li class="navListItem"><a class="navItem" href="/themis-graphql/docs/guides/nocks">Nocks</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">API</h3><ul class=""><li class="navListItem"><a class="navItem" href="/themis-graphql/docs/module">Module</a></li><li class="navListItem"><a class="navItem" href="/themis-graphql/docs/remote-module">Remote Module</a></li><li class="navListItem"><a class="navItem" href="/themis-graphql/docs/transforms">Transforms</a></li><li class="navListItem"><a class="navItem" href="/themis-graphql/docs/cli">CLI</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Configuration</h3><ul class=""><li class="navListItem"><a class="navItem" href="/themis-graphql/docs/config-file">Configuration File</a></li><li class="navListItem"><a class="navItem" href="/themis-graphql/docs/env">ENV</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Create a Module</h1></header><article><div><span><p>Themis is a CLI Layer on top of <a href="https://github.com/apollographql/apollo-server">Apollo Server</a> and <a href="https://github.com/apollographql/graphql-tools">GraphQL Tools</a>, to encapsulate subsets of a Graph into modules. Modules can also be NPM packages.</p>
+<p><em>Note:</em> To run the examples you can install themis globally <code>yarn global add themis-graphql</code>, or create a new package in an empty folder with <code>yarn init --yes</code>, install themis locally <code>yarn add themis-graphql</code> and use it in the shell examples like <code>./node_modules/.bin/themis --help</code>.</p>
+<p><a href="https://github.com/spring-media/themis-graphql/blob/master/examples">All examples</a> can be found in the repository as well.</p>
+<h2><a class="anchor" aria-hidden="true" id="creating-a-graphql-module"></a><a href="#creating-a-graphql-module" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Creating a GraphQL Module</h2>
+<p>A <code>module</code> in its most basic form consists of a GraphQL schema (Type Definition) and resolvers. If you don't know what a schema and resolvers are, checkout <a href="https://graphql.org/learn/">graphql.org/learn</a>. For convenience, Themis exposes the packages it uses, like <code>graphql-tag</code>, <code>graphql-tools</code> and <code>apollo-server</code>, plus other convenvient helpers for testing.</p>
+<p>Create a file called <code>hello.js</code> with the following contents:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> { gql } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'themis-graphql'</span>);
+
+<span class="hljs-built_in">module</span>.exports = {
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'hello'</span>,
+  <span class="hljs-attr">typeDefs</span>: gql<span class="hljs-string">`
+    type Query {
+      hello: String
+    }
+  `</span>,
+  <span class="hljs-attr">resolvers</span>: {
+    <span class="hljs-attr">Query</span>: {
+      <span class="hljs-attr">hello</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-string">'world'</span>
+    }
+  }
+}
+</code></pre>
+<p>You can point themis to a file/directory containing a <code>module</code> and it will start up an apollo-graphql server:</p>
+<pre><code class="hljs css language-bash">themis hello.js
+</code></pre>
+<p>By default, Themis will start a server at port <code>8484</code> and mount the server at the path <code>/api/graphql</code>. Goto <code>localhost:8484/api/graphql</code> to open GraphQL Playground. You can create a query on the left:</p>
+<pre><code class="hljs css language-text">{
+  hello
+}
+</code></pre>
+<p><em>Mutations</em> and <em>Subscriptions</em> work as well.</p>
+<h2><a class="anchor" aria-hidden="true" id="combining-modules"></a><a href="#combining-modules" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Combining Modules</h2>
+<p>Create a second file called <code>bye.js</code> with the following contents:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> { gql } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'themis-graphql'</span>);
+
+<span class="hljs-built_in">module</span>.exports = {
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'bye'</span>,
+  <span class="hljs-attr">typeDefs</span>: gql<span class="hljs-string">`
+    type Query {
+      bye: String
+    }
+  `</span>,
+  <span class="hljs-attr">resolvers</span>: {
+    <span class="hljs-attr">Query</span>: {
+      <span class="hljs-attr">bye</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-string">'world'</span>
+    }
+  }
+}
+</code></pre>
+<p>You can point themis to multiple modules:</p>
+<pre><code class="hljs css language-bash">themis hello.js bye.js
+</code></pre>
+<p>In Playground you should now be able to query:</p>
+<pre><code class="hljs css language-text">{
+  hello
+  bye
+}
+</code></pre>
+<p>If you have a bunch of modules, you can also specify which ones to run <a href="./config-file">via a config file</a>. You can find more advanced examples with <a href="./remote-modules">remote modules in its API docs</a>.</p>
+<h2><a class="anchor" aria-hidden="true" id="no-lock-in"></a><a href="#no-lock-in" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>No lock-in</h2>
+<p>If the need for deeper server customisation may arise, or an important feature is missing, Themis GraphQL modules can be used manually with Apollo Server and GraphQL Tools at any time. You just have to set up an Apollo Server and stitch them yourself. We'd be happy to integrate support for advanced use cases though.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/themis-graphql/docs/installation"><span class="arrow-prev">← </span><span>Installation</span></a><a class="docs-next button" href="/themis-graphql/docs/guides/remote-module-guide"><span>Remote Module</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#creating-a-graphql-module">Creating a GraphQL Module</a></li><li><a href="#combining-modules">Combining Modules</a></li><li><a href="#no-lock-in">No lock-in</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/themis-graphql/" class="nav-home"></a><div><h5>Docs</h5><a href="/themis-graphql/docs/getting-started">Getting Started</a><a href="/themis-graphql/docs/module">Module API Reference</a></div></section><section class="copyright">Copyright © 2019 Spring-Media</section></footer></div></body></html>

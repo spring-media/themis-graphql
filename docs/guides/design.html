@@ -1,0 +1,185 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Design Guide · Themis</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;h2&gt;&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; id=&quot;domain-driven-apis-naming-and-semantics&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#domain-driven-apis-naming-and-semantics&quot; aria-hidden=&quot;true&quot; class=&quot;hash-link&quot;&gt;&lt;svg class=&quot;hash-link-icon&quot; aria-hidden=&quot;true&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Domain-Driven APIs - Naming and Semantics&lt;/h2&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Design Guide · Themis"/><meta property="og:type" content="website"/><meta property="og:url" content="https://spring-media.github.io/themis-graphql/"/><meta property="og:description" content="&lt;h2&gt;&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; id=&quot;domain-driven-apis-naming-and-semantics&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#domain-driven-apis-naming-and-semantics&quot; aria-hidden=&quot;true&quot; class=&quot;hash-link&quot;&gt;&lt;svg class=&quot;hash-link-icon&quot; aria-hidden=&quot;true&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Domain-Driven APIs - Naming and Semantics&lt;/h2&gt;
+"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/themis-graphql/img/GraphQL_Logo.svg"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="/css/code-block-buttons.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/js/code-block-buttons.js"></script><script src="/themis-graphql/js/scrollSpy.js"></script><link rel="stylesheet" href="/themis-graphql/css/main.css"/><script src="/themis-graphql/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/themis-graphql/"><img class="logo" src="/themis-graphql/img/GraphQL_Logo.svg" alt="Themis"/><h2 class="headerTitleWithLogo">Themis</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/themis-graphql/docs/what" target="_self">Docs</a></li><li class=""><a href="/themis-graphql/roadmap" target="_self">Roadmap</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Design Guide</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="domain-driven-apis-naming-and-semantics"></a><a href="#domain-driven-apis-naming-and-semantics" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Domain-Driven APIs - Naming and Semantics</h2>
+<ol>
+<li>Design your API around the business domain, not the implementation, user-interface, or legacy APIs. Never expose implementation details in your API design. Always start with a high-level view of the objects and their relationships before you deal with specific fields.</li>
+<li>The API should provide business logic, not just data. Complex calculations should be done on the server, in one place, not on the client, in many places.</li>
+<li>Provide the raw data too, even when there’s business logic around it.</li>
+</ol>
+<h2><a class="anchor" aria-hidden="true" id="business-objects-vs-crud"></a><a href="#business-objects-vs-crud" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Business Objects vs. CRUD</h2>
+<ol>
+<li>Major business-object types should always implement Node with an ID! field, which allows the client to accurately and efficiently manage local caches and other tricks.</li>
+</ol>
+<pre><code class="hljs css language-graphql">interface Node {
+  id: ID!
+}
+<span class="hljs-built_in">
+type </span>Article implements Node {
+  id: ID!
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="relations"></a><a href="#relations" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Relations</h2>
+<ol>
+<li>Prefer one atomic operation per mutation! When writing separate mutations for relationships, consider whether it would be useful for the mutations to operate on multiple elements at once.</li>
+<li>Mutating relationships is really complicated and not easily summarized into a snappy rule! ;-)</li>
+</ol>
+<h2><a class="anchor" aria-hidden="true" id="pagination"></a><a href="#pagination" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Pagination</h2>
+<ol>
+<li>Always check whether list fields should be paginated or not. See:</li>
+</ol>
+<ul>
+<li><a href="https://www.apollographql.com/docs/react/features/pagination.html">Apollo Pagination Tutorial</a></li>
+<li><a href="https://facebook.github.io/relay/graphql/connections.htm">Relay Cursor Pagination Specification</a></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="fields"></a><a href="#fields" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Fields</h2>
+<ol>
+<li>Group closely-related fields together into subobjects.</li>
+</ol>
+<p><strong>Bad</strong></p>
+<pre><code class="hljs css language-graphql"><span class="hljs-keyword">type</span> <span class="hljs-type">Auth</span> {
+  isAuthenticated: <span class="hljs-type">Boolean</span>
+  scopes: [<span class="hljs-type">String</span>]!
+  roles: [<span class="hljs-type">String</span>]
+  userAccountName: <span class="hljs-type">String</span>
+  userEmail: <span class="hljs-type">String</span>
+  userName: <span class="hljs-type">String</span>
+}
+</code></pre>
+<p><strong>Good</strong></p>
+<pre><code class="hljs css language-graphql"><span class="hljs-keyword">type</span> <span class="hljs-type">Auth</span> {
+  isAuthenticated: <span class="hljs-type">Boolean</span>
+  scopes: [<span class="hljs-type">String</span>]!
+  user: <span class="hljs-type">AuthUser</span>
+}
+
+<span class="hljs-keyword">type</span> <span class="hljs-type">AuthUser</span> {
+  accountName: <span class="hljs-type">String</span>
+  email: <span class="hljs-type">EmailAddress</span>
+  username: <span class="hljs-type">String</span>
+  roles: [<span class="hljs-type">String</span>]
+}
+</code></pre>
+<ol start="2">
+<li>Always use object references instead of ID fields.</li>
+</ol>
+<p><strong>Bad</strong></p>
+<pre><code class="hljs css language-graphql">type Auth {
+  isAuthenticated: Boolean
+  scopes: [String]!
+  userId: ID
+}
+<span class="hljs-built_in">
+type </span>Query {
+  user: Auth
+}
+<span class="hljs-built_in">
+type </span>Mutation {
+  login: Auth
+}
+</code></pre>
+<p><strong>Good</strong></p>
+<pre><code class="hljs css language-graphql"><span class="hljs-keyword">type</span> <span class="hljs-type">Auth</span> {
+  isAuthenticated: <span class="hljs-type">Boolean</span>
+  scopes: [<span class="hljs-type">String</span>]!
+  user: <span class="hljs-type">AuthUser</span>
+}
+</code></pre>
+<ol start="3">
+<li>Choose field names based on what makes sense, not based on the implementation or what the field is called in legacy APIs.</li>
+</ol>
+<p><strong>Bad</strong></p>
+<pre><code class="hljs css language-graphql"><span class="hljs-selector-tag">type</span> <span class="hljs-selector-tag">Article</span> {
+  <span class="hljs-attribute">cmsId</span>: ID
+}
+</code></pre>
+<p><strong>Good</strong></p>
+<pre><code class="hljs css language-graphql"><span class="hljs-selector-tag">type</span> <span class="hljs-selector-tag">Article</span> {
+  <span class="hljs-attribute">id</span>: ID!
+}
+</code></pre>
+<ol start="4">
+<li>Use custom scalar types when you’re exposing something with specific semantic value. see <a href="https://github.com/okgrow/graphql-scalars">more GraphQL scalars</a></li>
+</ol>
+<p><strong>Bad</strong></p>
+<pre><code class="hljs css language-graphql"><span class="hljs-selector-tag">type</span> <span class="hljs-selector-tag">AuthUser</span> {
+  <span class="hljs-attribute">email</span>: String
+}
+</code></pre>
+<p><strong>Good</strong></p>
+<pre><code class="hljs css language-graphql"><span class="hljs-selector-tag">type</span> <span class="hljs-selector-tag">AuthUser</span> {
+  <span class="hljs-attribute">email</span>: EmailAddress
+}
+</code></pre>
+<ol start="5">
+<li>Use enums for fields which can only take a specific set of values.</li>
+</ol>
+<pre><code class="hljs css language-graphql"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">SortOrder</span> {</span>
+  CREATION_DATE
+  MODIFICATION_DATE
+  RELEVANCE
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="mutations"></a><a href="#mutations" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Mutations</h2>
+<ol>
+<li>Write separate mutations for separate logical actions on a resource.</li>
+</ol>
+<p><strong>Bad</strong></p>
+<pre><code class="hljs css language-graphql"><span class="hljs-selector-tag">mutation</span> <span class="hljs-selector-tag">setConfiguration</span>(<span class="hljs-selector-tag">input</span>: <span class="hljs-selector-tag">SetConfigurationInput</span>!): <span class="hljs-selector-tag">SetConfigurationResult</span>
+
+<span class="hljs-selector-tag">input</span> <span class="hljs-selector-tag">SetConfigurationInput</span> {
+  <span class="hljs-attribute">id</span>: ID
+  value: String
+}
+</code></pre>
+<p><strong>Good</strong></p>
+<pre><code class="hljs css language-graphql"><span class="hljs-selector-tag">mutation</span> <span class="hljs-selector-tag">configurationSet</span>(<span class="hljs-selector-tag">input</span>: <span class="hljs-selector-tag">SetConfigurationInput</span>!): <span class="hljs-selector-tag">SetConfigurationResult</span>!
+
+<span class="hljs-selector-tag">input</span> <span class="hljs-selector-tag">SetConfigurationInput</span> {
+  <span class="hljs-attribute">id</span>: ID!
+  value: Configuration!
+}
+
+<span class="hljs-selector-tag">mutation</span> <span class="hljs-selector-tag">configurationUnset</span>(<span class="hljs-selector-tag">input</span>: <span class="hljs-selector-tag">UnsetConfigurationInput</span>!): <span class="hljs-selector-tag">UnsetConfigurationResult</span>!
+
+<span class="hljs-selector-tag">input</span> <span class="hljs-selector-tag">UnsetConfigurationInput</span> {
+  <span class="hljs-attribute">id</span>: ID!
+}
+</code></pre>
+<ol start="2">
+<li>Prefix mutation names with the object they are mutating for alphabetical grouping (e.g. use configurationSet instead of setConfiguration).</li>
+</ol>
+<p><strong>Bad</strong></p>
+<pre><code class="hljs css language-graphql">mutation setConfiguration(input: SetConfigurationInput!): SetConfigurationResult!
+
+</code></pre>
+<p><strong>Good</strong></p>
+<pre><code class="hljs css language-graphql">mutation configurationSet(input: SetConfigurationInput!): SetConfigurationResult!
+</code></pre>
+<ol start="3">
+<li><p>Use weaker types for inputs (e.g. String instead of Email) when the format is unambiguous and client-side validation is complex. Use stronger types for inputs (e.g. DateTime instead of String) when the format may be ambiguous and client-side validation is simple.</p></li>
+<li><p>Mutations should provide user/business-level errors via a <code>error: Failure</code> field on the mutation payload. The top-level query errors entry is reserved for client and server-level errors. Most payload fields for a mutation should be nullable, unless there is really a value to return in every possible error case.</p></li>
+</ol>
+<pre><code class="hljs css language-graphql">type SetConfigurationResult {
+  result: Configuration
+  error: Failure
+}
+<span class="hljs-built_in">
+type </span>Failure {
+  message: String
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="versioning"></a><a href="#versioning" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Versioning</h2>
+<ol>
+<li>It’s easier to add fields than to remove them.</li>
+<li>Use <code>@deprecated(reason: &quot;Deprecated! Use field xyz instead of abc.&quot;)</code> directive to mark field as deprecated.</li>
+</ol>
+<pre><code class="hljs css language-graphql"><span class="hljs-selector-tag">type</span> <span class="hljs-selector-tag">Article</span> {
+  <span class="hljs-attribute">id</span>: ID!
+  <span class="hljs-attribute">cmsId</span>: ID <span class="hljs-variable">@deprecated</span>(<span class="hljs-attribute">reason</span>: <span class="hljs-string">"Deprecated! Use field id instead of cmsId."</span>)
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="conclusion"></a><a href="#conclusion" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Conclusion</h2>
+<p>Hopefully by this point you have a solid idea of how to design a good GraphQL API. Once you've designed an API you're happy with, it's time to implement it!</p>
+<h2><a class="anchor" aria-hidden="true" id="credits"></a><a href="#credits" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Credits</h2>
+<p>Many of this recommendations and rules were inspired and created by Shopify <a href="https://github.com/Shopify/graphql-design-tutorial/">GraphQL Design Tutorial</a>. Thank you for sharing.</p>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#domain-driven-apis-naming-and-semantics">Domain-Driven APIs - Naming and Semantics</a></li><li><a href="#business-objects-vs-crud">Business Objects vs. CRUD</a></li><li><a href="#relations">Relations</a></li><li><a href="#pagination">Pagination</a></li><li><a href="#fields">Fields</a></li><li><a href="#mutations">Mutations</a></li><li><a href="#versioning">Versioning</a></li><li><a href="#conclusion">Conclusion</a></li><li><a href="#credits">Credits</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/themis-graphql/" class="nav-home"></a><div><h5>Docs</h5><a href="/themis-graphql/docs/getting-started">Getting Started</a><a href="/themis-graphql/docs/module">Module API Reference</a></div></section><section class="copyright">Copyright © 2019 Spring-Media</section></footer></div></body></html>
