@@ -12,5 +12,13 @@ module.exports = {
       article: Article
     }
   `,
-  resolvers: {},
+  resolvers: {
+    Query: {
+      article () {
+        return {
+          title: 'Woop',
+        };
+      },
+    },
+  },
 };

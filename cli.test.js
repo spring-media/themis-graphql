@@ -83,6 +83,38 @@ describe('CLI', () => {
     });
   });
 
+  it('can set a mergeStrategy', async () => {
+    await spawnCLI([
+      './test/data/strategy-simple-article',
+      './test/data/strategy-simple-base',
+      '--strategy',
+      'all-local',
+    ], {
+      PORT: 54328,
+    });
+
+    const query = {
+      query: `query {
+        article {
+          title
+        }
+      }`,
+    };
+
+    const res1 = await request('http://127.0.0.1:54328')
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
+
+    expect(res1.body).toEqual({
+      data: {
+        article: {
+          title: 'Woop',
+        },
+      },
+    });
+  });
+
   it('resolves modules in node_modules', async () => {
     await spawnCLI([
       '-c',

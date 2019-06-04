@@ -72,7 +72,7 @@ if (program.build) {
   runTests();
 } else {
   initServer({
-    mergeStrategy: program.mergeStrategy,
+    mergeStrategy: program.strategy,
     mockMode: program.mock || false,
     nockMode: program.nock,
     nockPath: program.nockPath,
