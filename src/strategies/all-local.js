@@ -39,8 +39,12 @@ module.exports = {
     });
 
     let schema = mergeSchemas({
-      schemas: [ localSchema, ...remoteSchemas /* , ...extendTypes */ ],
-      // resolvers: extendResolvers,
+      schemas: [ localSchema, ...remoteSchemas ],
+      // https://github.com/apollographql/graphql-tools/issues/1033
+      // Specifying resolvers for merge schemas here again fixes the custom enum value issue.
+      // Having the resolvers here again should not be necessary
+      // and should be removed when graphql-tools is fixed.
+      resolvers,
     });
 
     if (filterSubscriptions) {
