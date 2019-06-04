@@ -18,7 +18,7 @@ Tests are mainly written as integration tests and should mainly be written as in
 
 Run `yarn test`.
 
-The test setup mocks all external requests (including remote gql resources like lean), with [jest-nock](https://www.npmjs.com/package/jest-nock).
+The test setup mocks all external requests with [jest-nock](https://www.npmjs.com/package/jest-nock).
 
 
 ---
