@@ -1,7 +1,3 @@
-
-/**
- * Checks if the imported module exports the needed data to stitch and mount it.
- */
 const Joi = require('joi');
 
 const middleware = Joi.alternatives([
@@ -22,6 +18,8 @@ const schema = Joi.object().keys({
     Joi.func(),
     Joi.array().items(Joi.func()),
   ]).default([]),
+  onConnect: Joi.func(),
+  onDisconnect: Joi.func(),
   onStartup: Joi.func().default(() => {}),
   onShutdown: Joi.func().default(() => {}),
 });

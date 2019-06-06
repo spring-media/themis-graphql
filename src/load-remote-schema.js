@@ -103,10 +103,12 @@ const createErrorLogLink = ({ uri, name }) => {
     }
 
     if (networkError) {
+      const errorMessage = createErrorMessageFromHtmlResponse(networkError);
+
       Object.assign(networkError, {
-        message: `[Remote Network Error in "${name} (${uri})"]: ${networkError.message}`,
+        message: `[Remote Network Error in "${name} (${uri})"]: ${errorMessage}`,
       });
-      logger.error(networkError.message);
+      logger.error(errorMessage);
     }
   });
 };
@@ -154,6 +156,17 @@ const loadIntrospectionSchema = async (link, linkContext) => {
 
   return rawSchema;
 };
+
+function createErrorMessageFromHtmlResponse (networkError) {
+  let errorMessage = `statusCode: ${networkError.statusCode}, `;
+
+  if (networkError.bodyText) {
+    // Strip HTML tags and break lines
+    errorMessage += networkError.bodyText.replace(/<(?:.)*?>|\r\n|\n|\r/gm, '');
+  }
+
+  return errorMessage;
+}
 
 module.exports = {
   loadRemoteSchema,

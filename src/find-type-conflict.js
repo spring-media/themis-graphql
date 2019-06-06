@@ -57,11 +57,11 @@ const findTypeConflict = (schemas, {
               }
             });
           }
+        } else {
+          Object.assign(left, {
+            [typeName]: ref,
+          });
         }
-
-        Object.assign(left, {
-          [typeName]: ref,
-        });
       });
 
       return left;

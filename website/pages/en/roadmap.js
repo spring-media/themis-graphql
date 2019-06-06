@@ -6,7 +6,7 @@ class Roadmap extends React.Component {
   render() {
     return (
       <div className="wrapper">
-        <Container 
+        <Container
           className="mainContainer documentContainer postContainer"
         >
           <div className="post">
@@ -16,19 +16,21 @@ class Roadmap extends React.Component {
             <div>
             <h2>v0.3</h2>
             <ul>
+              <li>Merge strategies (default and custom ways to mold modules into one executable schema)</li>
               <li>Persisted Queries</li>
-              <li>Query depth limiting</li>
-              <li>Query complexity/execution cost limiting</li>
-              <li>Subscription transport middlewares</li>
+              <li>Custom Directives (handover to graphql-tools from module)</li>
             </ul>
             <h2>v0.4</h2>
             <ul>
-              <li>--no-extend flag to start modules without their type extensions (no dependency check)</li>
+              <li>Query depth limiting</li>
+              <li>Query complexity/execution cost limiting</li>
+              <li>Subscription transport middlewares</li>
+              <li>(--no-extend flag to start modules without their type extensions (no dependency check))</li>
               <li>Development watch mode for modules</li>
-              <li>Port to Typescript</li>
             </ul>
             <h2>Not Scheduled</h2>
             <ul>
+              <li>Port to Typescript</li>
               <li>Allow global install to detect local themis installations and use the local one.</li>
               <li>Windows Support</li>
             </ul>

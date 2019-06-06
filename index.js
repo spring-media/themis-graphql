@@ -19,6 +19,7 @@ program
   .option('-t, --test', 'Test modules with jest and nock')
   .option('--pretty', 'store remote schema as pretty JSON for scm tracking and comparison')
   .option('-c, --config [configPath]', 'Load configuration from a file (resolved relative to cwd, or absolute)')
+  .option('--strategy [mergeStrategy]', 'Path to a node module exposing a merge strategy')
   .option('-m, --mock', 'Start server in mock mode')
   .option('-n, --nock', 'Start server in nock mode (Load recorded nocks)')
   .option('-r, --record', 'Record external requests with nock (use with --nock)')
@@ -52,6 +53,8 @@ const modulePaths = program.useSubfolders ?
 const {
   middleware,
   context,
+  onConnect,
+  onDisconnect,
   onStartup,
   onShutdown,
   modules,
@@ -69,6 +72,7 @@ if (program.build) {
   runTests();
 } else {
   initServer({
+    mergeStrategy: program.strategy,
     mockMode: program.mock || false,
     nockMode: program.nock,
     nockPath: program.nockPath,
@@ -90,6 +94,8 @@ if (program.build) {
     debug: program.debug || isDev,
     tracing: process.env.GQL_TRACING === 'true',
     engineApiKey: process.env.APOLLO_ENGINE_API_KEY,
+    onConnect,
+    onDisconnect,
     onStartup,
     onShutdown,
     cacheControl: {

@@ -47,7 +47,7 @@ const spawnCLI = (args, {
       const err = data.toString();
 
       if (process.env.LOG_LEVEL === 'debug') {
-        console.log('Spawn:', err);
+        console.error(err);
       }
 
       if (onStdErr) {

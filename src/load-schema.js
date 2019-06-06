@@ -1,25 +1,45 @@
 const { setupModule } = require('./setup-module');
-const {
-  mergeSchemas,
-  FilterRootFields,
-  transformSchema,
-} = require('graphql-tools');
-const { GraphQLSchema } = require('graphql');
 const { insertIfValue } = require('./utils');
-const { findTypeConflict } = require('./find-type-conflict');
+const { loadModule } = require('./load-module');
+const validateStrategy = require('./validate-strategy');
 const logger = require('./logger');
+const path = require('path');
 
-const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscriptions }) => {
+function resolveMergeStrategyPath (strategy) {
+  if (path.isAbsolute(strategy)) {
+    return strategy;
+  }
+  if (/^.\//.test(strategy)) {
+    return path.resolve(process.cwd(), strategy);
+  }
+  return require.resolve(strategy, {
+    paths: [
+      ...require.resolve.paths(strategy),
+      path.resolve(__dirname, 'strategies'),
+    ],
+  });
+}
+
+const loadSchema = async ({
+  mergeStrategy,
+  modulePaths,
+  mockMode,
+  useFileSchema,
+  filterSubscriptions,
+}) => {
   if (modulePaths.length === 0) {
     throw new Error('Need at least one target path with modules.');
   }
 
-  const sources = await Promise.all(modulePaths
-    .map(path => setupModule(path, { mockMode, useFileSchema, filterSubscriptions })));
+  const mergeStrategyPath = resolveMergeStrategyPath(mergeStrategy);
+  const strategy = require(mergeStrategyPath);
 
-  // TODO: Implement namespaces
+  validateStrategy(strategy, mergeStrategyPath);
 
-  const sourceNames = sources.map(config => config.name);
+  const configs = await Promise.all(modulePaths
+    .map(configPath => loadModule(configPath)));
+
+  const sourceNames = configs.map(config => config.name);
   const { duplicates } = sourceNames.reduce((p, name) => {
     if (p.checked.includes(name)) {
       p.duplicates.push(name);
@@ -37,65 +57,59 @@ const loadSchema = async ({ modulePaths, mockMode, useFileSchema, filterSubscrip
       `found duplicates of "${duplicates.join(', ')}"`);
   }
 
-  sources
-    .filter(config => config.dependencies)
-    .forEach(config => config.dependencies
-      .forEach(dependency => {
-        if (!sourceNames.includes(dependency)) {
-          throw new Error(`Cannot load module "${config.name}", ` +
-            `because missing dependency "${dependency}"`);
-        }
-      })
-    );
+  const moduleConfigMap = configs.reduce((prev, curr) => Object.assign(prev, {
+    [curr.name]: curr,
+  }), {});
+
+  const sources = await Promise.all(configs
+    .map(async config => {
+      if (config.dependencies) {
+        config.dependencyConfigs = config.dependencies.reduce((p, c) => ({
+          ...p,
+          [c]: moduleConfigMap[c],
+        }), {});
+      }
+
+      return setupModule(config, { mockMode, useFileSchema });
+    }));
 
   const {
-    schemas,
-    resolvers,
-    accessViaContext,
     context,
+    onConnect,
+    onDisconnect,
     startupFns,
     shutdownFns,
   } = sources
   .reduce((p, c) => ({
-    schemas: [ ...p.schemas, ...insertIfValue(c.schema), ...insertIfValue(c.extendTypes) ],
-    resolvers: [ ...p.resolvers, ...insertIfValue(c.resolvers), ...insertIfValue(c.extendResolvers) ],
     context: [ ...p.context, ...insertIfValue(c.context) ],
-    accessViaContext: { ...p.accessViaContext, ...c.accessViaContext },
+    onConnect: [ ...p.onConnect, ...insertIfValue(c.onConnect) ],
+    onDisconnect: [ ...p.onDisconnect, ...insertIfValue(c.onDisconnect) ],
     startupFns: [ ...p.startupFns, ...insertIfValue(c.onStartup) ],
     shutdownFns: [ ...p.shutdownFns, ...insertIfValue(c.onShutdown) ],
   }), {
-    schemas: [],
-    resolvers: [],
     context: [],
-    accessViaContext: {},
+    onConnect: [],
+    onDisconnect: [],
     startupFns: [],
     shutdownFns: [],
   });
 
-  findTypeConflict(schemas.filter(maybeSchema => (maybeSchema instanceof GraphQLSchema)), {
-    ignoreTypeCheck: [ 'Query', 'ID', 'Int', 'String', 'Boolean', 'JSON' ],
-    onTypeConflict: (left, right, info) => {
-      logger.warn(`Type Collision for "${left.name}" from "${info.left.schema.moduleName}" ` +
-        `to "${info.right.schema.moduleName}".`);
-    },
-    onFieldConflict: (fieldName, left, right, info) => {
-      logger.warn(`Field Collision in "${info.left.type.name}.${fieldName}" ` +
-        `from "${info.left.schema.moduleName}" to "${info.right.schema.moduleName}".`);
-    },
+  const { schema, context: mergeContext = [] } = strategy.merge(sources, {
+    filterSubscriptions,
+    mockMode,
+    logger,
   });
 
-  let schema = mergeSchemas({
-    schemas,
-    resolvers,
-  });
+  const combinedContext = context.concat(mergeContext);
 
-  if (filterSubscriptions) {
-    schema = transformSchema(schema, [
-      new FilterRootFields(op => op !== 'Subscription'),
-    ]);
-  }
-
-  return { schema, accessViaContext, context, startupFns, shutdownFns };
+  return {
+    schema,
+    context: combinedContext,
+    onConnect,
+    onDisconnect,
+    startupFns,
+    shutdownFns,
+  };
 };
 
 module.exports = {

@@ -1,2 +1,10 @@
 Jenkinsfile
 helm
+node_modules
+.vs
+website
+examples
+__query_nocks__
+coverage
+_book
+.env

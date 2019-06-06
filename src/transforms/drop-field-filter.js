@@ -1,11 +1,11 @@
 const { visit, Kind } = require('graphql');
 
 class DropFieldFilter {
-	constructor(path) {
+	constructor (path) {
 		this.path = path;
 	}
 
-	transformRequest(originalRequest) {
+	transformRequest (originalRequest) {
 		const document = originalRequest.document;
 		const fieldPath = [];
 		const field = this.path.pop();
@@ -20,8 +20,8 @@ class DropFieldFilter {
 							selectionSet: {
 								...node.selectionSet,
 								selections: node.selectionSet.selections
-									.filter((selection) => (selection.name.value !== field))
-							}
+									.filter(selection => (selection.name.value !== field)),
+							},
 						};
 					}
 					return node;

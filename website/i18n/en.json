@@ -21,6 +21,10 @@
         "title": "Create a Module",
         "sidebar_label": "Create a Module"
       },
+      "guides/design": {
+        "title": "Design Guide",
+        "sidebar_label": "Design"
+      },
       "guides/nocks": {
         "title": "Nocks Guide",
         "sidebar_label": "Nocks"
@@ -32,6 +36,10 @@
       "installation": {
         "title": "Installation",
         "sidebar_label": "Installation"
+      },
+      "merge-strategy": {
+        "title": "Merge Strategy",
+        "sidebar_label": "Merge Strategy"
       },
       "module": {
         "title": "Module",

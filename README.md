@@ -1,18 +1,24 @@
 # Themis
 GraphQL Data Aggregation CLI
 
-[Read the Docs](docs/getting-started.md) or checkout the repository, goto `./website` and run `yarn && yarn start`.
+[![Build Status](https://travis-ci.org/spring-media/themis-graphql.svg?branch=master)](https://travis-ci.org/spring-media/themis-graphql)
+[![npm version](https://badge.fury.io/js/themis-graphql.svg)](https://badge.fury.io/js/themis-graphql)
+
+[Documentation / API Reference](https://spring-media.github.io/themis-graphql/).
 
 
 # Development Setup
-Run `yarn install`.
+Run `yarn`.
+
+# Edit Docs
+Checkout the repository, goto `./website` and run `yarn && yarn start`
 
 # Testing
 Tests are mainly written as integration tests and should mainly be written as integration tests.
 
 Run `yarn test`.
 
-The test setup mocks all external requests (including remote gql resources like lean), with [jest-nock](https://www.npmjs.com/package/jest-nock).
+The test setup mocks all external requests with [jest-nock](https://www.npmjs.com/package/jest-nock).
 
 
 ---

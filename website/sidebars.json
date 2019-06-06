@@ -14,6 +14,7 @@
       "module",
       "remote-module",
       "transforms",
+      "merge-strategy",
       "cli"
     ],
     "Configuration": [

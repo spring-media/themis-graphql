@@ -1,8 +1,8 @@
 const siteConfig = {
   title: 'Themis',
   tagline: 'A CLI to support a modular GraphQL server.',
-  url: '#give-me-url', 
-  baseUrl: '/', 
+  url: 'https://spring-media.github.io',
+  baseUrl: '/themis-graphql/',
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
   //   baseUrl: '/test-site/',
@@ -10,11 +10,11 @@ const siteConfig = {
   // Used for publishing and more
   projectName: 'themis-graphql',
   organizationName: 'spring-media',
-  
+
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'what', label: 'Docs'},
-    {page: 'roadmap', label: 'Roadmap'},
+    { doc: 'what', label: 'Docs' },
+    { page: 'roadmap', label: 'Roadmap' },
   ],
 
   /* path to images for header/footer */
@@ -47,7 +47,7 @@ const siteConfig = {
   onPageNav: 'separate',
   // No .html extensions for paths.
   cleanUrl: true,
-  
+
   // Show documentation's last contributor's name.
   // enableUpdateBy: true,
 

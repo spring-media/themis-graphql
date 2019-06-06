@@ -10,13 +10,16 @@ const schema = Joi.alternatives().try([
   Joi.object().keys({
     name: Joi.string().packageName().required(),
     namespace: Joi.string(),
-    typeDefs: Joi.object(),
-    extendTypes: Joi.object(),
-    resolvers: Joi.object(),
-    extendResolvers: Joi.object(),
+    typeDefs: Joi.object(), // TODO: Allow array of typeDefs (test covered)
+    importTypes: Joi.object(),
+    extendTypes: Joi.object(), // TODO: Allow array (test covered)
+    resolvers: Joi.object(), // TODO: Allow array (test covered)
+    extendResolvers: Joi.object(), // TODO: Allow array (test covered)
     mocks: Joi.object(),
     context: Joi.func(),
-    mount: Joi.bool(),
+    onConnect: Joi.func(),
+    onDisconnect: Joi.func(),
+    mount: Joi.bool().default(true),
     transforms: Joi.array(),
     dependencies: Joi.array().items(Joi.string()),
     onStartup: Joi.func(),
@@ -25,7 +28,7 @@ const schema = Joi.alternatives().try([
   Joi.object().keys({
     name: Joi.string().packageName().required(),
     namespace: Joi.string(),
-    mount: Joi.bool(),
+    mount: Joi.bool().default(true),
     mocks: Joi.object(),
     context: Joi.func(),
     remote: Joi.object().keys({
@@ -41,10 +44,12 @@ const schema = Joi.alternatives().try([
 ]);
 
 module.exports = function validateModule (source, sourcePath) {
-  const { error } = Joi.validate(source, schema);
+  const { error, value } = Joi.validate(source, schema);
 
   if (error) {
     error.message = `${error.message} at ${sourcePath}`;
     throw new Error(error);
   }
+
+  return value;
 };

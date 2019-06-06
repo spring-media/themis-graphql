@@ -1,6 +1,6 @@
 const { initServer } = require('./server');
 const { buildModule } = require('./build-module');
-const { setupModule } = require('./setup-module');
+const { setupModule, clearModuleCache } = require('./setup-module');
 const { loadFileQuery } = require('./load-query');
 const { loadFileConfig } = require('./load-file-config');
 const SelectionFilter = require('./transforms/selection-filter');
@@ -15,6 +15,7 @@ module.exports = {
   initServer,
   buildModule,
   setupModule,
+  clearModuleCache,
   graphql,
   tools,
   supertest,

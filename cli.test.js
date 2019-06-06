@@ -83,6 +83,38 @@ describe('CLI', () => {
     });
   });
 
+  it('can set a mergeStrategy', async () => {
+    await spawnCLI([
+      './test/data/strategy-simple-article',
+      './test/data/strategy-simple-base',
+      '--strategy',
+      'all-local',
+    ], {
+      PORT: 54328,
+    });
+
+    const query = {
+      query: `query {
+        article {
+          title
+        }
+      }`,
+    };
+
+    const res1 = await request('http://127.0.0.1:54328')
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
+
+    expect(res1.body).toEqual({
+      data: {
+        article: {
+          title: 'Woop',
+        },
+      },
+    });
+  });
+
   it('resolves modules in node_modules', async () => {
     await spawnCLI([
       '-c',
@@ -175,10 +207,10 @@ describe('Subscriptions', () => {
       '--subscriptionsPath',
       '/custom/ws/path',
     ], {
-      PORT: 54301,
+      PORT: 54305,
     });
 
-    const client = createClient({ port: 54301, subPath: '/custom/ws/path' });
+    const client = createClient({ port: 54305, subPath: '/custom/ws/path' });
 
     const subscription = client.subscribe({
       query: gql`subscription {
@@ -196,6 +228,38 @@ describe('Subscriptions', () => {
               id: 'baf86a8bf86af8',
               value: expect.any(Number),
               __typename: 'Wallet',
+            },
+          },
+        }));
+        done();
+      },
+    });
+  });
+
+  it('sets context from global onConnect callback', async done => {
+    await spawnCLI([
+      '-c',
+      path.resolve(__dirname, 'test/data/config_file/on-connect.config.js'),
+    ], {
+      PORT: 54306,
+    });
+
+    const client = createClient({ port: 54306 });
+
+    const subscription = client.subscribe({
+      query: gql`subscription {
+        allInfo {
+          f1
+        }
+      }`,
+    }).subscribe({
+      next: res => {
+        subscription.unsubscribe();
+        expect(res).toMatchObject(expect.objectContaining({
+          data: {
+            allInfo: {
+              f1: 'global',
+              __typename: 'AllInfo',
             },
           },
         }));
