@@ -111,7 +111,7 @@ async function initServer ({
   if (debug) {
     const createReqResLog = require('./logger/log-req-res');
 
-    app.use(createReqResLog(logger));
+    app.use(createReqResLog());
   }
 
   app.use(expressWinston.logger({

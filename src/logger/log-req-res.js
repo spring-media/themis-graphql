@@ -1,4 +1,4 @@
-function createReqResLog (logger) {
+function createReqResLog () {
   return function logReqRes (req, res, next) {
     const oldWrite = res.write;
     const oldEnd = res.end;
@@ -16,7 +16,7 @@ function createReqResLog (logger) {
       }
       const body = Buffer.concat(chunks).toString('utf8');
 
-      logger.debug({
+      res.locals.logger.debug({
         responseData: body,
       });
 
