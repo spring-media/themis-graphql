@@ -2,6 +2,7 @@ const express = require('express');
 const { createServer } = require('http');
 const { nockMiddleware, replayNocks } = require('express-nock');
 const expressWinston = require('express-winston');
+const uuidv4 = require('uuid/v4');
 const crypto = require('crypto');
 const logger = require('./logger');
 const { spreadIf, insertIfValue } = require('./utils');
@@ -29,6 +30,11 @@ const applyMiddlewares = (app, middlewares) => {
       return app.use(wrapMiddleware(fnOrArr));
     });
   }
+};
+
+const addRequestIdMiddleware = (req, res, next) => {
+  res.locals.requestId = req.header('X-Request-ID') || uuidv4();
+  next();
 };
 
 const setupNockMode = (app, nockMode, nockPath, record) => {
@@ -84,6 +90,8 @@ async function initServer ({
         subscriptions[k] ? { ...p, [k]: subscriptions[k] } : p, {}),
     });
   }
+
+  app.use(addRequestIdMiddleware);
 
   if (debug) {
     const createReqResLog = require('./logger/log-req-res');
