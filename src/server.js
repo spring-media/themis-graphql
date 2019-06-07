@@ -102,6 +102,7 @@ async function initServer ({
   app.use(expressWinston.logger({
     winstonInstance: logger,
     statusLevels: true,
+    dynamicMeta: (req, res) => ({ requestId: res.locals.requestId }),
   }));
 
   applyMiddlewares(app, middleware.before);
