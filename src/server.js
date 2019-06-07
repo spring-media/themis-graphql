@@ -5,6 +5,7 @@ const expressWinston = require('express-winston');
 const uuidv4 = require('uuid/v4');
 const crypto = require('crypto');
 const logger = require('./logger');
+const { createLogger } = require('./logger/utils');
 const { spreadIf, insertIfValue } = require('./utils');
 const { ApolloServer } = require('apollo-server-express');
 const { express: voyagerMiddleware } = require('graphql-voyager/middleware');
@@ -34,6 +35,19 @@ const applyMiddlewares = (app, middlewares) => {
 
 const addRequestIdMiddleware = (req, res, next) => {
   res.locals.requestId = req.header('X-Request-ID') || uuidv4();
+  next();
+};
+
+const addRequestLoggerMiddleware = (req, res, next) => {
+  const addRequestMeta = (level, msg, meta) => {
+    if (res.locals.requestId) {
+      meta.requestId = res.locals.requestId;
+    }
+
+    return meta;
+  };
+
+  res.locals.logger = createLogger({ rewriters: [addRequestMeta] });
   next();
 };
 
@@ -92,6 +106,7 @@ async function initServer ({
   }
 
   app.use(addRequestIdMiddleware);
+  app.use(addRequestLoggerMiddleware);
 
   if (debug) {
     const createReqResLog = require('./logger/log-req-res');
