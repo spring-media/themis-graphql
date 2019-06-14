@@ -5,7 +5,6 @@ const expressWinston = require('express-winston');
 const uuidv4 = require('uuid/v4');
 const crypto = require('crypto');
 const logger = require('./logger');
-const { createLogger } = require('./logger/utils');
 const { spreadIf, insertIfValue } = require('./utils');
 const { ApolloServer } = require('apollo-server-express');
 const { express: voyagerMiddleware } = require('graphql-voyager/middleware');
@@ -39,15 +38,7 @@ const addRequestIdMiddleware = (req, res, next) => {
 };
 
 const addRequestLoggerMiddleware = (req, res, next) => {
-  const addRequestMeta = (level, msg, meta) => {
-    if (res.locals.requestId) {
-      meta.requestId = res.locals.requestId;
-    }
-
-    return meta;
-  };
-
-  res.locals.logger = createLogger({ rewriters: [addRequestMeta] });
+  res.locals.logger = logger.child({ requestId: res.locals.requestId });
   next();
 };
 
