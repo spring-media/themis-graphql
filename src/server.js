@@ -197,7 +197,7 @@ async function initServer ({
   applyMiddlewares(app, middleware.after);
 
   app.use((err, req, res, next) => {
-    res.locals.logger.error(err);
+    (res.locals.logger || logger).error(err);
     next(err);
   });
 
