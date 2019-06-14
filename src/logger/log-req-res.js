@@ -16,9 +16,7 @@ function createReqResLog () {
       }
       const body = Buffer.concat(chunks).toString('utf8');
 
-      res.locals.logger.debug({
-        responseData: body,
-      });
+      res.locals.logger.debug('Response data:', { body });
 
       oldEnd.apply(res, restArgs);
     };
