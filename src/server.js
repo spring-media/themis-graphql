@@ -2,6 +2,7 @@ const express = require('express');
 const { createServer } = require('http');
 const { nockMiddleware, replayNocks } = require('express-nock');
 const expressWinston = require('express-winston');
+const uuidv4 = require('uuid/v4');
 const crypto = require('crypto');
 const logger = require('./logger');
 const { spreadIf, insertIfValue } = require('./utils');
@@ -29,6 +30,16 @@ const applyMiddlewares = (app, middlewares) => {
       return app.use(wrapMiddleware(fnOrArr));
     });
   }
+};
+
+const addRequestIdMiddleware = (req, res, next) => {
+  res.locals.requestId = req.header('X-Request-ID') || uuidv4();
+  next();
+};
+
+const addRequestLoggerMiddleware = (req, res, next) => {
+  res.locals.logger = logger.child({ requestId: res.locals.requestId });
+  next();
 };
 
 const setupNockMode = (app, nockMode, nockPath, record) => {
@@ -85,15 +96,19 @@ async function initServer ({
     });
   }
 
+  app.use(addRequestIdMiddleware);
+  app.use(addRequestLoggerMiddleware);
+
   if (debug) {
     const createReqResLog = require('./logger/log-req-res');
 
-    app.use(createReqResLog(logger));
+    app.use(createReqResLog());
   }
 
   app.use(expressWinston.logger({
     winstonInstance: logger,
     statusLevels: true,
+    dynamicMeta: (req, res) => ({ requestId: res.locals.requestId }),
   }));
 
   applyMiddlewares(app, middleware.before);
@@ -173,7 +188,7 @@ async function initServer ({
   applyMiddlewares(app, middleware.after);
 
   app.use((err, req, res, next) => {
-    logger.error(err);
+    (res.locals.logger || logger).error(err);
     next(err);
   });
 
