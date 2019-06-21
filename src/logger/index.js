@@ -34,9 +34,26 @@ if (isDev) {
   logFormats.unshift(format.colorize());
 }
 
-module.exports = createLogger({
+const logger = createLogger({
   level: process.env.LOG_LEVEL || 'info',
   format: format.combine(...logFormats),
   transports: [new transports.Console()],
   exitOnError: false,
 });
+
+// Extend the logger to support calls to `logger.log` with arbitrary objects
+// (e. g. errors) that do not include a `level` property. graphql-tools does
+// this, but apparently it is not supported in the default Winston 3 logger.
+const originalLogFunc = logger.log;
+
+logger.log = (...args) => {
+  const info = args[0];
+
+  if (typeof info === 'object' && typeof info.level === 'undefined') {
+    info.level = info instanceof Error ? 'error' : 'info';
+  }
+
+  return originalLogFunc.apply(logger, args);
+};
+
+module.exports = logger;
