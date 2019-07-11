@@ -19,10 +19,10 @@ const schema = Joi.object().keys({
     Joi.array().items(Joi.func()),
   ]).default([]),
   onConnect: Joi.func(),
-  onDisconnect: oi.func(),
+  onDisconnect: Joi.func(),
   onStartup: Joi.func().default(() => {}),
   onShutdown: Joi.func().default(() => {}),
-  formatError: Joi.func().default((err) => err),
+  formatError: Joi.func(),
 });
 
 module.exports = function validateConfig (config, configPath) {

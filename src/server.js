@@ -161,7 +161,10 @@ async function initServer ({
     }),
     formatError: (err) => {
       logError(err)
-      return formatError(err)
+      if (formatError) {
+        return formatError(err.originalError)
+      }
+      return err
     },
     debug,
     tracing,
