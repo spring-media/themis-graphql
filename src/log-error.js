@@ -1,4 +1,3 @@
-const { formatError } = require('apollo-errors');
 const logger = require('./logger');
 
 // eslint-disable-next-line complexity
@@ -16,6 +15,4 @@ module.exports = err => {
   } else {
     logger.error(err.message || err);
   }
-
-  return formatError(err);
 };
