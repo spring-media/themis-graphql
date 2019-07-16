@@ -58,6 +58,7 @@ const {
   onStartup,
   onShutdown,
   modules,
+  formatError,
 } = loadFileConfig(program.config);
 
 modulePaths.push(...modules);
@@ -103,6 +104,7 @@ if (program.build) {
     },
     voyager: program.voyager || !isProd,
     playground: program.playground || !isProd,
+    formatError,
   })
   .then(mountServer);
 }

@@ -9,7 +9,7 @@ const { spreadIf, insertIfValue } = require('./utils');
 const { ApolloServer } = require('apollo-server-express');
 const { express: voyagerMiddleware } = require('graphql-voyager/middleware');
 const { loadSchema } = require('./load-schema');
-const formatError = require('./format-error');
+const logError = require('./log-error');
 
 const wrapMiddleware = middleware => {
   return (...args) => {
@@ -83,6 +83,7 @@ async function initServer ({
   cacheControl,
   voyager,
   playground,
+  formatError,
 } = {}) {
   const app = express();
   const server = createServer(app);
@@ -158,7 +159,13 @@ async function initServer ({
         ...spreadIf(connection && connection.context, () => connection.context),
       }), {}),
     }),
-    formatError,
+    formatError: (err) => {
+      logError(err)
+      if (formatError) {
+        return formatError(err)
+      }
+      return err
+    },
     debug,
     tracing,
     cacheControl,
