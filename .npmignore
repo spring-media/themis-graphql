@@ -8,3 +8,4 @@ __query_nocks__
 coverage
 _book
 .env
+.npmrc
