@@ -7,12 +7,10 @@ const {
 const { insertIfValue, insertIf } = require('../utils');
 
 module.exports = {
-  merge (srcs, { filterSubscriptions, logger }) {
+  merge (srcs, { filterSubscriptions, mergedSchemaTransforms = [], logger }) {
     const {
       typeDefs,
       resolvers,
-      extendTypes,
-      extendResolvers,
       remoteSchemas,
     } = srcs
     .reduce((p, c) => ({
@@ -51,6 +49,11 @@ module.exports = {
       schema = transformSchema(schema, [
         new FilterRootFields(op => op !== 'Subscription'),
       ]);
+    }
+
+    // schema transformations on the final schema
+    if (mergedSchemaTransforms.length) {
+      schema = transformSchema(schema, mergedSchemaTransforms);
     }
 
     return { schema };

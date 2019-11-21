@@ -59,6 +59,7 @@ const {
   onShutdown,
   modules,
   formatError,
+  mergedSchemaTransforms,
 } = loadFileConfig(program.config);
 
 modulePaths.push(...modules);
@@ -105,6 +106,7 @@ if (program.build) {
     voyager: program.voyager || !isProd,
     playground: program.playground || !isProd,
     formatError,
+    mergedSchemaTransforms,
   })
   .then(mountServer);
 }
