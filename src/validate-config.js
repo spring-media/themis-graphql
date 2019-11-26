@@ -23,6 +23,7 @@ const schema = Joi.object().keys({
   onStartup: Joi.func().default(() => {}),
   onShutdown: Joi.func().default(() => {}),
   formatError: Joi.func(),
+  mergedSchemaTransforms: Joi.array().items(Joi.object()).default([]),
 });
 
 module.exports = function validateConfig (config, configPath) {

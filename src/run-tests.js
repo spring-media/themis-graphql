@@ -13,7 +13,7 @@ const runTests = () => {
     ...process.argv.slice(testArgIndex, process.argv.length),
     // If no pattern or filename is specified (last argument is an option starting with `-`) use `./`
     ...(/^-/.test(process.argv.slice(-1)[0]) ? ['./'] : []),
-  ].filter(arg => !['-t', '--test', '-r', '--record'].includes(arg));
+  ].filter(arg => ![ '-t', '--test', '-r', '--record' ].includes(arg));
 
   jestCLI.run(argv);
 };

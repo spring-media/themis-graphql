@@ -47,7 +47,7 @@ function checkTypeConflict (schemas, importTypes, logger) {
 }
 
 module.exports = {
-  merge (srcs, { filterSubscriptions, mockMode, logger }) {
+  merge (srcs, { filterSubscriptions, mergedSchemaTransforms = [], mockMode, logger }) {
     const accessViaContext = {};
     // eslint-disable-next-line complexity
     const schemas = srcs.map(source => {
@@ -128,6 +128,11 @@ module.exports = {
       mergedSchema = transformSchema(mergedSchema, [
         new FilterRootFields(op => op !== 'Subscription'),
       ]);
+    }
+
+    // schema transformations on the final schema
+    if (mergedSchemaTransforms.length) {
+      mergedSchema = transformSchema(mergedSchema, mergedSchemaTransforms);
     }
 
     return { schema: mergedSchema, context };

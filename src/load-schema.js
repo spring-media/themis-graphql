@@ -26,6 +26,7 @@ const loadSchema = async ({
   mockMode,
   useFileSchema,
   filterSubscriptions,
+  mergedSchemaTransforms,
 }) => {
   if (modulePaths.length === 0) {
     throw new Error('Need at least one target path with modules.');
@@ -98,6 +99,7 @@ const loadSchema = async ({
     filterSubscriptions,
     mockMode,
     logger,
+    mergedSchemaTransforms,
   });
 
   const combinedContext = context.concat(mergeContext);

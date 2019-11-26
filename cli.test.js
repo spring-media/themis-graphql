@@ -194,6 +194,70 @@ describe('CLI', () => {
 
     setTimeout(() => spawn.killChild(server, 'SIGINT', false), 1500);
   }, 10000);
+
+  it('resolves modules with mergedSchemaTransforms', async () => {
+    await spawnCLI([
+      '-c',
+      './test/data/config_file/merged-schema-transforms.config.js',
+    ], {
+      PORT: 54328,
+    });
+
+    const query = {
+      query: `query {
+        article(input: { id: "some" }) {
+          creationDate
+        }
+      }`,
+    };
+
+    const res1 = await request('http://127.0.0.1:54328')
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
+
+    expect(res1.body).toEqual({
+      data: {
+        article: {
+          creationDate: '2018-06-24T00:34:45.253Z',
+        },
+      },
+    });
+  });
+
+  it('applies schema transforms on the merged schema', async () => {
+    await spawnCLI([
+      '-c',
+      './test/data/config_file/merged-schema-transforms.config.js',
+    ], {
+      PORT: 54328,
+    });
+
+    const query = {
+      query: `query {
+        __schema {
+          types {
+            name
+          }
+        }
+      }`,
+    };
+
+    const res1 = await request('http://127.0.0.1:54328')
+      .post('/api/graphql')
+      .send(query)
+      .expect(200);
+
+    // the introspected schema should not contain filtered type
+    // eslint-disable-next-line no-underscore-dangle
+    expect(res1.body.data.__schema.types).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'Book',
+        }),
+      ])
+    );
+  });
 });
 
 describe('Subscriptions', () => {

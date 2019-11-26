@@ -84,6 +84,7 @@ async function initServer ({
   voyager,
   playground,
   formatError,
+  mergedSchemaTransforms,
 } = {}) {
   const app = express();
   const server = createServer(app);
@@ -130,6 +131,7 @@ async function initServer ({
     mockMode,
     useFileSchema: nockMode || useFileSchema,
     filterSubscriptions: subscriptions === false,
+    mergedSchemaTransforms,
   });
   const combinedContext = context.concat(configContext);
 
@@ -159,12 +161,12 @@ async function initServer ({
         ...spreadIf(connection && connection.context, () => connection.context),
       }), {}),
     }),
-    formatError: (err) => {
-      logError(err)
+    formatError: err => {
+      logError(err);
       if (formatError) {
-        return formatError(err)
+        return formatError(err);
       }
-      return err
+      return err;
     },
     debug,
     tracing,
