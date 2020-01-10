@@ -113,10 +113,34 @@ const createErrorLogLink = ({ uri, name }) => {
   });
 };
 
+function ensureErrorPrototype (obj) {
+  if (Object.getPrototypeOf(obj) !== Error.prototype) {
+    Object.setPrototypeOf(obj, Error.prototype);
+  }
+}
+
+function createErrorPrototypeLink () {
+  // Some errors seem to get thrown as plain objects which causes them to be converted into
+  // Error objects by graphql-js [1], thereby losing some of their properties (including the
+  // error's `extensions`). We can work around that by setting the error prototype manually.
+  // [1] https://github.com/graphql/graphql-js/blob/e590dd2/src/execution/execute.js#L720
+  return onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+      graphQLErrors.map(ensureErrorPrototype);
+    }
+
+    if (networkError) {
+      ensureErrorPrototype(networkError);
+    }
+  });
+}
+
 const makeRemoteHTTPLink = ({ uri, wsUri, name }) => {
+  const errorPrototypeLink = createErrorPrototypeLink();
   const errorLogLink = createErrorLogLink({ uri, name });
   const connectionLink = createConnectionLink({ uri, wsUri });
   const link = ApolloLink.from([
+    errorPrototypeLink,
     errorLogLink,
     connectionLink,
   ]);
