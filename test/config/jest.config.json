@@ -12,5 +12,5 @@
   "setupFiles": [
     "dotenv/config"
   ],
-  "setupTestFrameworkScriptFile": "./test/framework.js"
+  "setupFilesAfterEnv": ["./test/framework.js"]
 }
