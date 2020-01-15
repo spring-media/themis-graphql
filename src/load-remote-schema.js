@@ -123,7 +123,9 @@ function createErrorPrototypeLink () {
   // Some errors seem to get thrown as plain objects which causes them to be converted into
   // Error objects by graphql-js [1], thereby losing some of their properties (including the
   // error's `extensions`). We can work around that by setting the error prototype manually.
+  // This workaround can be removed once an error handling fix [2] is merged into graphql-tools.
   // [1] https://github.com/graphql/graphql-js/blob/e590dd2/src/execution/execute.js#L720
+  // [2] https://github.com/apollographql/graphql-tools/pull/1048
   return onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
       graphQLErrors.map(ensureErrorPrototype);
