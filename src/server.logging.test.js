@@ -104,11 +104,7 @@ describe('Server', () => {
       expect(res.body).toMatchObject(expect.objectContaining(expected));
     });
 
-    // TODO: Activate and update when graphql 14.2 is released
-    // including https://github.com/graphql/graphql-js/pull/1600
-    // and graphql-tools with error handling fix:
-    // https://github.com/apollographql/graphql-tools/pull/1048
-    it.skip('logs remote link graphql errors', async () => {
+    it('logs remote link graphql errors', async () => {
       await spawnCLI([
         path.resolve(__dirname, '../test/data/error'),
       ], {
@@ -136,15 +132,15 @@ describe('Server', () => {
           error: null,
         },
         errors: [{
-          message: expect.stringContaining('[Remote GraphQL Error in "error-remote (http://127.0.0.1:53412/api/graphql)"]'),
-          locations: [{ line: 1, column: 9 }],
+          message: '[Remote GraphQL Error in "error-remote (http://127.0.0.1:53412/api/graphql)"]: resolver error in module',
+          locations: [{ column: 3, line: 2 }],
           path: ['error'],
           extensions: {
             code: 'INTERNAL_SERVER_ERROR',
             exception: {
               errors: [{
-                message: expect.stringContaining('[Remote GraphQL Error in "error-remote (http://127.0.0.1:53412/api/graphql)"]'),
                 locations: [],
+                message: 'resolver error in module',
                 path: ['error'],
               }],
             },
@@ -154,10 +150,10 @@ describe('Server', () => {
 
       expect(logger.error).toHaveBeenCalledWith(
         expect.stringContaining(
-          '[Remote GraphQL Error in "error-remote (http://127.0.0.1:53412/api/graphql)"]'
+          '[Remote GraphQL Error in "error-remote (http://127.0.0.1:53412/api/graphql)"]: resolver error in module'
         )
       );
-      expect(res.body).toMatchObject(expect.objectContaining(expected));
+      expect(res.body).toMatchObject(expected);
     });
 
     it('logs remote link graphql errors (with failing local resolver)', async () => {

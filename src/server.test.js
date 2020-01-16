@@ -53,6 +53,53 @@ describe('Server', () => {
 
     expect(res.body).toMatchObject(expect.objectContaining(expected));
   });
+
+  it('returns custom resolver errors from the remote as expected', async () => {
+    await spawnCLI([path.resolve(__dirname, '../test/data/error-custom')], {
+      PORT: 53412,
+    });
+
+    const { server } = await initServer({
+      modulePaths: [
+        path.resolve(__dirname, '../test/data/error-remote'),
+        path.resolve(__dirname, '../test/data/error-remote-on-delegate'),
+      ],
+      useFileSchema: false,
+    });
+
+    const res = await request(server)
+      .post('/api/graphql')
+      .send({
+        query: `query {
+          remoteError
+        }`,
+      })
+      .expect(200);
+
+    server.close();
+
+    const expected = {
+      data: {
+        remoteError: null,
+      },
+      errors: [
+        {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            exception: {
+              invalidArgs: ['foo'],
+            },
+          },
+          locations: [],
+          message:
+            '[Remote GraphQL Error in "error-remote (http://127.0.0.1:53412/api/graphql)"]: custom resolver error in module',
+          path: ['customError'],
+        },
+      ],
+    };
+
+    expect(res.body).toMatchObject(expect.objectContaining(expected));
+  });
 });
 
 describe('Context', () => {
