@@ -33,7 +33,7 @@
     "jest-nock": "0.1.7",
     "joi": "13.4.0",
     "json-stable-stringify": "^1.0.1",
-    "mkdirp": "0.5.1",
+    "mkdirp": "1.0.3",
     "nock": "12.0.0",
     "subscriptions-transport-ws": "0.9.16",
     "supertest": "4.0.2",

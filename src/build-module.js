@@ -4,7 +4,6 @@ const { makeRemoteHTTPLink, loadIntrospectionSchema, distPathForConfig } = requi
 const { promisify } = require('util');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
-const makeDir = promisify(mkdirp);
 const writeFile = promisify(fs.writeFile);
 
 const buildRemote = async (config, sourcePath, { pretty }) => {
@@ -14,7 +13,7 @@ const buildRemote = async (config, sourcePath, { pretty }) => {
   const introspectionSchema = await loadIntrospectionSchema(http, context);
   const { schemaDistPath, schemaFilePath } = distPathForConfig({ schemaPath }, sourcePath);
 
-  await makeDir(schemaDistPath);
+  await mkdirp(schemaDistPath);
   const schemaStr = pretty ?
     JSON.stringify(introspectionSchema, null, 2) :
     JSON.stringify(introspectionSchema);
