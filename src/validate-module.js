@@ -2,11 +2,11 @@
 /**
  * Checks if the imported module exports the needed data to stitch and mount it.
  */
-const BaseJoi = require('joi');
+const BaseJoi = require('@hapi/joi');
 const packageNameExtension = require('./joi-extensions/npm-package-name');
 const Joi = BaseJoi.extend(packageNameExtension);
 
-const schema = Joi.alternatives().try([
+const schema = Joi.alternatives().try(
   Joi.object().keys({
     name: Joi.string().packageName().required(),
     namespace: Joi.string(),
@@ -41,10 +41,10 @@ const schema = Joi.alternatives().try([
     onStartup: Joi.func(),
     onShutdown: Joi.func(),
   }),
-]);
+);
 
 module.exports = function validateModule (source, sourcePath) {
-  const { error, value } = Joi.validate(source, schema);
+  const { error, value } = schema.validate(source);
 
   if (error) {
     error.message = `${error.message} at ${sourcePath}`;

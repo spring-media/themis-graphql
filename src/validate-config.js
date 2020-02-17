@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 
 const middleware = Joi.alternatives([
   Joi.func(),
@@ -27,7 +27,7 @@ const schema = Joi.object().keys({
 });
 
 module.exports = function validateConfig (config, configPath) {
-  const { error, value } = Joi.validate(config, schema);
+  const { error, value } = schema.validate(config);
 
   if (error) {
     error.message = `${error.message} at ${configPath}`;
