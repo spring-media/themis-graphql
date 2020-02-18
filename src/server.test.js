@@ -89,6 +89,7 @@ describe('Server', () => {
             exception: {
               invalidArgs: ['foo'],
             },
+            invalidArgs: ['foo'],
           },
           locations: [],
           message:

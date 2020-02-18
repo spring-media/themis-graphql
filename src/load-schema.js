@@ -12,9 +12,12 @@ function resolveMergeStrategyPath (strategy) {
   if (/^.\//.test(strategy)) {
     return path.resolve(process.cwd(), strategy);
   }
-  return require.resolve(strategy, {
+
+  const localStrategy = `./${path.normalize(strategy)}`;
+
+  return require.resolve(localStrategy, {
     paths: [
-      ...require.resolve.paths(strategy),
+      ...require.resolve.paths(localStrategy),
       path.resolve(__dirname, 'strategies'),
     ],
   });
