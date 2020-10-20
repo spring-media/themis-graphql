@@ -12,5 +12,8 @@
   "setupFiles": [
     "dotenv/config"
   ],
-  "setupFilesAfterEnv": ["./test/framework.js"]
+  "setupFilesAfterEnv": ["./test/framework.js"],
+  "transform": {
+    ".*\\.js$": "babel-jest"
+  }
 }
