@@ -11,7 +11,7 @@ _Note:_ To run the examples you can install themis globally `yarn global add the
 [All examples](https://github.com/spring-media/themis-graphql/blob/master/examples) can be found in the repository as well.
 
 ## Creating a GraphQL Module
-A `module` in its most basic form consists of a GraphQL schema (Type Definition) and resolvers. If you don't know what a schema and resolvers are, checkout [graphql.org/learn](https://graphql.org/learn/). For convenience, Themis exposes the packages it uses, like `graphql-tag`, `graphql-tools` and `apollo-server`, plus other convenvient helpers for testing.
+A `module` in its most basic form consists of a GraphQL schema (Type Definition) and resolvers. If you don't know what a schema and resolvers are, checkout [graphql.org/learn](https://graphql.org/learn/). For convenience, Themis exposes the packages it uses, like `graphql-tag`, `graphql-tools` and `apollo-server`, plus other convenient helpers for testing.
 
 Create a file called `hello.js` with the following contents:
 ```js
