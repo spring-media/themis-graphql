@@ -24,6 +24,7 @@ const schema = Joi.object().keys({
   onShutdown: Joi.func().default(() => {}),
   formatError: Joi.func(),
   mergedSchemaTransforms: Joi.array().items(Joi.object()).default([]),
+  uploads: Joi.boolean().default(true),
 });
 
 module.exports = function validateConfig (config, configPath) {
